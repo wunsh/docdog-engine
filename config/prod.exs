@@ -59,6 +59,11 @@ config :logger, level: :info
 #     config :docdog, DocdogWeb.Endpoint, server: true
 #
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+# Configure your database
+config :docdog, Docdog.Repo,
+       adapter: Ecto.Adapters.Postgres,
+       username: System.get_env("DATABASE_USERNAME") || "postgres",
+       password: System.get_env("DATABASE_PASSWORD") || "postgres",
+       database: System.get_env("DATABASE_NAME") || "docdog_prod",
+       pool_size: 15
+

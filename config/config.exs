@@ -12,7 +12,7 @@ config :docdog,
 # Configures the endpoint
 config :docdog, DocdogWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "puG/wFGvRn4lLmwlqIlLueq+NU4lzdbUECChISYOUtLdlMEN8eVl1fEcjCgnU4Ad",
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || raise("Expected the SECRET_KEY_BASE environment variable to be set"),
   render_errors: [view: DocdogWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Docdog.PubSub,
            adapter: Phoenix.PubSub.PG2]
