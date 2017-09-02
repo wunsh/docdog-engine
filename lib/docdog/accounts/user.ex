@@ -8,6 +8,8 @@ defmodule Docdog.Accounts.User do
     field :username, :string
 
     timestamps()
+
+    has_many :projects, Docdog.Editor.Project
   end
 
   @doc false

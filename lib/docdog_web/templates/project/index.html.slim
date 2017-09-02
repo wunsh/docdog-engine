@@ -1,0 +1,18 @@
+h2 Listing Projects
+
+table.table
+  thead
+    tr
+      th Name
+      th
+  tbody
+    = for project <- @projects do
+      tr
+        td = project.name
+
+        td.text-right
+          span = link "Show", to: project_path(@conn, :show, project), class: "btn btn-default btn-xs"
+          span = link "Edit", to: project_path(@conn, :edit, project), class: "btn btn-default btn-xs"
+          span = link "Delete", to: project_path(@conn, :delete, project), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs"
+
+span = link "New Project", to: project_path(@conn, :new)

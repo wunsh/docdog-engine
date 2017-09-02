@@ -1,0 +1,5 @@
+h2 Edit Project
+
+= render "form.html", Map.put(assigns, :action, project_path(@conn, :update, @project))
+
+span = link "Back", to: project_path(@conn, :index)
