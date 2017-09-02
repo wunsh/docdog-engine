@@ -37,7 +37,7 @@ config :docdog, DocdogWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/docdog_web/views/.*(ex)$},
-      ~r{lib/docdog_web/templates/.*(eex)$}
+      ~r{lib/docdog_web/templates/.*(eex|slim|slime)$},
     ]
   ]
 
