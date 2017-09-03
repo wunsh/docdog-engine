@@ -10,6 +10,8 @@ defmodule Docdog.Editor.Project do
     timestamps()
 
     belongs_to :user, Docdog.Accounts.User
+
+    has_many :documents, Docdog.Editor.Document
   end
 
   @doc false

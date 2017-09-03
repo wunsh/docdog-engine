@@ -1,0 +1,7 @@
+- project_id = @conn.params["project_id"]
+
+h2 Edit Document
+
+= render "form.html", Map.put(assigns, :action, project_document_path(@conn, :update, project_id, @document))
+
+span = link "Back", to: project_document_path(@conn, :index, project_id)

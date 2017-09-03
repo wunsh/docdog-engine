@@ -18,7 +18,9 @@ defmodule DocdogWeb.Router do
 
     get "/", PageController, :index
     resources "/users", UserController
-    resources "/projects", ProjectController
+    resources "/projects", ProjectController do
+      resources "/documents", DocumentController
+    end
   end
 
   # Other scopes may use custom stacks.

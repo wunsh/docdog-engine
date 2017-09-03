@@ -1,0 +1,11 @@
+- project_id = @conn.params["project_id"]
+
+h2 Show Document
+
+ul
+  li
+    strong Name:
+    = @document.name
+
+span = link "Edit", to: project_document_path(@conn, :edit, project_id, @document)
+span = link "Back", to: project_document_path(@conn, :index, project_id)
