@@ -9,4 +9,9 @@
     = error_tag f, :name
 
   .form-group
+    = label f, :original_text, class: "control-label"
+    = textarea f, :original_text, rows: 14, class: "form-control"
+    = error_tag f, :original_text
+
+  .form-group
     = submit "Submit", class: "btn btn-primary"
