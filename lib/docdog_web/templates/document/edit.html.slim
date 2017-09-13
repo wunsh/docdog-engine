@@ -1,7 +1,23 @@
-- project_id = @conn.params["project_id"]
-
 h2 Edit Document
 
-= render "form.html", Map.put(assigns, :action, project_document_path(@conn, :update, project_id, @document))
+/= render "form.html", Map.put(assigns, :action, project_document_path(@conn, :update, project_id, @document))
 
-span = link "Back", to: project_document_path(@conn, :index, project_id)
+table
+  tr
+    th Оригинальная строка
+    th Перевод
+    th
+
+  = for line <- @document.lines do
+    = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
+        [ujs_method: "put", ujs_remote: true, data: [translated_text: line.translated_text]],  fn f ->
+      tr
+        td
+          strong = line.original_text
+        td
+            = textarea f, :translated_text, class: "translated-text form-control"
+        td = submit "Submit", class: "btn btn-primary"
+
+
+
+span = link "Back", to: project_document_path(@conn, :index, @document.project_id)

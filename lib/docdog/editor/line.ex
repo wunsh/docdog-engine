@@ -5,7 +5,6 @@ defmodule Docdog.Editor.Line do
 
 
   schema "lines" do
-    field :hashed_text, :string
     field :original_text, :string
     field :translated_text, :string
     field :index_number, :integer
@@ -18,8 +17,8 @@ defmodule Docdog.Editor.Line do
   @doc false
   def changeset(%Line{} = line, attrs) do
     line
-    |> cast(attrs, [:original_text, :translated_text])
-    |> validate_required([:original_text, :translated_text])
+    |> cast(attrs, [:translated_text])
+    |> validate_required([:translated_text])
   end
 
   def prepare_line({original_line, index}) do

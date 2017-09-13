@@ -1,5 +1,3 @@
-require IEx
-
 defmodule DocdogWeb.DocumentController do
   use DocdogWeb, :controller
 
@@ -36,8 +34,7 @@ defmodule DocdogWeb.DocumentController do
 
   def edit(conn, %{"id" => id}) do
     document = Editor.get_document!(id)
-    changeset = Editor.change_document(document)
-    render(conn, "edit.html", document: document, changeset: changeset)
+    render(conn, "edit.html", document: document)
   end
 
   def update(conn, %{"id" => id, "document" => document_params, "project_id" => project_id}) do

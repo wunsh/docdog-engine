@@ -14,7 +14,7 @@ defmodule Docdog.Editor.Document do
 
     belongs_to :project, Docdog.Editor.Project
 
-    has_many :lines, Docdog.Editor.Line
+    has_many :lines, Docdog.Editor.Line, on_replace: :mark_as_invalid
   end
 
   @doc false
@@ -23,6 +23,12 @@ defmodule Docdog.Editor.Document do
     |> cast(attrs, [:name, :original_text])
     |> validate_required([:name, :original_text])
     |> put_assoc(:lines, create_lines(attrs["original_text"]))
+  end
+
+  def translated_text(lines) do
+    lines
+    |> Enum.map(fn(x) -> x.translated_text end )
+    |> Enum.join("\n")
   end
 
   defp create_lines(nil) do

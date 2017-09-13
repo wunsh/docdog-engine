@@ -6,6 +6,9 @@ ul
   li
     strong Name:
     = @document.name
+  li
+    strong Translated text:
+    pre = Docdog.Editor.Document.translated_text(@document.lines)
 
 span = link "Edit", to: project_document_path(@conn, :edit, project_id, @document)
 span = link "Back", to: project_document_path(@conn, :index, project_id)

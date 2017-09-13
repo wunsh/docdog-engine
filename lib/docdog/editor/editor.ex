@@ -7,6 +7,7 @@ defmodule Docdog.Editor do
   alias Docdog.Repo
 
   alias Docdog.Editor.Project
+  alias Docdog.Editor.Line
 
   @doc """
   Returns the list of projects.
@@ -38,6 +39,13 @@ defmodule Docdog.Editor do
   def get_project!(id) do
     Project
     |> preload(:documents)
+    |> Repo.get!(id)
+  end
+
+
+
+  def get_line!(id) do
+    Line
     |> Repo.get!(id)
   end
 
@@ -74,6 +82,15 @@ defmodule Docdog.Editor do
   def update_project(%Project{} = project, attrs) do
     project
     |> Project.changeset(attrs)
+    |> Repo.update()
+  end
+
+
+
+
+  def update_line(%Line{} = line, attrs) do
+    line
+    |> Line.changeset(attrs)
     |> Repo.update()
   end
 
@@ -141,7 +158,7 @@ defmodule Docdog.Editor do
       ** (Ecto.NoResultsError)
 
   """
-  def get_document!(id), do: Repo.get!(Document, id)
+  def get_document!(id), do: Document |> preload(:lines) |> Repo.get!(id)
 
   @doc """
   Creates a document.
@@ -207,5 +224,10 @@ defmodule Docdog.Editor do
   """
   def change_document(%Document{} = document) do
     Document.changeset(document, %{})
+  end
+
+
+  def change_line(%Line{} = line) do
+    Line.changeset(line, %{})
   end
 end
