@@ -23,6 +23,12 @@ defmodule DocdogWeb.Router do
     end
   end
 
+  scope "/api", DocdogWeb do
+    pipe_through :api
+
+    resources "/lines", LineController, only: [:update]
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", DocdogWeb do
   #   pipe_through :api
