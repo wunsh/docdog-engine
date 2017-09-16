@@ -14,9 +14,21 @@
 import "phoenix_html"
 import "phoenix_ujs"
 
+import { Editor } from "./components/editor";
+
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+var App = (function(){
+    return {
+        init: function(){
+            Editor.init();
+        }
+    }
+})();
+
+App.init();

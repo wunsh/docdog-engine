@@ -6,17 +6,15 @@ table
   tr
     th Оригинальная строка
     th Перевод
-    th
 
-  = for line <- @document.lines do
-    = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
-        [ujs_method: "put", ujs_remote: true, data: [translated_text: line.translated_text]],  fn f ->
-      tr
-        td
-          strong = line.original_text
-        td
-            = textarea f, :translated_text, class: "translated-text form-control"
-        td = submit "Submit", class: "btn btn-primary"
+  = for line <- @lines do
+    tr
+      td
+        strong = line.original_text
+      td
+       = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
+                  [method: "put", ujs_remote: true, class: "translate_line__form", data: [id: line.id]],  fn f ->
+         = textarea f, :translated_text, class: "translate_line__input form-control"
 
 
 
