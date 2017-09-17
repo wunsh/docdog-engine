@@ -17,7 +17,11 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <%= if current_user = @conn.assigns[:current_user] do %>
+              <li><%= current_user.username %></li>
+            <% else %>
+              <li><a href="/auth/github">Sign in by Github</a></li>
+            <% end %>
           </ul>
         </nav>
         <span class="logo"></span>
