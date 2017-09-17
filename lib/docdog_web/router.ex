@@ -29,6 +29,15 @@ defmodule DocdogWeb.Router do
     resources "/lines", LineController, only: [:update]
   end
 
+  scope "/auth", DocdogWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
+    delete "/logout", AuthController, :delete
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", DocdogWeb do
   #   pipe_through :api

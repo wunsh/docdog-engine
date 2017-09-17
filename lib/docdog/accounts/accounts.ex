@@ -5,8 +5,8 @@ defmodule Docdog.Accounts do
 
   import Ecto.Query, warn: false
   alias Docdog.Repo
-
   alias Docdog.Accounts.User
+  alias Ueberauth.Auth
 
   @doc """
   Returns the list of users.
@@ -100,5 +100,16 @@ defmodule Docdog.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def find_or_create(%Auth{} = auth) do
+    query = from u in User,
+                 where: u.username == ^auth.info.nickname
+
+    if user = Repo.one(query) do
+      {:ok, user}
+    else
+      create_user(User.basic_info(auth))
+    end
   end
 end

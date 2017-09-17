@@ -20,7 +20,7 @@ defmodule Docdog.Mixfile do
   def application do
     [
       mod: {Docdog.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ueberauth_github]
     ]
   end
 
@@ -41,6 +41,7 @@ defmodule Docdog.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:phoenix_slime, "~> 0.9.0"},
+      {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"}
     ]
   end
