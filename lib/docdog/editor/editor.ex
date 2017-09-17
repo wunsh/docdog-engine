@@ -4,6 +4,7 @@ defmodule Docdog.Editor do
   """
 
   import Ecto.Query, warn: false
+  import Ecto, only: [assoc: 2]
   alias Docdog.Repo
 
   alias Docdog.Editor.Project
@@ -229,5 +230,12 @@ defmodule Docdog.Editor do
 
   def change_line(%Line{} = line) do
     Line.changeset(line, %{})
+  end
+
+  def get_lines_for_document(document) do
+    document
+    |> assoc(:lines)
+    |> Line.default_scope
+    |> Repo.all
   end
 end

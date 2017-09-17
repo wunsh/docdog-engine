@@ -34,7 +34,9 @@ defmodule DocdogWeb.DocumentController do
 
   def edit(conn, %{"id" => id}) do
     document = Editor.get_document!(id)
-    render(conn, "edit.html", document: document)
+    lines = Editor.get_lines_for_document(document)
+
+    render(conn, "edit.html", document: document, lines: lines)
   end
 
   def update(conn, %{"id" => id, "document" => document_params, "project_id" => project_id}) do

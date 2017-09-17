@@ -1,6 +1,7 @@
 defmodule Docdog.Editor.Line do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
   alias Docdog.Editor.Line
 
 
@@ -25,5 +26,10 @@ defmodule Docdog.Editor.Line do
     %{}
     |> Map.put(:original_text, original_line)
     |> Map.put(:index_number, index)
+  end
+
+  def default_scope(query) do
+    from line in query,
+      order_by: [asc: :index_number]
   end
 end
