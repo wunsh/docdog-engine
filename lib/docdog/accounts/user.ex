@@ -4,7 +4,9 @@ defmodule Docdog.Accounts.User do
   alias Docdog.Accounts.User
 
   schema "users" do
+    field :email, :string
     field :username, :string
+    field :avatar, :string
 
     timestamps()
 
@@ -14,12 +16,12 @@ defmodule Docdog.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:username])
-    |> validate_required([:username])
+    |> cast(attrs, [:email, :username, :avatar])
+    |> validate_required([:email, :username])
   end
 
   def basic_info(auth) do
-    %{username: name_from_auth(auth)} # , avatar: auth.info.image
+    %{ email: auth.info.email, username: name_from_auth(auth), avatar: auth.info.image }
   end
 
   defp name_from_auth(auth) do
