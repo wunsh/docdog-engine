@@ -62,7 +62,9 @@ defmodule Docdog.Editor do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(attrs \\ %{}) do
+  def create_project(user, attrs \\ %{}) do
+    attrs = attrs |> Map.put("user_id", user.id)
+
     %Project{}
     |> Project.changeset(attrs)
     |> Repo.insert()
@@ -86,10 +88,9 @@ defmodule Docdog.Editor do
     |> Repo.update()
   end
 
+  def update_line(%Line{} = line, user, attrs) do
+    attrs = attrs |> Map.put("user_id", user.id)
 
-
-
-  def update_line(%Line{} = line, attrs) do
     line
     |> Line.changeset(attrs)
     |> Repo.update()
@@ -173,7 +174,9 @@ defmodule Docdog.Editor do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_document(project, attrs \\ %{}) do
+  def create_document(project, user, attrs \\ %{}) do
+    attrs = attrs |> Map.put("user_id", user.id)
+
     project
     |> Ecto.build_assoc(:documents)
     |> Document.changeset(attrs)

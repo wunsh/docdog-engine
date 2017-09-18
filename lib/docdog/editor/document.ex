@@ -13,6 +13,7 @@ defmodule Docdog.Editor.Document do
     timestamps()
 
     belongs_to :project, Docdog.Editor.Project
+    belongs_to :user, Docdog.Accounts.User
 
     has_many :lines, Docdog.Editor.Line, on_replace: :mark_as_invalid
   end
@@ -20,8 +21,8 @@ defmodule Docdog.Editor.Document do
   @doc false
   def changeset(%Document{} = document, attrs) do
     document
-    |> cast(attrs, [:name, :original_text])
-    |> validate_required([:name, :original_text])
+    |> cast(attrs, [:name, :original_text, :user_id])
+    |> validate_required([:name, :original_text, :user_id])
     |> put_assoc(:lines, create_lines(attrs["original_text"]))
   end
 

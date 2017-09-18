@@ -12,6 +12,8 @@ defmodule DocdogWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug Docdog.CurrentUserPlug
   end
 
   scope "/", DocdogWeb do
@@ -24,7 +26,7 @@ defmodule DocdogWeb.Router do
     end
   end
 
-  scope "/api", DocdogWeb do
+  scope "/api/v1", DocdogWeb do
     pipe_through :api
 
     resources "/lines", LineController, only: [:update]

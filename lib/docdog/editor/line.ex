@@ -13,13 +13,14 @@ defmodule Docdog.Editor.Line do
     timestamps()
 
     belongs_to :document, Docdog.Editor.Document
+    belongs_to :user, Docdog.Accounts.User
   end
 
   @doc false
   def changeset(%Line{} = line, attrs) do
     line
-    |> cast(attrs, [:translated_text])
-    |> validate_required([:translated_text])
+    |> cast(attrs, [:translated_text, :user_id])
+    |> validate_required([:translated_text, :user_id])
   end
 
   def prepare_line({original_line, index}) do

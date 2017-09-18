@@ -15,7 +15,7 @@ defmodule DocdogWeb.ProjectController do
   end
 
   def create(conn, %{"project" => project_params}) do
-    case Editor.create_project(project_params) do
+    case Editor.create_project(conn.assigns.current_user, project_params) do
       {:ok, project} ->
         conn
         |> put_flash(:info, "Project created successfully.")

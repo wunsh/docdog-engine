@@ -6,8 +6,7 @@ defmodule DocdogWeb.LineController do
   def update(conn, %{"id" => id, "line" => line_params}) do
     line = Editor.get_line!(id)
 
-
-    case Editor.update_line(line, line_params) do
+    case Editor.update_line(line, conn.assigns.current_user, line_params) do
       {:ok, _} ->
         conn
         |> put_status(:ok)

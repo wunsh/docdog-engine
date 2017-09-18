@@ -11,6 +11,8 @@ defmodule Docdog.Accounts.User do
     timestamps()
 
     has_many :projects, Docdog.Editor.Project
+    has_many :documents, Docdog.Editor.Document
+    has_many :lines, Docdog.Editor.Line
   end
 
   @doc false
