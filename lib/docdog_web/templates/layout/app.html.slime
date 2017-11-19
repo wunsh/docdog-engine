@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
+    meta content="Application" name="description"
+    meta content="Wunsh Community" name="author"
+    
+    = csrf_meta_tag()
+    
+    title Hello Docdog!
+    
+    link rel="stylesheet" href=static_path(@conn, "/css/app.css")
+  
+  body
+    .site-wrapper
+      .site-wrapper-inner
+        .cover-container
+          .masthead.clearfix
+            .inner
+              h3.masthead-brand Docdog App
+          = render @view_module, @view_template, assigns
+    
+    script src=static_path(@conn, "/js/app.js")

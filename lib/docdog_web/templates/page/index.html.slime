@@ -1,0 +1,16 @@
+.inner.cover
+  h1.cover-heading Cover your page.
+  
+  p.lead
+    Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.
+  
+  p.lead
+    a.btn.btn-lg.btn-default href="/auth/github" Sign in with Github
+
+.mastfoot
+  .inner
+    p
+      | Cover template for
+      a href="http://getbootstrap.com"  Bootstrap
+      | by
+      a href="https://twitter.com/mdo"  @mdo

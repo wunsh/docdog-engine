@@ -16,14 +16,32 @@ defmodule DocdogWeb.Router do
     plug Docdog.CurrentUserPlug
   end
 
+  pipeline :workplace_layout do
+    plug :put_layout, {DocdogWeb.LayoutView, :workplace}
+  end
+
+  pipeline :simple_layout do
+    plug :put_layout, {DocdogWeb.LayoutView, :simple}
+  end
+
   scope "/", DocdogWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
+  end
+
+  scope "/workplace", DocdogWeb do
+    pipe_through [:browser, :workplace_layout]
+
     resources "/projects", ProjectController do
       resources "/documents", DocumentController
     end
+  end
+
+  scope "/", DocdogWeb do
+    pipe_through [:browser, :simple_layout]
+
+    resources "/users", UserController
   end
 
   scope "/api/v1", DocdogWeb do
