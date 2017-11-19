@@ -13,28 +13,21 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <%= if current_user = @conn.assigns[:current_user] do %>
-              <li><%= current_user.username %></li>
-            <% else %>
-              <li><a href="/auth/github">Sign in by Github</a></li>
-            <% end %>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+            <h3 class="masthead-brand">Docdog App</h3>
+          </div>
+        </div>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
         <%= render @view_module, @view_template, assigns %>
-      </main>
 
-    </div> <!-- /container -->
+      </div>
+    </div>
+
+                                                            </div>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
