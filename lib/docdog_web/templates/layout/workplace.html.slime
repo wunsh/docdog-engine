@@ -1,0 +1,3 @@
+= base_layout @conn do
+      
+  = render @view_module, @view_template, assigns
