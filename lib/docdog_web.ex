@@ -40,6 +40,10 @@ defmodule DocdogWeb do
       import DocdogWeb.Router.Helpers
       import DocdogWeb.ErrorHelpers
       import DocdogWeb.Gettext
+
+      def render_shared(template, assigns \\ []) do
+        render DocdogWeb.SharedView, template, assigns
+      end
     end
   end
 
