@@ -44,6 +44,10 @@ exports.config = {
 
   // Configure your plugins
   plugins: {
+    copycat: {
+        "fonts": ["node_modules/bootstrap-sass/assets/fonts/bootstrap"],
+        verbose: true
+    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/]
