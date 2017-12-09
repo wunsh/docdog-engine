@@ -1,0 +1,18 @@
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      = link "Docdog.io", to: page_path(@conn, :index), class: "navbar-brand"
+
+      button.collapsed.navbar-toggle aria-expanded="false" data-target="#collapsed" data-toggle="collapse" type="button"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+
+    #collapsed.navbar-collapse.collapse
+      ul.nav.navbar-nav
+        li = link "My Projects", to: project_path(@conn, :index)
+
+      .navbar-text.navbar-right
+        ' Signed in as
+        strong = link @current_user.email, to: "", class: "navbar-link"

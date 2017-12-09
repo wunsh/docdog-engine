@@ -1,10 +1,10 @@
 = base_layout @conn do
+  .cover
+    .site-wrapper
+      .site-wrapper-inner
+        .cover-container
+          .masthead.clearfix
+            .inner
+              h3.masthead-brand Docdog App
 
-  .site-wrapper
-    .site-wrapper-inner
-      .cover-container
-        .masthead.clearfix
-          .inner
-            h3.masthead-brand Docdog App
-        
-        = render @view_module, @view_template, assigns
+          = render @view_module, @view_template, assigns

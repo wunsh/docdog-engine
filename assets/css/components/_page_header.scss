@@ -1,0 +1,11 @@
+.page_header {
+  h1, h2, h3 {
+    display: inline;
+  }
+
+  &__icon {
+    &--front {
+      margin-right: 0.35em;
+    }
+  }
+}

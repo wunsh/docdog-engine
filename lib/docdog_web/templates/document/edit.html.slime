@@ -1,21 +1,22 @@
-h2 Edit Document
+.row
+  .col-md-6.col-md-offset-3
+    .page-header
+      h2.page_header
+        small.page_header__icon.page_header__icon--front
+          = link to: project_document_path(@conn, :index, @document.project_id) do
+            span.glyphicon.glyphicon-circle-arrow-left
+        | Edit Document
 
-/= render "form.html", Map.put(assigns, :action, project_document_path(@conn, :update, project_id, @document))
+    table
+      tr
+        th width="50%" Original line
+        th Translated line
 
-table
-  tr
-    th width="50%" Оригинальная строка
-    th Перевод
-
-  = for line <- @lines do
-    tr
-      td
-        strong = line.original_text
-      td
-       = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
-                  [method: "put", ujs_remote: true, class: "translate_line__form", data: [id: line.id]],  fn f ->
-         = textarea f, :translated_text, class: "translate_line__input form-control", rows: 5
-
-
-
-span = link "Back", to: project_document_path(@conn, :index, @document.project_id)
+      = for line <- @lines do
+        tr
+          td
+            strong = line.original_text
+          td
+           = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
+                      [method: "put", ujs_remote: true, class: "translate_line__form", data: [id: line.id]],  fn f ->
+             = textarea f, :translated_text, class: "translate_line__input form-control", rows: 5

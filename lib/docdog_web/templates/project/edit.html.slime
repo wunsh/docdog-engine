@@ -1,5 +1,10 @@
-h2 Edit Project
+.row
+  .col-md-6.col-md-offset-3
+    .page-header
+      h2.page_header
+        small.page_header__icon.page_header__icon--front
+          = link to: project_path(@conn, :index) do
+            span.glyphicon.glyphicon-circle-arrow-left
+        | Edit Project
 
-= render "form.html", Map.put(assigns, :action, project_path(@conn, :update, @project))
-
-span = link "Back", to: project_path(@conn, :index)
+    = render "form.html", Map.put(assigns, :action, project_path(@conn, :update, @project))

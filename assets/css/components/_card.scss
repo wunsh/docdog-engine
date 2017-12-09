@@ -1,0 +1,28 @@
+.card {
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+
+  &__header {
+    padding: 1rem 1.25rem;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  &__body {
+    padding: 1.25rem;
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__progress {
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+}

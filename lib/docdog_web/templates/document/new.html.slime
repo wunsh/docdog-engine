@@ -1,7 +1,10 @@
-- project_id = @conn.params["project_id"]
+.row
+  .col-md-6.col-md-offset-3
+    .page-header
+      h2.page_header
+        small.page_header__icon.page_header__icon--front
+          = link to: project_document_path(@conn, :index, @project_id) do
+            span.glyphicon.glyphicon-circle-arrow-left
+        | New Document for Project
 
-h2 New Document
-
-= render "form.html", Map.put(assigns, :action, project_document_path(@conn, :create, project_id))
-
-span = link "Back", to: project_document_path(@conn, :index, project_id)
+    = render "form.html", Map.put(assigns, :action, project_path(@conn, :create))

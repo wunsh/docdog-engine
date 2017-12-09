@@ -33,8 +33,8 @@ defmodule DocdogWeb.Router do
   scope "/workplace", DocdogWeb do
     pipe_through [:browser, :workplace_layout]
 
-    resources "/projects", ProjectController do
-      resources "/documents", DocumentController
+    resources "/projects", ProjectController, exclude: [:show] do
+      resources "/documents", DocumentController, exclude: [:update]
     end
   end
 

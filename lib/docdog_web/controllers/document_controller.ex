@@ -6,12 +6,12 @@ defmodule DocdogWeb.DocumentController do
 
   def index(conn, %{"project_id" => project_id}) do
     documents = Editor.get_project!(project_id).documents
-    render(conn, "index.html", documents: documents)
+    render(conn, "index.html", project_id: project_id, documents: documents)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"project_id" => project_id}) do
     changeset = Editor.change_document(%Document{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", project_id: project_id, changeset: changeset)
   end
 
   def create(conn, %{"document" => document_params, "project_id" => project_id}) do
@@ -21,9 +21,9 @@ defmodule DocdogWeb.DocumentController do
       {:ok, document} ->
         conn
         |> put_flash(:info, "Document created successfully.")
-        |> redirect(to: project_document_path(conn, :show, project, document))
+        |> redirect(to: project_document_path(conn, :edit, project, document))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", project_id: project_id, changeset: changeset)
     end
   end
 
@@ -37,19 +37,6 @@ defmodule DocdogWeb.DocumentController do
     lines = Editor.get_lines_for_document(document)
 
     render(conn, "edit.html", document: document, lines: lines)
-  end
-
-  def update(conn, %{"id" => id, "document" => document_params, "project_id" => project_id}) do
-    document = Editor.get_document!(id)
-
-    case Editor.update_document(document, document_params) do
-      {:ok, document} ->
-        conn
-        |> put_flash(:info, "Document updated successfully.")
-        |> redirect(to: project_document_path(conn, :show, project_id, document))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", document: document, changeset: changeset)
-    end
   end
 
   def delete(conn, %{"id" => id, "project_id" => project_id}) do

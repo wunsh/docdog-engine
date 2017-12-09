@@ -20,7 +20,9 @@ defmodule Docdog.Editor do
 
   """
   def list_projects do
-    Repo.all(Project)
+    Project
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
   end
 
   @doc """

@@ -15,7 +15,7 @@ defmodule Docdog.Editor.Document do
     belongs_to :project, Docdog.Editor.Project
     belongs_to :user, Docdog.Accounts.User
 
-    has_many :lines, Docdog.Editor.Line, on_replace: :mark_as_invalid
+    has_many :lines, Docdog.Editor.Line, on_replace: :mark_as_invalid, on_delete: :nilify_all
   end
 
   @doc false

@@ -1,20 +1,29 @@
-- project_id = @conn.params["project_id"]
+.row
+  .col-md-6.col-md-offset-3
+    .page-header
+      h2.page_header
+        small.page_header__icon.page_header__icon--front
+          = link to: project_path(@conn, :index) do
+                    span.glyphicon.glyphicon-circle-arrow-left
+        | Listing Documents
 
-h2 Listing Documents
+      = link to: project_document_path(@conn, :new, @project_id), class: "btn btn-success pull-right" do
+        span class="glyphicon glyphicon-plus" aria-hidden="true"
+        '
+        | Add
 
-table.table
-  thead
-    tr
-      th Name
-      th
-  tbody
-    = for document <- @documents do
-      tr
-        td = document.name
+    table.table
+      thead
+        tr
+          th Name
+          th
+      tbody
+        = for document <- @documents do
+          tr
+            td
+              = link document.name, to: project_document_path(@conn, :edit, document.project_id, document)
 
-        td.text-right
-          span = link "Show", to: project_document_path(@conn, :show, project_id, document), class: "btn btn-default btn-xs"
-          span = link "Edit", to: project_document_path(@conn, :edit, project_id, document), class: "btn btn-default btn-xs"
-          span = link "Delete", to: project_document_path(@conn, :delete, project_id, document), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs"
-
-span = link "New Document", to: project_document_path(@conn, :new, project_id)
+            td.text-right
+              span = link "Show", to: project_document_path(@conn, :show, document.project_id, document), class: "btn btn-default btn-xs"
+              span
+              span = link "Delete", to: project_document_path(@conn, :delete, document.project_id, document), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs"
