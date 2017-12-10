@@ -5,7 +5,7 @@ defmodule DocdogWeb.ProjectController do
   alias Docdog.Editor.Project
 
   def index(conn, _params) do
-    projects = Editor.list_projects()
+    projects = Editor.full_list_projects()
     render(conn, "index.html", projects: projects)
   end
 

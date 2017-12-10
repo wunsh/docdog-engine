@@ -17,7 +17,7 @@
 
           img class="img-responsive" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(97).jpg" alt="Card image cap"
           .card__progress.progress.progress-xs
-            .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" style="width: 60%;"
+            .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="#{project.completed_percentage}" role="progressbar" style="width: #{project.completed_percentage}%;"
               span.sr-only 60% Complete
           .card__body
             h4.card__title = project.name

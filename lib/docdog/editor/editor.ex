@@ -25,6 +25,11 @@ defmodule Docdog.Editor do
     |> Repo.all()
   end
 
+  def full_list_projects do
+    Project.with_completed_percentages_query
+    |> Repo.all
+  end
+
   @doc """
   Gets a single project.
 
