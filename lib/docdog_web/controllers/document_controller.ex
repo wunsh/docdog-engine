@@ -29,7 +29,18 @@ defmodule DocdogWeb.DocumentController do
 
   def show(conn, %{"id" => id}) do
     document = Editor.get_document!(id)
-    render(conn, "show.html", document: document)
+
+    case get_format(conn) do
+      "html" ->
+        render(conn, "show.html", document: document)
+      "md" ->
+        content = Document.translated_text(document.lines)
+
+        conn
+        |> put_resp_content_type("text/markdown; charset=UTF-8")
+        |> put_resp_header("content-disposition", "attachment; filename=\"#{document.name}.md\"")
+        |> send_resp(200, content)
+    end
   end
 
   def edit(conn, %{"id" => id}) do
