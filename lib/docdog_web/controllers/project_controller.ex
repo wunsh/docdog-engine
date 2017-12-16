@@ -16,7 +16,7 @@ defmodule DocdogWeb.ProjectController do
 
   def create(conn, %{"project" => project_params}) do
     case Editor.create_project(conn.assigns.current_user, project_params) do
-      {:ok, project} ->
+      {:ok, _project} ->
         conn
         |> put_flash(:info, "Project created successfully.")
         |> redirect(to: project_path(conn, :index))
@@ -35,7 +35,7 @@ defmodule DocdogWeb.ProjectController do
     project = Editor.get_project!(id)
 
     case Editor.update_project(project, project_params) do
-      {:ok, project} ->
+      {:ok, _project} ->
         conn
         |> put_flash(:info, "Project updated successfully.")
         |> redirect(to: project_path(conn, :index))

@@ -5,8 +5,8 @@ defmodule Docdog.Editor do
 
   import Ecto.Query, warn: false
   import Ecto, only: [assoc: 2]
-  alias Docdog.Repo
 
+  alias Docdog.Repo
   alias Docdog.Editor.Project
   alias Docdog.Editor.Line
 
@@ -49,8 +49,6 @@ defmodule Docdog.Editor do
     |> preload(:documents)
     |> Repo.get!(id)
   end
-
-
 
   def get_line!(id) do
     Line
@@ -152,7 +150,6 @@ defmodule Docdog.Editor do
     Repo.all(from d in Document, where: d.project_id == ^project_id)
   end
 
-
   @doc """
   Gets a single document.
 
@@ -236,7 +233,6 @@ defmodule Docdog.Editor do
   def change_document(%Document{} = document) do
     Document.changeset(document, %{})
   end
-
 
   def change_line(%Line{} = line) do
     Line.changeset(line, %{})

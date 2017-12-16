@@ -1,4 +1,8 @@
 defmodule Docdog.Editor.Document do
+  @moduledoc """
+    The Document representation.
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -15,7 +19,8 @@ defmodule Docdog.Editor.Document do
     belongs_to :project, Docdog.Editor.Project
     belongs_to :user, Docdog.Accounts.User
 
-    has_many :lines, Docdog.Editor.Line, on_replace: :mark_as_invalid, on_delete: :nilify_all
+    has_many :lines, Docdog.Editor.Line,
+             on_replace: :mark_as_invalid, on_delete: :nilify_all
   end
 
   @doc false
@@ -28,7 +33,7 @@ defmodule Docdog.Editor.Document do
 
   def translated_text(lines) do
     lines
-    |> Enum.map(fn(x) -> x.translated_text end )
+    |> Enum.map(fn(x) -> x.translated_text end)
     |> Enum.join("\n")
   end
 

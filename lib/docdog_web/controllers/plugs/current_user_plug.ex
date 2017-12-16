@@ -1,4 +1,8 @@
 defmodule Docdog.CurrentUserPlug do
+  @moduledoc """
+    Getting current user from session.
+  """
+
   import Plug.Conn
 
   def init(default), do: default

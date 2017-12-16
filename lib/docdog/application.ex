@@ -1,5 +1,11 @@
 defmodule Docdog.Application do
+  @moduledoc """
+    The main Application module.
+  """
+
   use Application
+
+  alias DocdogWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -11,9 +17,9 @@ defmodule Docdog.Application do
       # Start the Ecto repository
       supervisor(Docdog.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(DocdogWeb.Endpoint, []),
-      # Start your own worker by calling: Docdog.Worker.start_link(arg1, arg2, arg3)
-      # worker(Docdog.Worker, [arg1, arg2, arg3]),
+      supervisor(Endpoint, []),
+      # Start your own worker by calling: Docdog.Worker.start_link(a1, a2, a3)
+      # worker(Docdog.Worker, [a1, a2, a3]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -25,7 +31,7 @@ defmodule Docdog.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    DocdogWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end

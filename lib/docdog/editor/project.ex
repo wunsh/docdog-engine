@@ -1,9 +1,14 @@
 defmodule Docdog.Editor.Project do
+  @moduledoc """
+    The Project representation.
+  """
+
   use Ecto.Schema
+
   import Ecto.Query
   import Ecto.Changeset
-  alias Docdog.Editor.Project
 
+  alias Docdog.Editor.Project
 
   schema "projects" do
     field :name, :string

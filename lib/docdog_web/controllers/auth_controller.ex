@@ -3,9 +3,7 @@ defmodule DocdogWeb.AuthController do
 
   plug Ueberauth
 
-  alias Ueberauth.Strategy.Helpers
   alias Docdog.Accounts
-
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn

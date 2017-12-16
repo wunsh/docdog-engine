@@ -16,8 +16,9 @@ defmodule DocdogWeb.DocumentController do
 
   def create(conn, %{"document" => document_params, "project_id" => project_id}) do
     project = Editor.get_project!(project_id)
+    current_user = conn.assigns.current_user
 
-    case Editor.create_document(project, conn.assigns.current_user, document_params) do
+    case Editor.create_document(project, current_user, document_params) do
       {:ok, document} ->
         conn
         |> put_flash(:info, "Document created successfully.")

@@ -1,4 +1,8 @@
 defmodule Docdog.Accounts.User do
+  @moduledoc """
+    The User representation.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
   alias Docdog.Accounts.User
@@ -23,19 +27,25 @@ defmodule Docdog.Accounts.User do
   end
 
   def basic_info(auth) do
-    %{ email: auth.info.email, username: name_from_auth(auth), avatar: auth.info.image }
+    %{
+      email: auth.info.email,
+      username: name_from_auth(auth),
+      avatar: auth.info.image
+    }
   end
 
   defp name_from_auth(auth) do
     if auth.info.name do
       auth.info.name
     else
-      name = [auth.info.first_name, auth.info.last_name]
-             |> Enum.filter(&(&1 != nil and &1 != ""))
+      name_parts =
+        [auth.info.first_name, auth.info.last_name]
+        |> Enum.filter(&(&1 != nil and &1 != ""))
 
-      cond do
-        length(name) == 0 -> auth.info.nickname
-        true -> Enum.join(name, " ")
+      if name_parts == [] do
+        auth.info.nickname
+      else
+        Enum.join(name_parts, " ")
       end
     end
   end

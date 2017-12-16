@@ -1,7 +1,7 @@
 defmodule DocdogWeb.PageController do
   use DocdogWeb, :controller
 
-	import DocdogWeb.Router.Helpers
+  import DocdogWeb.Router.Helpers
 
   alias DocdogWeb.Endpoint
 

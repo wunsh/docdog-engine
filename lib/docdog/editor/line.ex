@@ -1,9 +1,15 @@
 defmodule Docdog.Editor.Line do
+  @moduledoc """
+    The Line representation.
+    There are lines from which documents are composed.
+  """
+
   use Ecto.Schema
+
   import Ecto.Changeset
   import Ecto.Query
-  alias Docdog.Editor.Line
 
+  alias Docdog.Editor.Line
 
   schema "lines" do
     field :original_text, :string
