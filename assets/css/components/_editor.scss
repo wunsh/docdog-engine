@@ -1,0 +1,22 @@
+.translate_input {
+  border-color: $brand-primary;
+
+  &--changed {
+    border-color: $brand-warning;
+    background-color: lighten($brand-warning, 35%);
+  }
+  &--confirmed  {
+    border-color: $brand-success;
+    background-color: lighten($brand-success, 35%);
+  }
+  &--faulty {
+    border-color: $brand-danger;
+    background-color: lighten($brand-danger, 35%);
+  }
+  &--unprocessed {
+    border-color: $brand-info;
+    background-color: lighten($brand-info, 35%);
+  }
+
+  &--active { border-width: 2px; }
+}

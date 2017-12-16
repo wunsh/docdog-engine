@@ -2,7 +2,10 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      joinTo: {
+        "js/app.js": /^js/,
+        "js/vendor.js": /^(node_modules|deps)/
+      }
 
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
@@ -71,7 +74,8 @@ exports.config = {
     globals: {
         $: 'jquery',
         jQuery: 'jquery',
-        bootstrap: 'bootstrap-sass'
+        bootstrap: 'bootstrap-sass',
+        md5: 'md5.js'
     }
   }
 };

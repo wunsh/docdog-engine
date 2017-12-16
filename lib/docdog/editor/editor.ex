@@ -96,10 +96,10 @@ defmodule Docdog.Editor do
   end
 
   def update_line(%Line{} = line, user, attrs) do
-    attrs = attrs |> Map.put("user_id", user.id)
+    attrs = attrs
+            |> Map.put("user_id", user.id)
 
-    line
-    |> Line.changeset(attrs)
+    line |> Line.changeset(attrs)
     |> Repo.update()
   end
 

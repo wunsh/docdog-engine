@@ -17,4 +17,5 @@ html
     
     = @contents
     
+    script src=static_path(@conn, "/js/vendor.js")
     script src=static_path(@conn, "/js/app.js")

@@ -9,6 +9,7 @@ defmodule Docdog.Editor.Line do
     field :original_text, :string
     field :translated_text, :string
     field :index_number, :integer
+    field :processed, :boolean, default: false
 
     timestamps()
 
@@ -21,6 +22,7 @@ defmodule Docdog.Editor.Line do
     line
     |> cast(attrs, [:translated_text, :user_id])
     |> validate_required([:user_id])
+    |> make_processed
   end
 
   def prepare_line({original_line, index}) do
@@ -32,5 +34,9 @@ defmodule Docdog.Editor.Line do
   def default_scope(query) do
     from line in query,
       order_by: [asc: :index_number]
+  end
+
+  defp make_processed(changeset) do
+    put_change(changeset, :processed, true)
   end
 end
