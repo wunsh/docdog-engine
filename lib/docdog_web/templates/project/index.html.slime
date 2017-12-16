@@ -1,4 +1,4 @@
-.page-header
+.page_header.page-header
   h2 Listing Projects
 
   = link to: project_path(@conn, :new), class: "btn btn-success pull-right" do
