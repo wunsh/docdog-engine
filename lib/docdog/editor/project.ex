@@ -41,6 +41,7 @@ defmodule Docdog.Editor.Project do
 
     from p in Docdog.Editor.Project,
          join: s in subquery(projects_subquery),
-         select: %{p | completed_percentage: s.completed_percentage}
+         select: %{p | completed_percentage: s.completed_percentage},
+         distinct: p.id
   end
 end
