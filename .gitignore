@@ -29,6 +29,9 @@ npm-debug.log
 
 # Idea
 /.idea
+*.iml
 
 # Environment
 .env
+
+/.elixir_ls
