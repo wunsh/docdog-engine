@@ -3,6 +3,12 @@ defmodule DocdogWeb.LineController do
 
   alias Docdog.Editor
 
+  def index(conn, %{"document_id" => document_id}) do
+    lines = Editor.get_document!(document_id).lines
+    
+    render(conn, "index.json", lines: lines)
+  end
+
   def update(conn, %{"id" => id, "line" => line_params}) do
     line = Editor.get_line!(id)
 

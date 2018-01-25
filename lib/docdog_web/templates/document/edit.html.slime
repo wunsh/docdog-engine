@@ -17,6 +17,7 @@
         '
         | Save
 
+    #elmApp
 
     table.table
       tr

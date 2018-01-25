@@ -47,6 +47,10 @@ defmodule DocdogWeb.Router do
   scope "/api/v1", DocdogWeb do
     pipe_through :api
 
+    resources "/documents", DocumentController, only: [] do
+      resources "/lines", LineController, only: [:index]
+    end
+
     resources "/lines", LineController, only: [:update]
   end
 
