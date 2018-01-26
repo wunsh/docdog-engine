@@ -1,16 +1,26 @@
 module Main exposing (..)
 
 import Html
-import Msgs exposing (Msg)
-import Models exposing (Model, initialModel)
+import Msgs exposing (Msg(..))
+import Models exposing (Route(..), Model, initialModel)
 import Update exposing (update)
 import View exposing (view)
 import Commands exposing (fetchLines)
 import Lines.List
+import Navigation exposing (Location)
+import Routing
 
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, fetchLines )
+init : Location -> ( Model, Cmd Msg )
+init location =
+    let
+        currentRoute =
+          Routing.parseLocation location
+        command = 
+          case currentRoute of
+            EditorRoute _ documentId -> fetchLines documentId
+            NotFoundRoute -> Cmd.none
+    in
+        ( initialModel currentRoute, command )
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -20,7 +30,7 @@ subscriptions model =
 
 main : Program Never Model Msg
 main =
-    Html.program
+    Navigation.program OnLocationChange
         { init = init
         , view = view
         , update = update

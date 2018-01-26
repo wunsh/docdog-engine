@@ -36,7 +36,7 @@ renderLine line =
 renderTranslateForm : Line -> Html Msg
 renderTranslateForm line =
     input
-        [ value line.translatedText
+        [ value (Maybe.withDefault "" line.translatedText)
         , class "translate_line__input translate_input form-control"
         ]
         [] 

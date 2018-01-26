@@ -4,12 +4,18 @@ import RemoteData exposing (WebData)
 
 type alias Model =
   { lines : WebData Lines
+  , route : Route
   }
 
-initialModel : Model
-initialModel =
+initialModel : Route -> Model
+initialModel route =
   { lines = RemoteData.Loading
+  , route = route
   }
+
+type Route
+    = EditorRoute Int DocumentId
+    | NotFoundRoute
 
 type alias Lines =
   List Line
@@ -17,8 +23,11 @@ type alias Lines =
 type alias Line =
   { id: LineId
   , originalText : String
-  , translatedText : String 
+  , translatedText : Maybe String 
   }
 
 type alias LineId =
+  Int
+
+type alias DocumentId =
   Int
