@@ -4,8 +4,9 @@ defmodule DocdogWeb.LineController do
   alias Docdog.Editor
 
   def index(conn, %{"document_id" => document_id}) do
-    lines = Editor.get_document!(document_id).lines
-    
+    document = Editor.get_document!(document_id)
+    lines = Editor.get_lines_for_document(document)
+
     render(conn, "index.json", lines: lines)
   end
 

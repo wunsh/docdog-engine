@@ -18,18 +18,3 @@
         | Save
 
     #elmApp
-
-    table.table
-      tr
-        th width="50%" Original line
-        th Translated line
-
-      = for line <- @lines do
-        tr
-          td
-            strong = line.original_text
-          td
-           = form_for Docdog.Editor.change_line(line), line_path(@conn, :update, line),
-                      [method: "put", ujs_remote: true, class: "translate_line__form", data: [id: line.id]],  fn f ->
-             - foo = line.translated_text |> Kernel.to_string |> :erlang.md5() |> Base.encode16(case: :lower)
-             = textarea f, :translated_text, class: "translate_line__input translate_input form-control", rows: 5, data: [translated_text_digest: foo]

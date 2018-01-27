@@ -1,7 +1,8 @@
 module Lines.List exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, value)
+import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (class, value, rows)
 import Msgs exposing (Msg)
 import Models exposing (Lines, Line)
 import RemoteData exposing (WebData)
@@ -18,7 +19,9 @@ renderHeading =
     thead [] 
         [ tr []
             [ th [] [ text "Original Text" ]
-            , th [] [ text "Translated Text"] ] ]       
+            , th [] [ text "Translated Text"] 
+            , th [] [ text "Buttons"] 
+            ] ]
 
 renderLines : Lines -> Html Msg
 renderLines lines =
@@ -31,13 +34,17 @@ renderLine : Line -> Html Msg
 renderLine line =
     tr []
         [ td [] [ strong [] [ text line.originalText ] ]
-        , td [] [ renderTranslateForm line ] ]
+        , td [] [ renderTranslateForm line ]
+        , td [] [ button [ onClick (Msgs.SaveLine line.id) ] [ text "OK" ] ]
+        ]
 
 renderTranslateForm : Line -> Html Msg
 renderTranslateForm line =
-    input
+    textarea
         [ value (Maybe.withDefault "" line.translatedText)
+        , rows 5
         , class "translate_line__input translate_input form-control"
+        , onInput (Msgs.UpdateLine line.id)
         ]
         [] 
 
