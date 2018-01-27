@@ -1,9 +1,10 @@
 module Msgs exposing (..)
 
-import Models exposing (Line, Lines, LineId)
-import RemoteData exposing (WebData)
-import Navigation exposing (Location)
 import Http
+import Models exposing (Line, LineId, Lines)
+import Navigation exposing (Location)
+import RemoteData exposing (WebData)
+
 
 type Msg
     = NoOp

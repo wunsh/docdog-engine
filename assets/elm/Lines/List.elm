@@ -1,35 +1,41 @@
 module Lines.List exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (class, rows, value)
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (class, value, rows)
+import Models exposing (Line, Lines)
 import Msgs exposing (Msg)
-import Models exposing (Lines, Line)
 import RemoteData exposing (WebData)
+
 
 view : WebData Lines -> Html Msg
 view response =
-    table [ class "editor table" ] [
-        renderHeading,
-        maybeList response
-    ]
+    table [ class "editor table" ]
+        [ renderHeading
+        , maybeList response
+        ]
+
 
 renderHeading : Html Msg
 renderHeading =
-    thead [] 
+    thead []
         [ tr []
             [ th [] [ text "Original Text" ]
-            , th [] [ text "Translated Text"] 
-            , th [] [ text "Buttons"] 
-            ] ]
+            , th [] [ text "Translated Text" ]
+            , th [] [ text "Buttons" ]
+            ]
+        ]
+
 
 renderLines : Lines -> Html Msg
 renderLines lines =
     let
-        renderedLines = List.map renderLine lines            
+        renderedLines =
+            List.map renderLine lines
     in
-        tbody [] renderedLines
-  
+    tbody [] renderedLines
+
+
 renderLine : Line -> Html Msg
 renderLine line =
     tr []
@@ -37,6 +43,7 @@ renderLine line =
         , td [] [ renderTranslateForm line ]
         , td [] [ button [ onClick (Msgs.SaveLine line.id) ] [ text "OK" ] ]
         ]
+
 
 renderTranslateForm : Line -> Html Msg
 renderTranslateForm line =
@@ -46,7 +53,8 @@ renderTranslateForm line =
         , class "translate_line__input translate_input form-control"
         , onInput (Msgs.UpdateLine line.id)
         ]
-        [] 
+        []
+
 
 maybeList : WebData Lines -> Html Msg
 maybeList response =

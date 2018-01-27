@@ -2,32 +2,39 @@ module Models exposing (..)
 
 import RemoteData exposing (WebData)
 
+
 type alias Model =
-  { lines : WebData Lines
-  , route : Route
-  }
+    { lines : WebData Lines
+    , route : Route
+    }
+
 
 initialModel : Route -> Model
 initialModel route =
-  { lines = RemoteData.Loading
-  , route = route
-  }
+    { lines = RemoteData.Loading
+    , route = route
+    }
+
 
 type Route
     = EditorRoute Int DocumentId
     | NotFoundRoute
 
+
 type alias Lines =
-  List Line
+    List Line
+
 
 type alias Line =
-  { id: LineId
-  , originalText : String
-  , translatedText : Maybe String 
-  }
+    { id : LineId
+    , originalText : String
+    , translatedText : Maybe String
+    }
+
 
 type alias LineId =
-  Int
+    Int
+
 
 type alias DocumentId =
-  Int
+    Int
