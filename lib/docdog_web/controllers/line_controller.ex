@@ -18,10 +18,11 @@ defmodule DocdogWeb.LineController do
         conn
         |> put_status(:ok)
         |> render("line.json", line: updated_line)
+
       {:error, %Ecto.Changeset{}} ->
         conn
         |> put_status(:bad_request)
-        |> json(%{"status": "error"})
+        |> json(%{status: "error"})
     end
   end
 end

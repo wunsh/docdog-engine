@@ -20,6 +20,7 @@ defmodule DocdogWeb.ProjectController do
         conn
         |> put_flash(:info, "Project created successfully.")
         |> redirect(to: project_path(conn, :index))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -39,6 +40,7 @@ defmodule DocdogWeb.ProjectController do
         conn
         |> put_flash(:info, "Project updated successfully.")
         |> redirect(to: project_path(conn, :index))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", project: project, changeset: changeset)
     end

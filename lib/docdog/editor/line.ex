@@ -12,15 +12,15 @@ defmodule Docdog.Editor.Line do
   alias Docdog.Editor.Line
 
   schema "lines" do
-    field :original_text, :string
-    field :translated_text, :string
-    field :index_number, :integer
-    field :processed, :boolean, default: false
+    field(:original_text, :string)
+    field(:translated_text, :string)
+    field(:index_number, :integer)
+    field(:processed, :boolean, default: false)
 
     timestamps()
 
-    belongs_to :document, Docdog.Editor.Document
-    belongs_to :user, Docdog.Accounts.User
+    belongs_to(:document, Docdog.Editor.Document)
+    belongs_to(:user, Docdog.Accounts.User)
   end
 
   @doc false
@@ -38,8 +38,7 @@ defmodule Docdog.Editor.Line do
   end
 
   def default_scope(query) do
-    from line in query,
-      order_by: [asc: :index_number]
+    from(line in query, order_by: [asc: :index_number])
   end
 
   defp make_processed(changeset) do

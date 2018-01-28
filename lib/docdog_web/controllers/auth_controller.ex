@@ -1,7 +1,7 @@
 defmodule DocdogWeb.AuthController do
   use DocdogWeb, :controller
 
-  plug Ueberauth
+  plug(Ueberauth)
 
   alias Docdog.Accounts
 
@@ -18,6 +18,7 @@ defmodule DocdogWeb.AuthController do
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:current_user, user)
         |> redirect(to: "/")
+
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)

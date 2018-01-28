@@ -25,13 +25,13 @@ defmodule DocdogWeb.ChannelCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Docdog.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Docdog.Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end

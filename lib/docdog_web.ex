@@ -28,8 +28,9 @@ defmodule DocdogWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/docdog_web/templates",
-                        namespace: DocdogWeb
+      use Phoenix.View,
+        root: "lib/docdog_web/templates",
+        namespace: DocdogWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -42,7 +43,7 @@ defmodule DocdogWeb do
       import DocdogWeb.Gettext
 
       def render_shared(template, assigns \\ []) do
-        render DocdogWeb.SharedView, template, assigns
+        render(DocdogWeb.SharedView, template, assigns)
       end
     end
   end

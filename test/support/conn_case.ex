@@ -26,13 +26,13 @@ defmodule DocdogWeb.ConnCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Docdog.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Docdog.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end

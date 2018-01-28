@@ -26,8 +26,8 @@ defmodule Docdog.Editor do
   end
 
   def full_list_projects do
-    Project.with_completed_percentages_query
-    |> Repo.all
+    Project.with_completed_percentages_query()
+    |> Repo.all()
   end
 
   @doc """
@@ -94,8 +94,9 @@ defmodule Docdog.Editor do
   end
 
   def update_line(%Line{} = line, user, attrs) do
-    attrs = attrs
-            |> Map.put("user_id", user.id)
+    attrs =
+      attrs
+      |> Map.put("user_id", user.id)
 
     line |> Line.changeset(attrs)
     |> Repo.update()
@@ -143,11 +144,11 @@ defmodule Docdog.Editor do
   """
   def list_documents do
     Document
-    |> Repo.all
+    |> Repo.all()
   end
 
   def list_documents_for_project(project_id) do
-    Repo.all(from d in Document, where: d.project_id == ^project_id)
+    Repo.all(from(d in Document, where: d.project_id == ^project_id))
   end
 
   @doc """
@@ -241,7 +242,7 @@ defmodule Docdog.Editor do
   def get_lines_for_document(document) do
     document
     |> assoc(:lines)
-    |> Line.default_scope
-    |> Repo.all
+    |> Line.default_scope()
+    |> Repo.all()
   end
 end

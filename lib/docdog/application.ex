@@ -17,7 +17,7 @@ defmodule Docdog.Application do
       # Start the Ecto repository
       supervisor(Docdog.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Endpoint, []),
+      supervisor(Endpoint, [])
       # Start your own worker by calling: Docdog.Worker.start_link(a1, a2, a3)
       # worker(Docdog.Worker, [a1, a2, a3]),
     ]

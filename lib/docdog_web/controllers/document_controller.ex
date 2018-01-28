@@ -23,6 +23,7 @@ defmodule DocdogWeb.DocumentController do
         conn
         |> put_flash(:info, "Document created successfully.")
         |> redirect(to: project_document_path(conn, :edit, project, document))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", project_id: project_id, changeset: changeset)
     end
@@ -34,6 +35,7 @@ defmodule DocdogWeb.DocumentController do
     case get_format(conn) do
       "html" ->
         render(conn, "show.html", document: document)
+
       "md" ->
         content = Document.translated_text(document.lines)
 

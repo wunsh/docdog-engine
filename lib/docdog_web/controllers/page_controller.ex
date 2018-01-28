@@ -10,7 +10,7 @@ defmodule DocdogWeb.PageController do
       conn
       |> redirect(to: project_path(Endpoint, :index))
     else
-      render conn, "index.html"
+      render(conn, "index.html")
     end
   end
 end

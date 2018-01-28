@@ -8,15 +8,15 @@ defmodule Docdog.Accounts.User do
   alias Docdog.Accounts.User
 
   schema "users" do
-    field :email, :string
-    field :username, :string
-    field :avatar, :string
+    field(:email, :string)
+    field(:username, :string)
+    field(:avatar, :string)
 
     timestamps()
 
-    has_many :projects, Docdog.Editor.Project
-    has_many :documents, Docdog.Editor.Document
-    has_many :lines, Docdog.Editor.Line
+    has_many(:projects, Docdog.Editor.Project)
+    has_many(:documents, Docdog.Editor.Document)
+    has_many(:lines, Docdog.Editor.Line)
   end
 
   @doc false

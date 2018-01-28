@@ -11,16 +11,15 @@ defmodule Docdog.Editor.Document do
   alias Docdog.Editor.Line
 
   schema "documents" do
-    field :name, :string
-    field :original_text, :string
+    field(:name, :string)
+    field(:original_text, :string)
 
     timestamps()
 
-    belongs_to :project, Docdog.Editor.Project
-    belongs_to :user, Docdog.Accounts.User
+    belongs_to(:project, Docdog.Editor.Project)
+    belongs_to(:user, Docdog.Accounts.User)
 
-    has_many :lines, Docdog.Editor.Line,
-             on_replace: :mark_as_invalid, on_delete: :nilify_all
+    has_many(:lines, Docdog.Editor.Line, on_replace: :mark_as_invalid, on_delete: :nilify_all)
   end
 
   @doc false
@@ -33,7 +32,7 @@ defmodule Docdog.Editor.Document do
 
   def translated_text(lines) do
     lines
-    |> Enum.map(fn(x) -> x.translated_text end)
+    |> Enum.map(fn x -> x.translated_text end)
     |> Enum.join("\n")
   end
 
@@ -47,8 +46,8 @@ defmodule Docdog.Editor.Document do
     |> String.split("\n")
     |> Enum.map(&decode_newlines/1)
     |> Enum.map(&String.trim/1)
-    |> Enum.reject(& &1 == "")
-    |> Enum.with_index
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.with_index()
     |> Enum.map(&Line.prepare_line/1)
   end
 
@@ -58,7 +57,7 @@ defmodule Docdog.Editor.Document do
 
     snippets
     |> Stream.zip(replacements)
-    |> Enum.reduce(text, fn({from, to}, s) ->
+    |> Enum.reduce(text, fn {from, to}, s ->
       String.replace(s, from, to)
     end)
   end

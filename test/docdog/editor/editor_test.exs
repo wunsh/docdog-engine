@@ -15,7 +15,6 @@ defmodule Docdog.EditorTest do
   end
 
   def document_fixture(attrs \\ %{}) do
-
     params = Enum.into(attrs, @valid_attrs)
     {:ok, document} = Editor.create_document(project_fixture, params)
 
@@ -28,8 +27,6 @@ defmodule Docdog.EditorTest do
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
-
-
 
     test "list_projects/0 returns all projects" do
       project = project_fixture()
