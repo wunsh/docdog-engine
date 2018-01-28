@@ -1,3 +1,9 @@
+.editor {
+  th {
+    width: 50%;
+  }
+}
+
 .translate_input {
   border-color: $brand-primary;
 
@@ -5,7 +11,7 @@
     border-color: $brand-warning;
     background-color: lighten($brand-warning, 35%);
   }
-  &--confirmed  {
+  &--saved  {
     border-color: $brand-success;
     background-color: lighten($brand-success, 35%);
   }
