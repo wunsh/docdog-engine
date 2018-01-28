@@ -13,5 +13,6 @@ type Msg
     | OnLocationChange Location
     | OnFetchLines (WebData Lines)
     | OnLineSave (Result Http.Error Line)
+    | KeyDown LineId Int
     | ChangeLineStatus LineId
     | NotFoundError

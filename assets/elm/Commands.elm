@@ -100,5 +100,7 @@ lineDecoder =
         |> required "id" Decode.int
         |> required "original_text" Decode.string
         |> required "translated_text" (Decode.nullable Decode.string)
+        -- For `initialTranslatedText` field
+        |> required "translated_text" (Decode.nullable Decode.string)
         |> hardcoded ""
         |> hardcoded Default

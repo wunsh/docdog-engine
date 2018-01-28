@@ -36,6 +36,7 @@ type alias Line =
     { id : LineId
     , originalText : String
     , translatedText : Maybe String
+    , initialTranslatedText : Maybe String
     , initialDigest : String
     , status : Status
     }

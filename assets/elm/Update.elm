@@ -41,6 +41,25 @@ update msg model =
             in
             ( { model | route = newRoute }, Cmd.none )
 
+        KeyDown lineId key ->
+            if key == escKeyCode then
+                let
+                    updateLine line =
+                        if line.id == lineId then
+                            { line | translatedText = line.initialTranslatedText, status = Default }
+                        else
+                            line
+
+                    updatedLines =
+                        RemoteData.Success (List.map updateLine (maybeList model.lines))
+
+                    updatedModel =
+                        { model | lines = updatedLines }
+                in
+                updatedModel ! []
+            else
+                model ! []
+
         UpdateLine lineId newTranslatedText ->
             let
                 determineStatus line =
@@ -95,7 +114,7 @@ update msg model =
                     Maybe.withDefault "" line.translatedText
 
                 updatedLine =
-                    { line | initialDigest = H.computeDigest translatedText, status = Saved }
+                    { line | initialTranslatedText = line.translatedText, initialDigest = H.computeDigest translatedText, status = Saved }
             in
             updateModel model updatedLine
                 ! [ H.setTimeout (Time.second * 5) <| ChangeLineStatus line.id ]
@@ -130,3 +149,8 @@ updateModel model updatedLine =
             RemoteData.map updateLineList model.lines
     in
     { model | lines = updatedLines }
+
+
+escKeyCode : Int
+escKeyCode =
+    27
