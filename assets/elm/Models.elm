@@ -7,6 +7,7 @@ type alias Model =
     { lines : WebData Lines
     , currentLineId : Maybe LineId
     , route : Route
+    , heldMetaKeys : HeldMetaKeys
     }
 
 
@@ -15,6 +16,17 @@ initialModel route =
     { lines = RemoteData.Loading
     , currentLineId = Nothing
     , route = route
+    , heldMetaKeys = initialHeldMetaKeys
+    }
+
+
+initialHeldMetaKeys : HeldMetaKeys
+initialHeldMetaKeys =
+    { alt = False
+    , control = False
+    , enter = False
+    , shift = False
+    , super = False
     }
 
 
@@ -41,6 +53,15 @@ type alias Line =
     , initialTranslatedText : Maybe String
     , initialDigest : String
     , status : Status
+    }
+
+
+type alias HeldMetaKeys =
+    { alt : Bool
+    , control : Bool
+    , enter : Bool
+    , shift : Bool
+    , super : Bool
     }
 
 

@@ -4,6 +4,7 @@ import Char
 import Commands exposing (fetchLines)
 import Html
 import Keyboard
+import Keyboard.Extra
 import Lines.List
 import Models exposing (Model, Route(..), initialModel)
 import Msgs exposing (Msg(..))
@@ -32,12 +33,10 @@ init location =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    case model.currentLineId of
-        Just _ ->
-            Keyboard.downs (\code -> KeyDown code)
-
-        Nothing ->
-            Sub.none
+    Sub.batch
+        [ Keyboard.Extra.downs KeyDown
+        , Keyboard.Extra.ups KeyUp
+        ]
 
 
 

@@ -2,8 +2,9 @@ module Update exposing (..)
 
 import Commands exposing (saveLineCmd)
 import Helper as H
+import Keyboard.Extra exposing (Key(..))
 import MD5
-import Models exposing (Line, Lines, Model, Status(..))
+import Models exposing (HeldMetaKeys, Line, Lines, Model, Status(..))
 import Msgs exposing (Msg(..))
 import RemoteData exposing (WebData)
 import Routing exposing (parseLocation)
@@ -41,10 +42,30 @@ update msg model =
             in
             ( { model | route = newRoute }, Cmd.none )
 
+        KeyUp key ->
+            let
+                heldMetaKeys =
+                    model.heldMetaKeys
+
+                updatedHeldMetaKeys =
+                    releaseMetaKey key heldMetaKeys
+            in
+            { model | heldMetaKeys = updatedHeldMetaKeys } ! []
+
         KeyDown key ->
+            let
+                _ =
+                    Debug.log (toString key) 1
+
+                heldMetaKeys =
+                    model.heldMetaKeys
+
+                updatedHeldMetaKeys =
+                    pressMetaKey key heldMetaKeys
+            in
             case model.currentLineId of
                 Just lineId ->
-                    if key == escKeyCode then
+                    if key == Escape then
                         let
                             updateLine line =
                                 if line.id == lineId then
@@ -56,11 +77,17 @@ update msg model =
                                 RemoteData.Success (List.map updateLine (maybeList model.lines))
 
                             updatedModel =
-                                { model | lines = updatedLines }
+                                { model | lines = updatedLines, heldMetaKeys = updatedHeldMetaKeys }
                         in
                         updatedModel ! []
+                    else if isPressed [ Super, Enter ] updatedHeldMetaKeys then
+                        let
+                            updatedLine =
+                                List.head (List.filter (\m -> m.id == lineId) (maybeList model.lines))
+                        in
+                        { model | heldMetaKeys = updatedHeldMetaKeys } ! [ saveLineCmd updatedLine ]
                     else
-                        model ! []
+                        { model | heldMetaKeys = updatedHeldMetaKeys } ! []
 
                 Nothing ->
                     model ! []
@@ -162,6 +189,42 @@ maybeList response =
             []
 
 
+pressMetaKey : Key -> HeldMetaKeys -> HeldMetaKeys
+pressMetaKey key keys =
+    updateHeldMetaKeys key True keys
+
+
+releaseMetaKey : Key -> HeldMetaKeys -> HeldMetaKeys
+releaseMetaKey key keys =
+    updateHeldMetaKeys key False keys
+
+
+updateHeldMetaKeys : Key -> Bool -> HeldMetaKeys -> HeldMetaKeys
+updateHeldMetaKeys key isPressed keys =
+    case key of
+        Alt ->
+            { keys | alt = isPressed }
+
+        Control ->
+            { keys | control = isPressed }
+
+        Enter ->
+            { keys | enter = isPressed }
+
+        Shift ->
+            { keys | shift = isPressed }
+
+        Super ->
+            -- Workaround for bug with `Cmd + Enter` combination
+            if isPressed then
+                { keys | super = isPressed }
+            else
+                Models.initialHeldMetaKeys
+
+        _ ->
+            keys
+
+
 updateModel : Model -> Line -> Model
 updateModel model updatedLine =
     let
@@ -180,6 +243,27 @@ updateModel model updatedLine =
     { model | lines = updatedLines }
 
 
-escKeyCode : Int
-escKeyCode =
-    27
+isPressed : List Key -> HeldMetaKeys -> Bool
+isPressed needCheckKeys pressedKeys =
+    let
+        keyIncludedIn key =
+            case key of
+                Alt ->
+                    pressedKeys.alt
+
+                Control ->
+                    pressedKeys.control
+
+                Enter ->
+                    pressedKeys.enter
+
+                Shift ->
+                    pressedKeys.shift
+
+                Super ->
+                    pressedKeys.super
+
+                _ ->
+                    False
+    in
+    List.all keyIncludedIn needCheckKeys
