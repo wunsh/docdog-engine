@@ -43,10 +43,33 @@ defmodule Docdog.Editor.Document do
 
   defp create_lines(text) do
     text
+    |> process_snippets
     |> String.split("\n")
+    |> Enum.map(&decode_newlines/1)
     |> Enum.map(&String.trim/1)
     |> Enum.reject(& &1 == "")
     |> Enum.with_index
     |> Enum.map(&Line.prepare_line/1)
+  end
+
+  defp process_snippets(text) do
+    snippets = Regex.scan(~r/```[^`]*```/, text) |> Enum.map(&hd/1)
+    replacements = snippets |> Enum.map(&encode_newlines/1)
+
+    snippets
+    |> Stream.zip(replacements)
+    |> Enum.reduce(text, fn({from, to}, s) ->
+      String.replace(s, from, to)
+    end)
+  end
+
+  defp encode_newlines(string) do
+    string
+    |> String.replace(~r/\n/, "%$%n$%$")
+  end
+
+  defp decode_newlines(string) do
+    string
+    |> String.replace("%$%n$%$", "\n")
   end
 end
