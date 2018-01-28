@@ -1,7 +1,9 @@
 module Main exposing (..)
 
+import Char
 import Commands exposing (fetchLines)
 import Html
+import Keyboard
 import Lines.List
 import Models exposing (Model, Route(..), initialModel)
 import Msgs exposing (Msg(..))
@@ -30,7 +32,12 @@ init location =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    case model.currentLineId of
+        Just _ ->
+            Keyboard.downs (\code -> KeyDown code)
+
+        Nothing ->
+            Sub.none
 
 
 

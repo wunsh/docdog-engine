@@ -41,53 +41,66 @@ update msg model =
             in
             ( { model | route = newRoute }, Cmd.none )
 
-        KeyDown lineId key ->
-            if key == escKeyCode then
-                let
-                    updateLine line =
-                        if line.id == lineId then
-                            { line | translatedText = line.initialTranslatedText, status = Default }
-                        else
-                            line
+        KeyDown key ->
+            case model.currentLineId of
+                Just lineId ->
+                    if key == escKeyCode then
+                        let
+                            updateLine line =
+                                if line.id == lineId then
+                                    { line | translatedText = line.initialTranslatedText, status = Default }
+                                else
+                                    line
 
-                    updatedLines =
-                        RemoteData.Success (List.map updateLine (maybeList model.lines))
+                            updatedLines =
+                                RemoteData.Success (List.map updateLine (maybeList model.lines))
 
-                    updatedModel =
-                        { model | lines = updatedLines }
-                in
-                updatedModel ! []
-            else
-                model ! []
-
-        UpdateLine lineId newTranslatedText ->
-            let
-                determineStatus line =
-                    if line.initialDigest == H.computeDigest newTranslatedText then
-                        Default
+                            updatedModel =
+                                { model | lines = updatedLines }
+                        in
+                        updatedModel ! []
                     else
-                        Changed
+                        model ! []
 
-                updateLine line =
-                    if line.id == lineId then
-                        { line | translatedText = Just newTranslatedText, status = determineStatus line }
-                    else
-                        line
+                Nothing ->
+                    model ! []
 
-                updatedLines =
-                    RemoteData.Success (List.map updateLine (maybeList model.lines))
+        UpdateCurrentLine newTranslatedText ->
+            case model.currentLineId of
+                Just lineId ->
+                    let
+                        determineStatus line =
+                            if line.initialDigest == H.computeDigest newTranslatedText then
+                                Default
+                            else
+                                Changed
 
-                updatedModel =
-                    { model | lines = updatedLines }
-            in
-            ( updatedModel, Cmd.none )
+                        updateLine line =
+                            if line.id == lineId then
+                                { line | translatedText = Just newTranslatedText, status = determineStatus line }
+                            else
+                                line
+
+                        updatedLines =
+                            RemoteData.Success (List.map updateLine (maybeList model.lines))
+
+                        updatedModel =
+                            { model | lines = updatedLines }
+                    in
+                    updatedModel
+                        ! []
+
+                Nothing ->
+                    model
+                        ! []
 
         SaveLine lineId ->
             let
                 updatedLine =
                     List.head (List.filter (\m -> m.id == lineId) (maybeList model.lines))
             in
-            ( model, saveLineCmd updatedLine )
+            model
+                ! [ saveLineCmd updatedLine ]
 
         ChangeLineStatus lineId ->
             let
@@ -106,6 +119,22 @@ update msg model =
                             model
             in
             updatedModel
+                ! []
+
+        OnLineFocus lineId ->
+            let
+                _ =
+                    Debug.log "Focused line: " lineId
+            in
+            { model | currentLineId = Just lineId }
+                ! []
+
+        OnLineBlur lineId ->
+            let
+                _ =
+                    Debug.log "Blured line: " lineId
+            in
+            { model | currentLineId = Nothing }
                 ! []
 
         OnLineSave (Ok line) ->

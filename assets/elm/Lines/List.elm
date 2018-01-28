@@ -2,7 +2,7 @@ module Lines.List exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, disabled, rows, value)
-import Html.Events exposing (keyCode, on, onClick, onInput)
+import Html.Events exposing (keyCode, on, onBlur, onClick, onFocus, onInput)
 import Json.Decode as Json
 import Models exposing (Line, Lines, Status(..))
 import Msgs exposing (Msg)
@@ -59,8 +59,9 @@ renderTranslateForm line =
         , rows 5
         , class "translate_line__input translate_input form-control"
         , class (statusToString line.status)
-        , onInput (Msgs.UpdateLine line.id)
-        , onKeyDown (Msgs.KeyDown line.id)
+        , onInput Msgs.UpdateCurrentLine
+        , onFocus (Msgs.OnLineFocus line.id)
+        , onBlur (Msgs.OnLineBlur line.id)
         ]
         []
 
@@ -68,11 +69,6 @@ renderTranslateForm line =
 statusToString : Status -> String
 statusToString status =
     "translate_input--" ++ String.toLower (toString status)
-
-
-onKeyDown : (Int -> msg) -> Attribute msg
-onKeyDown tagger =
-    on "keydown" (Json.map tagger keyCode)
 
 
 maybeList : WebData Lines -> Html Msg

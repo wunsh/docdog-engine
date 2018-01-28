@@ -8,11 +8,13 @@ import RemoteData exposing (WebData)
 
 type Msg
     = NoOp
-    | UpdateLine LineId String
+    | UpdateCurrentLine String
     | SaveLine LineId
     | OnLocationChange Location
     | OnFetchLines (WebData Lines)
     | OnLineSave (Result Http.Error Line)
-    | KeyDown LineId Int
+    | OnLineFocus LineId
+    | OnLineBlur LineId
+    | KeyDown Int
     | ChangeLineStatus LineId
     | NotFoundError
