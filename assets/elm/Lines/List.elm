@@ -11,9 +11,21 @@ import RemoteData exposing (WebData)
 
 view : WebData Lines -> Html Msg
 view response =
-    table [ class "editor table" ]
-        [ renderHeading
-        , maybeList response
+    div []
+        [ hintBlock
+        , table [ class "editor table" ]
+            [ renderHeading
+            , maybeList response
+            ]
+        ]
+
+
+hintBlock : Html Msg
+hintBlock =
+    ul [ class "hint_block" ]
+        [ li [] [ text "Command + Enter / Save line" ]
+        , li [] [ text "Escape / Cancel changes" ]
+        , li [] [ text "Tab / Go to the next line" ]
         ]
 
 
