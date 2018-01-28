@@ -1,5 +1,6 @@
 module Msgs exposing (..)
 
+import Dom
 import Http
 import Keyboard.Extra exposing (Key)
 import Models exposing (Line, LineId, Lines)
@@ -10,7 +11,6 @@ import RemoteData exposing (WebData)
 type Msg
     = NoOp
     | UpdateCurrentLine String
-    | SaveLine LineId
     | OnLocationChange Location
     | OnFetchLines (WebData Lines)
     | OnLineSave (Result Http.Error Line)
@@ -19,4 +19,5 @@ type Msg
     | KeyDown Key
     | KeyUp Key
     | ChangeLineStatus LineId
+    | FocusLine (Result Dom.Error ())
     | NotFoundError

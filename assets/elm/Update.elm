@@ -1,6 +1,7 @@
 module Update exposing (..)
 
 import Commands exposing (saveLineCmd)
+import Dom
 import Helper as H
 import Keyboard.Extra exposing (Key(..))
 import MD5
@@ -8,6 +9,7 @@ import Models exposing (HeldMetaKeys, Line, Lines, Model, Status(..))
 import Msgs exposing (Msg(..))
 import RemoteData exposing (WebData)
 import Routing exposing (parseLocation)
+import Task
 import Time
 
 
@@ -121,14 +123,6 @@ update msg model =
                     model
                         ! []
 
-        SaveLine lineId ->
-            let
-                updatedLine =
-                    List.head (List.filter (\m -> m.id == lineId) (maybeList model.lines))
-            in
-            model
-                ! [ saveLineCmd updatedLine ]
-
         ChangeLineStatus lineId ->
             let
                 line =
@@ -149,18 +143,10 @@ update msg model =
                 ! []
 
         OnLineFocus lineId ->
-            let
-                _ =
-                    Debug.log "Focused line: " lineId
-            in
             { model | currentLineId = Just lineId }
                 ! []
 
         OnLineBlur lineId ->
-            let
-                _ =
-                    Debug.log "Blured line: " lineId
-            in
             { model | currentLineId = Nothing }
                 ! []
 
@@ -171,11 +157,23 @@ update msg model =
 
                 updatedLine =
                     { line | initialTranslatedText = line.translatedText, initialDigest = H.computeDigest translatedText, status = Saved }
+
+                nextLine =
+                    getNextLineOrCurrent line (maybeList model.lines)
+
+                makeNextLineFocusedCommand =
+                    if nextLine == line then
+                        Cmd.none
+                    else
+                        Dom.focus ("line_" ++ toString nextLine.id) |> Task.attempt FocusLine
             in
             updateModel model updatedLine
-                ! [ H.setTimeout (Time.second * 5) <| ChangeLineStatus line.id ]
+                ! [ H.setTimeout (Time.second * 5) <| ChangeLineStatus line.id, makeNextLineFocusedCommand ]
 
         OnLineSave (Err error) ->
+            ( model, Cmd.none )
+
+        FocusLine result ->
             ( model, Cmd.none )
 
 
@@ -241,6 +239,32 @@ updateModel model updatedLine =
             RemoteData.map updateLineList model.lines
     in
     { model | lines = updatedLines }
+
+
+getNextLineOrCurrent : Line -> Lines -> Line
+getNextLineOrCurrent currentLine lines =
+    let
+        lineId =
+            currentLine.id
+
+        findNextInList l =
+            case l of
+                [] ->
+                    currentLine
+
+                x :: [] ->
+                    if x.id == lineId then
+                        Maybe.withDefault currentLine (List.head lines)
+                    else
+                        currentLine
+
+                x :: y :: rest ->
+                    if x.id == lineId then
+                        y
+                    else
+                        findNextInList (y :: rest)
+    in
+    findNextInList lines
 
 
 isPressed : List Key -> HeldMetaKeys -> Bool

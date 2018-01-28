@@ -1,7 +1,7 @@
 module Lines.List exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, disabled, rows, value)
+import Html.Attributes exposing (class, disabled, id, rows, value)
 import Html.Events exposing (keyCode, on, onBlur, onClick, onFocus, onInput)
 import Json.Decode as Json
 import Models exposing (Line, Lines, Status(..))
@@ -23,7 +23,6 @@ renderHeading =
         [ tr []
             [ th [] [ text "Original Text" ]
             , th [] [ text "Translated Text" ]
-            , th [] [ text "Buttons" ]
             ]
         ]
 
@@ -42,20 +41,14 @@ renderLine line =
     tr []
         [ td [] [ strong [] [ text line.originalText ] ]
         , td [] [ renderTranslateForm line ]
-        , td []
-            [ button
-                [ onClick (Msgs.SaveLine line.id)
-                , disabled (line.status == Default)
-                ]
-                [ text "Save" ]
-            ]
         ]
 
 
 renderTranslateForm : Line -> Html Msg
 renderTranslateForm line =
     textarea
-        [ value (Maybe.withDefault "" line.translatedText)
+        [ id ("line_" ++ toString line.id)
+        , value (Maybe.withDefault "" line.translatedText)
         , rows 5
         , class "translate_line__input translate_input form-control"
         , class (statusToString line.status)
