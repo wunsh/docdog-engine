@@ -1,10 +1,11 @@
 module Commands exposing (..)
 
+import Helper as H
 import Http
 import Json.Decode as Decode
-import Json.Decode.Pipeline exposing (decode, required)
+import Json.Decode.Pipeline exposing (decode, hardcoded, required)
 import Json.Encode as Encode
-import Models exposing (DocumentId, Line, LineId, Lines)
+import Models exposing (DocumentId, Line, LineId, Lines, Status(..))
 import Msgs exposing (Msg)
 import RemoteData
 
@@ -15,16 +16,18 @@ import RemoteData
 saveLineCmd : Maybe Line -> Cmd Msg
 saveLineCmd maybeLine =
     let
-        line =
+        command =
             case maybeLine of
                 Just line ->
                     line
+                        |> H.addDigestToLine
+                        |> saveLineRequest
+                        |> Http.send Msgs.OnLineSave
 
                 Nothing ->
-                    { id = 0, originalText = "", translatedText = Nothing }
+                    Cmd.none
     in
-    saveLineRequest line
-        |> Http.send Msgs.OnLineSave
+    command
 
 
 
@@ -97,3 +100,5 @@ lineDecoder =
         |> required "id" Decode.int
         |> required "original_text" Decode.string
         |> required "translated_text" (Decode.nullable Decode.string)
+        |> hardcoded ""
+        |> hardcoded Default

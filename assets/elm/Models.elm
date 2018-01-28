@@ -21,6 +21,13 @@ type Route
     | NotFoundRoute
 
 
+type Status
+    = Default
+    | Active
+    | Changed
+    | Saved
+
+
 type alias Lines =
     List Line
 
@@ -29,6 +36,8 @@ type alias Line =
     { id : LineId
     , originalText : String
     , translatedText : Maybe String
+    , initialDigest : String
+    , status : Status
     }
 
 

@@ -1,9 +1,9 @@
 module Lines.List exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, rows, value)
+import Html.Attributes exposing (class, disabled, rows, value)
 import Html.Events exposing (onClick, onInput)
-import Models exposing (Line, Lines)
+import Models exposing (Line, Lines, Status(..))
 import Msgs exposing (Msg)
 import RemoteData exposing (WebData)
 
@@ -41,7 +41,13 @@ renderLine line =
     tr []
         [ td [] [ strong [] [ text line.originalText ] ]
         , td [] [ renderTranslateForm line ]
-        , td [] [ button [ onClick (Msgs.SaveLine line.id) ] [ text "OK" ] ]
+        , td []
+            [ button
+                [ onClick (Msgs.SaveLine line.id)
+                , disabled (line.status == Default)
+                ]
+                [ text "Save" ]
+            ]
         ]
 
 
@@ -51,9 +57,15 @@ renderTranslateForm line =
         [ value (Maybe.withDefault "" line.translatedText)
         , rows 5
         , class "translate_line__input translate_input form-control"
+        , class (statusToString line.status)
         , onInput (Msgs.UpdateLine line.id)
         ]
         []
+
+
+statusToString : Status -> String
+statusToString status =
+    "translate_input--" ++ String.toLower (toString status)
 
 
 maybeList : WebData Lines -> Html Msg
