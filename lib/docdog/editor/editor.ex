@@ -3,12 +3,18 @@ defmodule Docdog.Editor do
   The Editor context.
   """
 
-  import Ecto.Query, warn: false
-  import Ecto, only: [assoc: 2]
+  import Ecto.Query
 
   alias Docdog.Repo
   alias Docdog.Editor.Project
+  alias Docdog.Editor.Document
   alias Docdog.Editor.Line
+
+  def projects_query do
+    Project
+    |> preload([:user, documents: :user])
+    |> order_by(desc: :inserted_at)
+  end
 
   @doc """
   Returns the list of projects.
@@ -20,8 +26,7 @@ defmodule Docdog.Editor do
 
   """
   def list_projects do
-    Project
-    |> order_by(desc: :inserted_at)
+    projects_query
     |> Repo.all()
   end
 
@@ -45,13 +50,7 @@ defmodule Docdog.Editor do
 
   """
   def get_project!(id) do
-    Project
-    |> preload(:documents)
-    |> Repo.get!(id)
-  end
-
-  def get_line!(id) do
-    Line
+    projects_query
     |> Repo.get!(id)
   end
 
@@ -68,7 +67,7 @@ defmodule Docdog.Editor do
 
   """
   def create_project(user, attrs \\ %{}) do
-    attrs = attrs |> Map.put("user_id", user.id)
+    attrs = attrs |> Map.put(:user_id, user.id)
 
     %Project{}
     |> Project.changeset(attrs)
@@ -90,15 +89,6 @@ defmodule Docdog.Editor do
   def update_project(%Project{} = project, attrs) do
     project
     |> Project.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def update_line(%Line{} = line, user, attrs) do
-    attrs =
-      attrs
-      |> Map.put("user_id", user.id)
-
-    line |> Line.changeset(attrs)
     |> Repo.update()
   end
 
@@ -131,7 +121,11 @@ defmodule Docdog.Editor do
     Project.changeset(project, %{})
   end
 
-  alias Docdog.Editor.Document
+  def documents_query do
+    Document
+    |> preload([:user, :lines, project: :user])
+    |> order_by(desc: :inserted_at)
+  end
 
   @doc """
   Returns the list of documents.
@@ -143,12 +137,14 @@ defmodule Docdog.Editor do
 
   """
   def list_documents do
-    Document
+    documents_query
     |> Repo.all()
   end
 
   def list_documents_for_project(project_id) do
-    Repo.all(from(d in Document, where: d.project_id == ^project_id))
+    documents_query
+    |> where(project_id: ^project_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -165,7 +161,7 @@ defmodule Docdog.Editor do
       ** (Ecto.NoResultsError)
 
   """
-  def get_document!(id), do: Document |> preload(:lines) |> Repo.get!(id)
+  def get_document!(id), do: documents_query |> Repo.get!(id)
 
   @doc """
   Creates a document.
@@ -180,7 +176,7 @@ defmodule Docdog.Editor do
 
   """
   def create_document(project, user, attrs \\ %{}) do
-    attrs = attrs |> Map.put("user_id", user.id)
+    attrs = attrs |> Map.put(:user_id, user.id)
 
     project
     |> Ecto.build_assoc(:documents)
@@ -235,14 +231,32 @@ defmodule Docdog.Editor do
     Document.changeset(document, %{})
   end
 
-  def change_line(%Line{} = line) do
-    Line.changeset(line, %{})
+  def line_query do
+    Line
+    |> preload([:user, document: :user])
+    |> Line.default_scope()
+  end
+
+  def get_line!(id) do
+    line_query
+    |> Repo.get!(id)
   end
 
   def get_lines_for_document(document) do
-    document
-    |> assoc(:lines)
-    |> Line.default_scope()
+    line_query
+    |> where(document_id: ^document.id)
     |> Repo.all()
+  end
+
+  def update_line(%Line{} = line, user, attrs) do
+    attrs = Map.put(attrs, :user_id, user.id)
+
+    line
+    |> change_line(attrs)
+    |> Repo.update()
+  end
+
+  def change_line(line, attrs \\ %{}) do
+    Line.changeset(line, attrs)
   end
 end
