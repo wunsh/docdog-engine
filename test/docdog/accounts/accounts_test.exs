@@ -14,8 +14,10 @@ defmodule Docdog.AccountsTest do
     @invalid_attrs %{username: nil}
     @create_attrs_from_github %{
       email: "petrov@example.com",
-      name: "Petr Petrov",
       nickname: "petr_petrov",
+      name: "Petr Petroff",
+      first_name: "Petr",
+      last_name: "Petrov",
       image: ""
     }
 
@@ -62,13 +64,44 @@ defmodule Docdog.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
 
-    test "find_or_create/1 returns existed user", %{user: user} do
-      assert user = Accounts.find_or_create(%Ueberauth.Auth{info: %{nickname: "ivan_ivanov"}})
+    test "find_or_create/1 returns existed user when found by nickname", %{user: user} do
+      {:ok, found_user} =
+        Accounts.find_or_create(%Ueberauth.Auth{info: %{nickname: "ivan_ivanov"}})
+
+      assert user == found_user
     end
 
-    test "find_or_create/1 returns just created user" do
-      assert {:ok, user} =
-               Accounts.find_or_create(%Ueberauth.Auth{info: @create_attrs_from_github})
+    test "find_or_create/1 returns just created user with usesrname from name", %{
+      user: existed_user
+    } do
+      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: @create_attrs_from_github})
+      refute existed_user == new_user
+      assert new_user.username == "Petr Petroff"
+    end
+
+    test "find_or_create/1 returns just created user when info with empty name", %{
+      user: existed_user
+    } do
+      params_without_name = %{@create_attrs_from_github | name: nil}
+
+      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: params_without_name})
+      refute existed_user == new_user
+      assert new_user.username == "Petr Petrov"
+    end
+
+    test "find_or_create/1 returns just created user when no any names in info", %{
+      user: existed_user
+    } do
+      params_without_any_names = %{
+        @create_attrs_from_github
+        | name: nil,
+          first_name: nil,
+          last_name: nil
+      }
+
+      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: params_without_any_names})
+      refute existed_user == new_user
+      assert new_user.username == "petr_petrov"
     end
   end
 end

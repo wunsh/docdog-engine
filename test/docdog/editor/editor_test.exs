@@ -1,7 +1,5 @@
-require IEx
-
 defmodule Docdog.EditorTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case
   use Docdog.DataCase
 
   import Docdog.Factory
@@ -11,9 +9,9 @@ defmodule Docdog.EditorTest do
   describe "projects" do
     alias Docdog.Editor.Project
 
-    @valid_attrs params_for(:project)
-    @update_attrs %{name: "Phoenix Documentation"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs string_params_for(:project)
+    @update_attrs %{"name" => "Phoenix Documentation"}
+    @invalid_attrs %{"name" => nil}
 
     setup do
       user = insert(:user)
@@ -43,7 +41,7 @@ defmodule Docdog.EditorTest do
       assert Editor.get_project!(project.id) == project
     end
 
-    test "create_project/2 with valid data creates a project", %{user: user, project: project} do
+    test "create_project/2 with valid data creates a project", %{user: user} do
       assert {:ok, %Project{} = project} = Editor.create_project(user, @valid_attrs)
       assert project.name == "Elixir Documentation"
     end
@@ -76,9 +74,9 @@ defmodule Docdog.EditorTest do
   describe "documents" do
     alias Docdog.Editor.Document
 
-    @valid_attrs params_for(:document)
-    @update_attrs %{name: "Getting Started"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs string_params_for(:document)
+    @update_attrs %{"name" => "Getting Started"}
+    @invalid_attrs %{"name" => nil}
 
     setup do
       user = insert(:user)
@@ -139,7 +137,7 @@ defmodule Docdog.EditorTest do
   describe "lines" do
     alias Docdog.Editor.Line
 
-    @update_attrs %{translated_text: "Эликсир"}
+    @update_attrs %{"translated_text" => "Эликсир"}
 
     setup do
       user = insert(:user)

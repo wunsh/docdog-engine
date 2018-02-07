@@ -67,7 +67,7 @@ defmodule Docdog.Editor do
 
   """
   def create_project(user, attrs \\ %{}) do
-    attrs = attrs |> Map.put(:user_id, user.id)
+    attrs = attrs |> Map.put("user_id", user.id)
 
     %Project{}
     |> Project.changeset(attrs)
@@ -176,7 +176,7 @@ defmodule Docdog.Editor do
 
   """
   def create_document(project, user, attrs \\ %{}) do
-    attrs = attrs |> Map.put(:user_id, user.id)
+    attrs = attrs |> Map.put("user_id", user.id)
 
     project
     |> Ecto.build_assoc(:documents)
@@ -249,7 +249,7 @@ defmodule Docdog.Editor do
   end
 
   def update_line(%Line{} = line, user, attrs) do
-    attrs = Map.put(attrs, :user_id, user.id)
+    attrs = Map.put(attrs, "user_id", user.id)
 
     line
     |> change_line(attrs)
