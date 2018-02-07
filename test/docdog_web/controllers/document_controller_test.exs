@@ -1,91 +1,92 @@
-# # TODO: Fix tests
+defmodule DocdogWeb.DocumentControllerTest do
+  use DocdogWeb.ConnCase
 
-# defmodule DocdogWeb.DocumentControllerTest do
-#   use DocdogWeb.ConnCase
+  import Docdog.Factory
 
-#   alias Docdog.Editor
+  @create_attrs string_params_for(:document)
+  @invalid_attrs %{"name" => nil}
 
-#   @create_attrs %{name: "some name"}
-#   @update_attrs %{name: "some updated name"}
-#   @invalid_attrs %{name: nil}
+  setup do
+    user = insert(:user)
 
-#   def fixture(:document) do
-#     {:ok, document} = Editor.create_document(@create_attrs)
-#     document
-#   end
+    conn =
+      build_conn()
+      |> assign(:current_user, user)
 
-#   describe "index" do
-#     test "lists all documents", %{conn: conn} do
-#       conn = get(conn, document_path(conn, :index))
-#       assert html_response(conn, 200) =~ "Listing Documents"
-#     end
-#   end
+    line = build(:processed_line)
+    project = insert(:project, user: user)
+    document = insert(:document, user: user, project: project, lines: [line, line])
 
-#   describe "new document" do
-#     test "renders form", %{conn: conn} do
-#       conn = get(conn, document_path(conn, :new))
-#       assert html_response(conn, 200) =~ "New Document"
-#     end
-#   end
+    {:ok, conn: conn, user: user, project: project, document: document}
+  end
 
-#   describe "create document" do
-#     test "redirects to show when data is valid", %{conn: conn} do
-#       conn = post(conn, document_path(conn, :create), document: @create_attrs)
+  describe "index" do
+    test "lists all documents", %{conn: conn, project: project} do
+      conn = get(conn, project_document_path(conn, :index, project.id))
+      assert html_response(conn, 200) =~ "Listing Documents"
+    end
+  end
 
-#       assert %{id: id} = redirected_params(conn)
-#       assert redirected_to(conn) == document_path(conn, :show, id)
+  describe "show document" do
+    test "shows the document in html format", %{conn: conn, project: project, document: document} do
+      conn = get(conn, project_document_path(conn, :show, project.id, document.id))
+      assert html_response(conn, 200) =~ "Show Document"
+    end
 
-#       conn = get(conn, document_path(conn, :show, id))
-#       assert html_response(conn, 200) =~ "Show Document"
-#     end
+    test "saves the document in md format", %{conn: conn, project: project, document: document} do
+      conn = conn |> put_req_header("accept", "text/markdown")
+      conn = get(conn, project_document_path(conn, :show, project.id, document.id))
+      assert response_content_type(conn, :md) =~ "text/markdown; charset=utf-8"
+      assert response(conn, 200) == "Эликсир - это\nЭликсир - это"
+    end
+  end
 
-#     test "renders errors when data is invalid", %{conn: conn} do
-#       conn = post(conn, document_path(conn, :create), document: @invalid_attrs)
-#       assert html_response(conn, 200) =~ "New Document"
-#     end
-#   end
+  describe "new document" do
+    test "renders form", %{conn: conn, project: project} do
+      conn = get(conn, project_document_path(conn, :new, project.id))
+      assert html_response(conn, 200) =~ "New Document"
+    end
+  end
 
-#   describe "edit document" do
-#     setup [:create_document]
+  describe "create document" do
+    test "redirects to show when data is valid", %{conn: conn, project: project} do
+      new_conn =
+        post(conn, project_document_path(conn, :create, project.id), document: @create_attrs)
 
-#     test "renders form for editing chosen document", %{conn: conn, document: document} do
-#       conn = get(conn, document_path(conn, :edit, document))
-#       assert html_response(conn, 200) =~ "Edit Document"
-#     end
-#   end
+      assert %{id: id} = redirected_params(new_conn)
+      assert redirected_to(new_conn) == project_document_path(new_conn, :edit, project.id, id)
 
-#   describe "update document" do
-#     setup [:create_document]
+      new_conn = get(conn, project_document_path(conn, :edit, project.id, id))
+      assert html_response(new_conn, 200) =~ "Edit Document"
+    end
 
-#     test "redirects when data is valid", %{conn: conn, document: document} do
-#       conn = put(conn, document_path(conn, :update, document), document: @update_attrs)
-#       assert redirected_to(conn) == document_path(conn, :show, document)
+    test "renders errors when data is invalid", %{conn: conn, project: project} do
+      conn =
+        post(conn, project_document_path(conn, :create, project.id), document: @invalid_attrs)
 
-#       conn = get(conn, document_path(conn, :show, document))
-#       assert html_response(conn, 200) =~ "some updated name"
-#     end
+      assert html_response(conn, 200) =~ "New Document"
+    end
+  end
 
-#     test "renders errors when data is invalid", %{conn: conn, document: document} do
-#       conn = put(conn, document_path(conn, :update, document), document: @invalid_attrs)
-#       assert html_response(conn, 200) =~ "Edit Document"
-#     end
-#   end
+  describe "edit document" do
+    test "renders form for editing chosen document", %{
+      conn: conn,
+      project: project,
+      document: document
+    } do
+      conn = get(conn, project_document_path(conn, :edit, project.id, document))
+      assert html_response(conn, 200) =~ "Edit Document"
+    end
+  end
 
-#   describe "delete document" do
-#     setup [:create_document]
+  describe "delete document" do
+    test "deletes chosen document", %{conn: conn, project: project, document: document} do
+      conn = delete(conn, project_document_path(conn, :delete, project.id, document))
+      assert redirected_to(conn) == project_document_path(conn, :index, project.id)
 
-#     test "deletes chosen document", %{conn: conn, document: document} do
-#       conn = delete(conn, document_path(conn, :delete, document))
-#       assert redirected_to(conn) == document_path(conn, :index)
-
-#       assert_error_sent(404, fn ->
-#         get(conn, document_path(conn, :show, document))
-#       end)
-#     end
-#   end
-
-#   defp create_document(_) do
-#     document = fixture(:document)
-#     {:ok, document: document}
-#   end
-# end
+      assert_error_sent(404, fn ->
+        get(conn, project_document_path(conn, :show, project.id, document))
+      end)
+    end
+  end
+end

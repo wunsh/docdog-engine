@@ -1,11 +1,13 @@
-defmodule Docdog.CurrentUserPlug do
+defmodule DocdogWeb.CurrentUserPlug do
   @moduledoc """
     Getting current user from session.
   """
 
   import Plug.Conn
 
-  def init(default), do: default
+  def init(default) do
+    default
+  end
 
   def call(conn, _opts) do
     if current_user = get_session(conn, :current_user) do

@@ -27,7 +27,7 @@ defmodule Docdog.Editor.Line do
   def changeset(%Line{} = line, attrs) do
     line
     |> cast(attrs, [:translated_text, :user_id])
-    |> validate_required([:user_id])
+    |> validate_required([:translated_text, :user_id])
     |> make_processed
   end
 

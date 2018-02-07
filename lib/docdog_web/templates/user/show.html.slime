@@ -1,9 +1,0 @@
-h2 Show User
-
-ul
-  li
-    strong Username:
-    = @user.username
-
-span = link "Edit", to: user_path(@conn, :edit, @user)
-span = link "Back", to: user_path(@conn, :index)

@@ -1,18 +1,9 @@
 defmodule DocdogWeb.ErrorViewTest do
   use DocdogWeb.ConnCase, async: true
 
-  # Bring render/3 and render_to_string/3 for testing custom views
-  import Phoenix.View
+  import DocdogWeb.ErrorView
 
-  test "renders 404.html" do
-    assert render_to_string(DocdogWeb.ErrorView, "404.html", []) == "Page not found"
-  end
-
-  test "render 500.html" do
-    assert render_to_string(DocdogWeb.ErrorView, "500.html", []) == "Internal server error"
-  end
-
-  test "render any other" do
-    assert render_to_string(DocdogWeb.ErrorView, "505.html", []) == "Internal server error"
+  test "template_not_found/2 renders error" do
+    assert "Internal server error" == template_not_found("", %{})
   end
 end
