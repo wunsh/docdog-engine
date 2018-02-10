@@ -9,6 +9,8 @@ defmodule Docdog.Mixfile do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
       aliases: aliases(),
       deps: deps()
     ]
@@ -20,7 +22,7 @@ defmodule Docdog.Mixfile do
   def application do
     [
       mod: {Docdog.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth_github]
+      extra_applications: [:ex_machina, :logger, :runtime_tools, :ueberauth_github]
     ]
   end
 
@@ -44,6 +46,8 @@ defmodule Docdog.Mixfile do
       {:cowboy, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.8", only: :test},
+      {:ex_machina, "~> 2.1"},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end

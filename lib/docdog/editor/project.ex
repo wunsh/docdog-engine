@@ -18,7 +18,7 @@ defmodule Docdog.Editor.Project do
 
     belongs_to(:user, Docdog.Accounts.User)
 
-    has_many(:documents, Docdog.Editor.Document)
+    has_many(:documents, Docdog.Editor.Document, on_delete: :delete_all)
   end
 
   @doc false
@@ -54,6 +54,7 @@ defmodule Docdog.Editor.Project do
     from(
       p in Docdog.Editor.Project,
       join: s in subquery(projects_subquery),
+      on: p.id == s.id,
       select: %{p | completed_percentage: s.completed_percentage},
       distinct: p.id
     )

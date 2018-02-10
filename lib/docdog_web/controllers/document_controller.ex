@@ -40,7 +40,7 @@ defmodule DocdogWeb.DocumentController do
         content = Document.translated_text(document.lines)
 
         conn
-        |> put_resp_content_type("text/markdown; charset=UTF-8")
+        |> put_resp_content_type("text/markdown")
         |> put_resp_header("content-disposition", "attachment; filename=\"#{document.name}.md\"")
         |> send_resp(200, content)
     end

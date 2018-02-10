@@ -19,9 +19,10 @@ defmodule DocdogWeb.AuthController do
         |> put_session(:current_user, user)
         |> redirect(to: "/")
 
-      {:error, reason} ->
+      {:error, changeset} ->
+        # TODO: Pass humanized errors
         conn
-        |> put_flash(:error, reason)
+        |> put_flash(:error, changeset.errors)
         |> redirect(to: "/")
     end
   end

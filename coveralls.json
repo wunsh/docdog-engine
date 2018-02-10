@@ -1,0 +1,11 @@
+{
+  "skip_files": [
+    "lib/docdog.ex",
+    "lib/docdog/application.ex",
+    "lib/docdog/repo.ex",
+    "lib/docdog_web.ex",
+    "lib/docdog_web/endpoint.ex",
+    "lib/docdog_web/gettext.ex",
+    "test/support"
+  ]
+}
