@@ -12,7 +12,7 @@ config :docdog,
 # Configures the endpoint
 config :docdog, DocdogWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: System.get_env("SECRET_KEY_BASE") || raise("Expected the SECRET_KEY_BASE environment variable to be set"),
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "${SECRET_KEY_BASE}",
   render_errors: [view: DocdogWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Docdog.PubSub,
            adapter: Phoenix.PubSub.PG2]
@@ -34,8 +34,8 @@ config :ueberauth, Ueberauth,
        ]
 
 config :ueberauth, Ueberauth.Strategy.Github.OAuth,
-       client_id: System.get_env("GITHUB_CLIENT_ID"),
-       client_secret: System.get_env("GITHUB_CLIENT_SECRET")
+       client_id: System.get_env("GITHUB_CLIENT_ID") || "${GITHUB_CLIENT_ID}",
+       client_secret: System.get_env("GITHUB_CLIENT_SECRET") || "${GITHUB_CLIENT_SECRET}"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
