@@ -14,8 +14,9 @@ html
     link rel="stylesheet" href=static_path(@conn, "/css/app.css")
   
   body
+    = render_shared "_counters.html"
     
     = @contents
-    
+
     script src=static_path(@conn, "/js/vendor.js")
     script src=static_path(@conn, "/js/app.js")
