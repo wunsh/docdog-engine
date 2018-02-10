@@ -56,9 +56,6 @@ update msg model =
 
         KeyDown key ->
             let
-                _ =
-                    Debug.log (toString key) 1
-
                 heldMetaKeys =
                     model.heldMetaKeys
 
