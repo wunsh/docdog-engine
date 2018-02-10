@@ -216,6 +216,12 @@ updateHeldMetaKeys key isPressed keys =
             else
                 Models.initialHeldMetaKeys
 
+        ContextMenu ->
+            if isPressed then
+                { keys | super = isPressed }
+            else
+                Models.initialHeldMetaKeys
+
         _ ->
             keys
 
@@ -282,6 +288,9 @@ isPressed needCheckKeys pressedKeys =
                     pressedKeys.shift
 
                 Super ->
+                    pressedKeys.super
+
+                ContextMenu ->
                     pressedKeys.super
 
                 _ ->
