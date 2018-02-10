@@ -15,7 +15,7 @@ defmodule DocdogWeb.Endpoint do
     only: ~w(css fonts js favicon.ico robots.txt)
   )
 
-  plug(Plug.Static, at: "/", from: "assets/static", gzip: false, only: ~w(images))
+  plug(Plug.Static, at: "/", from: :docdog, gzip: false, only: ~w(images))
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
