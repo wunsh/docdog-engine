@@ -1,4 +1,4 @@
-= form_for @changeset, project_document_path(@conn, :create, @conn.params["project_id"]), fn f ->
+= form_for @changeset, project_document_path(@conn, :create, @conn.params["project_id"]), [id: "documentForm"], fn f ->
   = if @changeset.action do
     .alert.alert-danger
       p Oops, something went wrong! Please check the errors below.

@@ -5,7 +5,7 @@
     | Welcome here. We're working on a great tool which aim is making translation of Markdown documents simple
 
   p.lead
-    a.btn.btn-lg.btn-default href="/auth/github" Sign in with Github
+    a.btn.btn-lg.btn-default href="/auth/github" id="signInGithub" Sign in with Github
 
   p.lead
     | Here is Docdoge, he wants you to try this out!
