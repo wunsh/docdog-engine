@@ -1,0 +1,11 @@
+language: elixir
+elixir: 1.5.1
+otp_release: 20.0
+services:
+  - postgresql
+before_script:
+  - PGPASSWORD=postgres psql -c "create database docdog_test;" -U postgres
+env:
+  - MIX_ENV=test
+script:
+  - mix coveralls.travis && ./deploy.sh
