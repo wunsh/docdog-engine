@@ -5,7 +5,7 @@ defmodule Docdog.Mixfile do
     [
       app: :docdog,
       version: "0.0.1",
-      elixir: "~> 1.6",
+      elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -44,6 +44,7 @@ defmodule Docdog.Mixfile do
       {:phoenix_slime, git: "https://github.com/slime-lang/phoenix_slime"},
       {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"},
+      {:distillery, "~> 1.0.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.8", only: :test},

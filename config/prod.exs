@@ -18,6 +18,10 @@ config :docdog, DocdogWeb.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :docdog, DocdogWeb.Endpoint,
+  server: true,
+  secret_key_base: "${SECRET_KEY_BASE}"
+
 # Do not print debug messages in production
 config :logger, level: :info
 
@@ -61,9 +65,9 @@ config :logger, level: :info
 
 # Configure your database
 config :docdog, Docdog.Repo,
-       adapter: Ecto.Adapters.Postgres,
-       username: System.get_env("DATABASE_USERNAME") || "postgres",
-       password: System.get_env("DATABASE_PASSWORD") || "postgres",
-       database: System.get_env("DATABASE_NAME") || "docdog_prod",
-       pool_size: 15
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}",
+  database: "",
+  ssl: true,
+  pool_size: 1
 
