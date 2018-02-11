@@ -60,12 +60,12 @@ saveLineRequest line =
 
 fetchLinesUrl : DocumentId -> String
 fetchLinesUrl documentId =
-    "http://localhost:4000/api/v1/documents/" ++ toString documentId ++ "/lines"
+    "/api/v1/documents/" ++ toString documentId ++ "/lines"
 
 
 saveLineUrl : LineId -> String
 saveLineUrl lineId =
-    "http://localhost:4000/api/v1/lines/" ++ toString lineId
+    "/api/v1/lines/" ++ toString lineId
 
 
 
