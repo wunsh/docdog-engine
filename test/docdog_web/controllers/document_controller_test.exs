@@ -37,7 +37,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       conn = conn |> put_req_header("accept", "text/markdown")
       conn = get(conn, project_document_path(conn, :show, project.id, document.id))
       assert response_content_type(conn, :md) =~ "text/markdown; charset=utf-8"
-      assert response(conn, 200) == "Эликсир - это\nЭликсир - это"
+      assert response(conn, 200) == "Эликсир - это\n\nЭликсир - это"
     end
   end
 
