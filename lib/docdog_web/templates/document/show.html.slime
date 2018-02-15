@@ -18,4 +18,4 @@
         = @document.name
       li
         strong Translated text:
-        pre = Docdog.Editor.Document.translated_text(Docdog.Editor.get_lines_for_document(@document))
+        pre = Docdog.Editor.Document.translated_text(@document)
