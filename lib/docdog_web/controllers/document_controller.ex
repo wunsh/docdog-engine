@@ -37,7 +37,7 @@ defmodule DocdogWeb.DocumentController do
         render(conn, "show.html", document: document)
 
       "md" ->
-        content = Document.translated_text(document.lines)
+        content = Document.translated_text(document)
 
         conn
         |> put_resp_content_type("text/markdown")

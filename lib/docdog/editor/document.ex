@@ -31,8 +31,8 @@ defmodule Docdog.Editor.Document do
     |> put_assoc(:lines, create_lines(attrs["original_text"]))
   end
 
-  def translated_text(lines) do
-    lines
+  def translated_text(document) do
+    Docdog.Editor.get_lines_for_document(document)
     |> Enum.map(fn x -> x.translated_text end)
     |> Enum.join("\n\n")
   end
