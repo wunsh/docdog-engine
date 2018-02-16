@@ -6,16 +6,23 @@ html
     meta content="width=device-width, initial-scale=1" name="viewport"
     meta content="Application" name="description"
     meta content="Wunsh Community" name="author"
-    
+
     = csrf_meta_tag()
-    
+
     title Hello Docdog!
-    
+
     link rel="stylesheet" href=static_path(@conn, "/css/app.css")
-  
+
   body
-    
+
     = @contents
-    
+
     script src=static_path(@conn, "/js/vendor.js")
     script src=static_path(@conn, "/js/app.js")
+  footer.footer
+    .container
+      span Made with love at&nbsp;
+      a href="https://wunsh.ru" target="_blank" Elixir & Wunsh
+
+      span.text-muted
+        = " Version: #{Docdog.Mixfile.project[:version]}"
