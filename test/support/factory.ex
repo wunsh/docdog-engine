@@ -15,6 +15,11 @@ defmodule Docdog.Factory do
     }
   end
 
+  def with_documents(project) do
+    insert(:document, project: project, user: build(:user), lines: [build(:processed_line)])
+    project
+  end
+
   def document_factory do
     %Docdog.Editor.Document{
       name: "Introduction",
