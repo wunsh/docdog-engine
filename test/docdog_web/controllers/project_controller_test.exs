@@ -15,8 +15,9 @@ defmodule DocdogWeb.ProjectControllerTest do
       |> assign(:current_user, user)
 
     project = insert(:project, user: user)
+    project_with_documents = insert(:project, user: user) |> with_documents
 
-    {:ok, conn: conn, project: project}
+    {:ok, conn: conn, project: project, project_with_documents: project_with_documents}
   end
 
   describe "index" do
@@ -73,6 +74,11 @@ defmodule DocdogWeb.ProjectControllerTest do
   describe "delete project" do
     test "deletes chosen project", %{conn: conn, project: project} do
       conn = delete(conn, project_path(conn, :delete, project))
+      assert redirected_to(conn) == project_path(conn, :index)
+    end
+
+    test "deletes chosen project with documents", %{conn: conn, project_with_documents: project_with_documents} do
+      conn = delete(conn, project_path(conn, :delete, project_with_documents))
       assert redirected_to(conn) == project_path(conn, :index)
     end
   end
