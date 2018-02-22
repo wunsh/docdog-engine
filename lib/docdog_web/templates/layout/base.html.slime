@@ -24,4 +24,6 @@ html
     .container
       span.text-muted
         = "Version: #{Mix.Project.config[:version]}"
-
+      span &nbsp;
+      span Made with love at&nbsp;
+      a href="https://wunsh.ru" target="_blank" Elixir & Wunsh
