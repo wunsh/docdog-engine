@@ -43,7 +43,7 @@ defmodule Docdog.Editor.Document do
 
   defp create_lines(text) do
     text
-    |> SnippetHelper.process_snippets
+    |> SnippetHelper.process_snippets()
     |> String.split("\n")
     |> Enum.map(&SnippetHelper.decode_newlines/1)
     |> Enum.map(&String.trim/1)

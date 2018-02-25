@@ -77,7 +77,10 @@ defmodule DocdogWeb.ProjectControllerTest do
       assert redirected_to(conn) == project_path(conn, :index)
     end
 
-    test "deletes chosen project with documents", %{conn: conn, project_with_documents: project_with_documents} do
+    test "deletes chosen project with documents", %{
+      conn: conn,
+      project_with_documents: project_with_documents
+    } do
       conn = delete(conn, project_path(conn, :delete, project_with_documents))
       assert redirected_to(conn) == project_path(conn, :index)
     end

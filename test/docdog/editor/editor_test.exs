@@ -178,10 +178,14 @@ defmodule Docdog.EditorTest do
 
       text_with_snippet = "Take a look at the snippet below:\n\n#{snippet}\n\nWow, it works!\n"
 
-      processed_text = "Take a look at the snippet below:\n\n#{encoded_snippet}\n\nWow, it works!\n"
+      processed_text =
+        "Take a look at the snippet below:\n\n#{encoded_snippet}\n\nWow, it works!\n"
 
-      {:ok, snippet: snippet, encoded_snippet: encoded_snippet, text_with_snippet: text_with_snippet,
-            processed_text: processed_text}
+      {:ok,
+       snippet: snippet,
+       encoded_snippet: encoded_snippet,
+       text_with_snippet: text_with_snippet,
+       processed_text: processed_text}
     end
 
     test "process_snippets/1 encodes newlines inside snippets", %{
@@ -191,11 +195,17 @@ defmodule Docdog.EditorTest do
       assert SnippetHelper.process_snippets(text_with_snippet) == processed_text
     end
 
-    test "encode_newlines/1 encodes \\n into %$%n$%$", %{snippet: snippet, encoded_snippet: encoded_snippet} do
+    test "encode_newlines/1 encodes \\n into %$%n$%$", %{
+      snippet: snippet,
+      encoded_snippet: encoded_snippet
+    } do
       assert SnippetHelper.encode_newlines(snippet) == encoded_snippet
     end
 
-    test "decode_newlines/1 decodes %$%n$%$ into \\n", %{snippet: snippet, encoded_snippet: encoded_snippet} do
+    test "decode_newlines/1 decodes %$%n$%$ into \\n", %{
+      snippet: snippet,
+      encoded_snippet: encoded_snippet
+    } do
       assert SnippetHelper.decode_newlines(encoded_snippet) == snippet
     end
   end

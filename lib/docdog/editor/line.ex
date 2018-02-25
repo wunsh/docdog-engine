@@ -37,10 +37,6 @@ defmodule Docdog.Editor.Line do
     |> Map.put(:index_number, index)
   end
 
-  def default_scope(query) do
-    from(line in query, order_by: [asc: :index_number])
-  end
-
   defp make_processed(changeset) do
     put_change(changeset, :processed, true)
   end

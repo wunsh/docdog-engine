@@ -9,12 +9,9 @@ defmodule Docdog.Editor do
   alias Docdog.Editor.Project
   alias Docdog.Editor.Document
   alias Docdog.Editor.Line
-
-  def projects_query do
-    Project
-    |> preload([:user, documents: :user])
-    |> order_by(desc: :inserted_at)
-  end
+  alias Docdog.Editor.Queries.ProjectQuery
+  alias Docdog.Editor.Queries.DocumentQuery
+  alias Docdog.Editor.Queries.LineQuery
 
   @doc """
   Returns the list of projects.
@@ -26,12 +23,13 @@ defmodule Docdog.Editor do
 
   """
   def list_projects do
-    projects_query
+    Project
+    |> ProjectQuery.default_scope()
     |> Repo.all()
   end
 
   def full_list_projects do
-    Project.with_completed_percentages_query()
+    ProjectQuery.with_completed_percentages()
     |> Repo.all()
   end
 
@@ -50,7 +48,8 @@ defmodule Docdog.Editor do
 
   """
   def get_project!(id) do
-    projects_query
+    Project
+    |> ProjectQuery.default_scope()
     |> Repo.get!(id)
   end
 
@@ -121,12 +120,6 @@ defmodule Docdog.Editor do
     Project.changeset(project, %{})
   end
 
-  def documents_query do
-    Document
-    |> preload([:user, :lines, project: :user])
-    |> order_by(desc: :inserted_at)
-  end
-
   @doc """
   Returns the list of documents.
 
@@ -137,12 +130,14 @@ defmodule Docdog.Editor do
 
   """
   def list_documents do
-    documents_query
+    Document
+    |> DocumentQuery.default_scope()
     |> Repo.all()
   end
 
   def list_documents_for_project(project_id) do
-    documents_query
+    Document
+    |> DocumentQuery.default_scope()
     |> where(project_id: ^project_id)
     |> Repo.all()
   end
@@ -161,7 +156,11 @@ defmodule Docdog.Editor do
       ** (Ecto.NoResultsError)
 
   """
-  def get_document!(id), do: documents_query |> Repo.get!(id)
+  def get_document!(id) do
+    Document
+    |> DocumentQuery.default_scope()
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a document.
@@ -231,19 +230,15 @@ defmodule Docdog.Editor do
     Document.changeset(document, %{})
   end
 
-  def line_query do
-    Line
-    |> preload([:user, document: :user])
-    |> Line.default_scope()
-  end
-
   def get_line!(id) do
-    line_query
+    Line
+    |> LineQuery.default_scope()
     |> Repo.get!(id)
   end
 
   def get_lines_for_document(document) do
-    line_query
+    Line
+    |> LineQuery.default_scope()
     |> where(document_id: ^document.id)
     |> Repo.all()
   end
