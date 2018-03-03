@@ -11,7 +11,8 @@ defmodule Docdog.Factory do
 
   def project_factory do
     %Docdog.Editor.Project{
-      name: "Elixir Documentation"
+      name: "Elixir Documentation",
+      public: false
     }
   end
 

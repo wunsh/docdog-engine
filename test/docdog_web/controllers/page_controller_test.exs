@@ -19,7 +19,7 @@ defmodule DocdogWeb.PageControllerTest do
 
     test "GET /", %{conn: conn} do
       conn = get(conn, "/")
-      assert redirected_to(conn) =~ "/workplace/projects"
+      assert redirected_to(conn) =~ "/workplace/popular"
     end
   end
 end
