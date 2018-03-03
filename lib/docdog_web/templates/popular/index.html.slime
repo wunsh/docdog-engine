@@ -1,0 +1,8 @@
+.page_header.page-header
+  h2 Popular Projects
+
+= for row <- Enum.chunk_every(@projects, 4) do
+  .row
+    = for project <- row do
+      .col-xs-6.col-md-3
+        = render ProjectView, "_project.html", project: project, conn: @conn
