@@ -33,6 +33,12 @@ defmodule Docdog.Editor do
     |> Repo.all()
   end
 
+  def full_list_popular_projects do
+    ProjectQuery.with_completed_percentages()
+    |> ProjectQuery.popular_scope()
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single project.
 

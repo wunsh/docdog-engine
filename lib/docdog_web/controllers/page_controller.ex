@@ -7,7 +7,7 @@ defmodule DocdogWeb.PageController do
 
   def index(conn, _params) do
     if conn.assigns[:current_user] do
-      redirect(conn, to: project_path(Endpoint, :index))
+      redirect(conn, to: popular_path(Endpoint, :index))
     else
       render(conn, "index.html")
     end

@@ -34,6 +34,8 @@ defmodule DocdogWeb.Router do
   scope "/workplace", DocdogWeb do
     pipe_through([:browser, :workplace_layout])
 
+    resources "/popular", PopularController, only: [:index]
+
     resources "/projects", ProjectController, exclude: [:show] do
       resources("/documents", DocumentController, exclude: [:update])
     end

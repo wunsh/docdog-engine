@@ -11,6 +11,13 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
     )
   end
 
+  def popular_scope(query) do
+    from(
+      p in query,
+      where: p.public == true
+    )
+  end
+
   def with_completed_percentages do
     documents_subquery =
       from(

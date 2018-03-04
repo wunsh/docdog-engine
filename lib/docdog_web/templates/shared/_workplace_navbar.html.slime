@@ -11,6 +11,7 @@ nav.navbar.navbar-default
 
     #collapsed.navbar-collapse.collapse
       ul.nav.navbar-nav
+        li = link "Popular Projects", to: popular_path(@conn, :index)
         li = link "My Projects", to: project_path(@conn, :index)
 
       .navbar-text.navbar-right

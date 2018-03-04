@@ -9,4 +9,9 @@
     = error_tag f, :name
 
   .form-group
+    = label f, :public, class: "control-label"
+    =< checkbox f, :public
+    = error_tag f, :public
+
+  .form-group
     = submit "Submit", class: "btn btn-primary"
