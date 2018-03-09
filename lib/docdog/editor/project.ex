@@ -13,6 +13,7 @@ defmodule Docdog.Editor.Project do
     field(:name, :string)
     field(:public, :boolean)
     field(:completed_percentage, :decimal, virtual: true)
+    field(:members, {:array, :integer}, default: [])
 
     timestamps()
 
@@ -24,7 +25,7 @@ defmodule Docdog.Editor.Project do
   @doc false
   def changeset(%Project{} = project, attrs) do
     project
-    |> cast(attrs, [:name, :public, :user_id])
+    |> cast(attrs, [:name, :public, :members, :user_id])
     |> validate_required([:name, :public, :user_id])
   end
 end
