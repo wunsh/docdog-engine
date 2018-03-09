@@ -11,6 +11,7 @@ defmodule Docdog.Accounts.User do
     field(:email, :string)
     field(:username, :string)
     field(:avatar, :string)
+    field(:admin, :boolean, default: false)
 
     timestamps()
 
