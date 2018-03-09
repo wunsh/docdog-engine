@@ -9,7 +9,10 @@ defmodule Docdog.Editor.Line do
   import Ecto.Changeset
   import Ecto.Query
 
+  alias Docdog.Editor.Project
+  alias Docdog.Editor.Document
   alias Docdog.Editor.Line
+  alias Docdog.Accounts.User
 
   schema "lines" do
     field(:original_text, :string)
@@ -19,8 +22,9 @@ defmodule Docdog.Editor.Line do
 
     timestamps()
 
-    belongs_to(:document, Docdog.Editor.Document)
-    belongs_to(:user, Docdog.Accounts.User)
+    belongs_to(:project, Project)
+    belongs_to(:document, Document)
+    belongs_to(:user, User)
   end
 
   @doc false

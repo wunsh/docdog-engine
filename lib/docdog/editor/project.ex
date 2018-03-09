@@ -11,7 +11,7 @@ defmodule Docdog.Editor.Project do
 
   schema "projects" do
     field(:name, :string)
-    field(:public, :boolean)
+    field(:public, :boolean, default: false)
     field(:completed_percentage, :decimal, virtual: true)
     field(:members, {:array, :integer}, default: [])
 
@@ -20,6 +20,7 @@ defmodule Docdog.Editor.Project do
     belongs_to(:user, Docdog.Accounts.User)
 
     has_many(:documents, Docdog.Editor.Document, on_delete: :delete_all)
+    has_many(:lines, Docdog.Editor.Line)
   end
 
   @doc false
