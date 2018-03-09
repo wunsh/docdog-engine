@@ -9,21 +9,36 @@ defmodule DocdogWeb.ProjectControllerTest do
 
   setup do
     user = insert(:user)
+    another_user = insert(:user)
 
     conn =
       build_conn()
       |> assign(:current_user, user)
 
-    project = insert(:project, user: user)
-    project_with_documents = insert(:project, user: user) |> with_documents
+    conn_with_another_user =
+      build_conn()
+      |> assign(:current_user, another_user)
 
-    {:ok, conn: conn, project: project, project_with_documents: project_with_documents}
+    project = insert(:project, user: user, name: "Elixir Documentation 1")
+
+    project_with_documents =
+      insert(:project, name: "Elixir Documentation 2", user: user) |> with_documents
+
+    _project_of_another_user = insert(:project, name: "Another User Project", user: another_user)
+
+    {:ok,
+     conn: conn,
+     another_conn: conn_with_another_user,
+     project: project,
+     project_with_documents: project_with_documents}
   end
 
   describe "index" do
-    test "lists all projects", %{conn: conn} do
+    test "lists main user projects", %{conn: conn} do
       conn = get(conn, project_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Projects"
+      assert html_response(conn, 200) =~ "Elixir Documentation 1"
+      assert html_response(conn, 200) =~ "Elixir Documentation 2"
+      refute html_response(conn, 200) =~ "Another User Project"
     end
   end
 
@@ -54,6 +69,11 @@ defmodule DocdogWeb.ProjectControllerTest do
       conn = get(conn, project_path(conn, :edit, project))
       assert html_response(conn, 200) =~ "Edit Project"
     end
+
+    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
+      conn = get(conn, project_path(conn, :edit, project))
+      assert html_response(conn, 403) =~ "Forbidden"
+    end
   end
 
   describe "update project" do
@@ -69,6 +89,11 @@ defmodule DocdogWeb.ProjectControllerTest do
       conn = put(conn, project_path(conn, :update, project), project: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Project"
     end
+
+    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
+      conn = put(conn, project_path(conn, :update, project), project: @invalid_attrs)
+      assert html_response(conn, 403) =~ "Forbidden"
+    end
   end
 
   describe "delete project" do
@@ -83,6 +108,11 @@ defmodule DocdogWeb.ProjectControllerTest do
     } do
       conn = delete(conn, project_path(conn, :delete, project_with_documents))
       assert redirected_to(conn) == project_path(conn, :index)
+    end
+
+    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
+      conn = delete(conn, project_path(conn, :delete, project))
+      assert html_response(conn, 403) =~ "Forbidden"
     end
   end
 end

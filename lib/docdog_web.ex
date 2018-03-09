@@ -23,6 +23,7 @@ defmodule DocdogWeb do
       import Plug.Conn
       import DocdogWeb.Router.Helpers
       import DocdogWeb.Gettext
+      action_fallback(DocdogWeb.FallbackController)
     end
   end
 
