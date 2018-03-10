@@ -1,6 +1,14 @@
 defmodule DocdogWeb.ErrorView do
   use DocdogWeb, :view
 
+  def render("403.json", _assigns) do
+    %{error: "Forbidden"}
+  end
+
+  def render("403.html", _assigns) do
+    "Forbidden"
+  end
+
   def render("404.html", _assigns) do
     "Page not found"
   end

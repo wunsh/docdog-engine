@@ -6,6 +6,7 @@ defmodule DocdogWeb.PopularController do
 
   def index(conn, _params) do
     projects = Editor.full_list_popular_projects()
+
     render(conn, "index.html", projects: projects)
   end
 end

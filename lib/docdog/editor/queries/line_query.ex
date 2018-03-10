@@ -4,7 +4,7 @@ defmodule Docdog.Editor.Queries.LineQuery do
   def default_scope(query) do
     from(
       l in query,
-      preload: [:user, document: :user],
+      preload: [:user, :project, document: :user],
       order_by: [asc: :index_number]
     )
   end

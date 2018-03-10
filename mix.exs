@@ -45,6 +45,7 @@ defmodule Docdog.Mixfile do
       {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"},
       {:distillery, "~> 1.0.0"},
+      {:bodyguard, "~> 2.2"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.8", only: :test},

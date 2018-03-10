@@ -13,6 +13,8 @@ defmodule Docdog.Editor do
   alias Docdog.Editor.Queries.DocumentQuery
   alias Docdog.Editor.Queries.LineQuery
 
+  defdelegate authorize(action, user, params), to: Docdog.Editor.Policies.Router
+
   @doc """
   Returns the list of projects.
 
@@ -22,19 +24,22 @@ defmodule Docdog.Editor do
       [%Project{}, ...]
 
   """
-  def list_projects do
+  def list_projects() do
     Project
     |> ProjectQuery.default_scope()
     |> Repo.all()
   end
 
-  def full_list_projects do
-    ProjectQuery.with_completed_percentages()
+  def full_list_projects(user) do
+    Project
+    |> ProjectQuery.default_scope(user)
+    |> ProjectQuery.with_completed_percentages()
     |> Repo.all()
   end
 
   def full_list_popular_projects do
-    ProjectQuery.with_completed_percentages()
+    Project
+    |> ProjectQuery.with_completed_percentages()
     |> ProjectQuery.popular_scope()
     |> Repo.all()
   end

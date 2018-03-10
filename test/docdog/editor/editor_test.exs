@@ -32,7 +32,7 @@ defmodule Docdog.EditorTest do
       project = insert(:project, user: user, documents: [document])
 
       project_with_percentage =
-        Enum.find(Editor.full_list_projects(), fn p -> p.id == project.id end)
+        Enum.find(Editor.full_list_projects(user), fn p -> p.id == project.id end)
 
       assert Decimal.to_float(project_with_percentage.completed_percentage) == 50.0
     end
@@ -141,8 +141,9 @@ defmodule Docdog.EditorTest do
 
     setup do
       user = insert(:user)
+      project = insert(:project)
       document = insert(:document, user: user)
-      line = insert(:processed_line, document: document, user: user)
+      line = insert(:processed_line, document: document, user: user, project: project)
 
       {:ok, user: user, _line: line, document: document}
     end

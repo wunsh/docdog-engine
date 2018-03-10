@@ -2,12 +2,22 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
   import Ecto.Query, warn: false
 
   alias Docdog.Editor.Project
+  alias Docdog.Accounts.User
 
   def default_scope(query) do
     from(
       p in query,
       preload: [:user, documents: :user],
       order_by: [desc: :inserted_at]
+    )
+  end
+
+  def default_scope(query, %User{id: user_id}) do
+    query = default_scope(query)
+
+    from(
+      p in query,
+      where: p.user_id == ^user_id or ^user_id in p.members
     )
   end
 
@@ -18,7 +28,7 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
     )
   end
 
-  def with_completed_percentages do
+  def with_completed_percentages(query) do
     documents_subquery =
       from(
         p in Project,
@@ -42,7 +52,7 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
       )
 
     from(
-      p in Project,
+      p in query,
       join: s in subquery(projects_subquery),
       on: p.id == s.id,
       select: %{p | completed_percentage: s.completed_percentage},
