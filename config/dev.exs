@@ -53,6 +53,6 @@ config :docdog, Docdog.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("DATABASE_USERNAME") || "postgres",
   password: System.get_env("DATABASE_PASSWORD") || "postgres",
-  database: System.get_env("DATABASE_NAME") || "docdog_dev",
+  database: System.get_env("DEV_DATABASE_NAME") || "docdog_dev",
   hostname: "localhost",
   pool_size: 10
