@@ -11,6 +11,7 @@ defmodule Docdog.Editor.Project do
 
   schema "projects" do
     field(:name, :string)
+    field(:description, :string)
     field(:public, :boolean, default: false)
     field(:completed_percentage, :decimal, virtual: true)
     field(:members, {:array, :integer}, default: [])
@@ -26,7 +27,7 @@ defmodule Docdog.Editor.Project do
   @doc false
   def changeset(%Project{} = project, attrs) do
     project
-    |> cast(attrs, [:name, :public, :members, :user_id])
+    |> cast(attrs, [:name, :public, :members, :user_id, :description])
     |> validate_required([:name, :public, :user_id])
   end
 end
