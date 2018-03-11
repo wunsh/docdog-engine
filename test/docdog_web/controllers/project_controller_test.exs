@@ -19,7 +19,8 @@ defmodule DocdogWeb.ProjectControllerTest do
       build_conn()
       |> assign(:current_user, another_user)
 
-    project = insert(:project, user: user, name: "Elixir Documentation 1")
+    project = insert(:project, user: user, name: "Elixir Documentation 1",
+      description: "Official documentation of Elixir language")
 
     project_with_documents =
       insert(:project, name: "Elixir Documentation 2", user: user) |> with_documents
@@ -37,7 +38,10 @@ defmodule DocdogWeb.ProjectControllerTest do
     test "lists main user projects", %{conn: conn} do
       conn = get(conn, project_path(conn, :index))
       assert html_response(conn, 200) =~ "Elixir Documentation 1"
+      assert html_response(conn, 200) =~ "Official documentation of Elixir language"
       assert html_response(conn, 200) =~ "Elixir Documentation 2"
+      assert html_response(conn, 200) =~ "No description"
+
       refute html_response(conn, 200) =~ "Another User Project"
     end
   end
@@ -46,6 +50,7 @@ defmodule DocdogWeb.ProjectControllerTest do
     test "renders form", %{conn: conn} do
       conn = get(conn, project_path(conn, :new))
       assert html_response(conn, 200) =~ "New Project"
+      assert html_response(conn, 200) =~ "Description"
     end
   end
 
