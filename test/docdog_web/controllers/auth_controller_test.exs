@@ -76,9 +76,21 @@ defmodule DocdogWeb.AuthControllerTest do
     assert redirected_to(conn) == "/auth/sign_in"
     assert get_flash(conn, :error) == "Failed to authenticate."
     assert html_response(conn, 302) =~ "You are being <a href=\"/auth/sign_in\">redirected</a>"
+    refute get_session(conn, :current_user)
   end
 
   test "when guest try to open workplace", %{conn: _} do
     # TODO: Implement
+  end
+
+  test "logout", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(current_user: "a user")
+      |> delete(auth_path(conn, :delete))
+
+    assert redirected_to(conn) == page_path(conn, :index)
+    assert get_flash(conn, :info) == "Successfully logged out."
+    refute get_session(conn, :current_user)
   end
 end

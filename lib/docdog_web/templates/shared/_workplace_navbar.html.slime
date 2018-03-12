@@ -15,5 +15,7 @@ nav.navbar.navbar-default
         li = link "My Projects", to: project_path(@conn, :index)
 
       .navbar-text.navbar-right
+        = link "Logout", to: auth_path(@conn, :delete), method: :delete
+      .navbar-text.navbar-right
         ' Signed in as
         strong = link @current_user.email, to: "", class: "navbar-link"
