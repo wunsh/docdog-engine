@@ -9,6 +9,13 @@ defmodule DocdogWeb.AuthController do
     render(conn, "new.html")
   end
 
+  def delete(conn, _params) do
+    conn
+    |> put_flash(:info, "Successfully logged out.")
+    |> delete_session(:current_user)
+    |> redirect(to: "/")
+  end
+
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
