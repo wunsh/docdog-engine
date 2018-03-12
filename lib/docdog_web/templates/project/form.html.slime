@@ -9,6 +9,11 @@
     = error_tag f, :name
 
   .form-group
+    = label f, :description, class: "control-label"
+    = text_input f, :description, class: "form-control"
+    = error_tag f, :description
+
+  .form-group
     = label f, :public, class: "control-label"
     =< checkbox f, :public
     = error_tag f, :public

@@ -10,7 +10,7 @@ defmodule Docdog.EditorTest do
     alias Docdog.Editor.Project
 
     @valid_attrs string_params_for(:project)
-    @update_attrs %{"name" => "Phoenix Documentation"}
+    @update_attrs %{"name" => "Phoenix Documentation", "description" => "New description"}
     @invalid_attrs %{"name" => nil}
 
     setup do
@@ -54,6 +54,7 @@ defmodule Docdog.EditorTest do
       assert {:ok, project} = Editor.update_project(project, @update_attrs)
       assert %Project{} = project
       assert project.name == "Phoenix Documentation"
+      assert project.description == "New description"
     end
 
     test "update_project/2 with invalid data returns error changeset", %{project: project} do
