@@ -26,4 +26,11 @@ defmodule DocdogWeb.AuthController do
         |> redirect(to: "/")
     end
   end
+
+  def delete(conn, _params) do
+    conn
+    |> put_flash(:info, "Successfully logged out.")
+    |> delete_session(:current_user)
+    |> redirect(to: "/")
+  end
 end
