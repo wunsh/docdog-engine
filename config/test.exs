@@ -15,6 +15,6 @@ config :docdog, Docdog.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("DATABASE_USERNAME") || "postgres",
   password: System.get_env("DATABASE_PASSWORD") || "postgres",
-  database: System.get_env("TEST_DATABASE_NAME") || "docdog_test",
+  database: "docdog_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
