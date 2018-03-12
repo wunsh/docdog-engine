@@ -103,7 +103,7 @@ defmodule Docdog.Accounts do
   end
 
   def find_or_create(%Auth{} = auth) do
-    query = from(u in User, where: u.username == ^auth.info.nickname)
+    query = from(u in User, where: u.email == ^auth.info.email)
 
     if user = Repo.one(query) do
       {:ok, user}
