@@ -10,8 +10,3 @@
   p.lead
     | Here is Docdoge, he wants you to try this out!
   img src="#{static_path(@conn, "/images/doge.jpg")}"
-
-.mastfoot
-  .inner
-    p
-      | Powered by Wunsh
