@@ -1,6 +1,8 @@
 defmodule DocdogWeb.ProjectController do
   use DocdogWeb, :controller
 
+  plug DocdogWeb.AuthorizationRequiredPlug
+
   alias Docdog.Editor
   alias Docdog.Editor.Project
 

@@ -10,8 +10,7 @@
 
   .card__body
     h4.card__title = @project.name
-    h5 = description(@project)
-    p.card__text The translation of documentation for <a href="">Phoenix framework</a>.
+    p.card__text = description(@project)
     = link "Documents", to: project_document_path(@conn, :index, @project), class: "btn btn-default"
 
     = link to: project_path(@conn, :delete, @project), method: :delete, class: "btn btn-danger pull-right" do
