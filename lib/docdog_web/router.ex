@@ -54,6 +54,7 @@ defmodule DocdogWeb.Router do
   scope "/auth", DocdogWeb do
     pipe_through(:browser)
 
+    get("/sign_in", AuthController, :new)
     get("/:provider", AuthController, :request)
     get("/:provider/callback", AuthController, :callback)
     post("/:provider/callback", AuthController, :callback)
