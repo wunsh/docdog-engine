@@ -1,5 +1,6 @@
 defmodule DocdogWeb.AuthControllerTest do
   use DocdogWeb.ConnCase
+  use Plug.Test
 
   @create_attrs_from_github %Ueberauth.Auth{
     info: %{
@@ -33,6 +34,29 @@ defmodule DocdogWeb.AuthControllerTest do
 
     assert redirected_to(conn) == "/workplace/popular"
     assert get_flash(conn, :info) == "Successfully authenticated."
+    assert html_response(conn, 302) =~ "You are being <a href=\"/workplace/popular\">redirected</a>."
+  end
+
+  test "when success auth from Github authenticates user and redirect url is /auth/sign_in", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{redirect_url: "/auth/sign_in"})
+      |> assign(:ueberauth_auth, @create_attrs_from_github)
+      |> post(auth_path(conn, :callback, :github))
+
+    assert redirected_to(conn) == "/workplace/popular"
+    assert html_response(conn, 302) =~ "You are being <a href=\"/workplace/popular\">redirected</a>."
+  end
+
+  test "when success auth from Github authenticates user and redirect url is /workplace/projects/123", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{redirect_url: "/workplace/projects/123"})
+      |> assign(:ueberauth_auth, @create_attrs_from_github)
+      |> post(auth_path(conn, :callback, :github))
+
+    assert redirected_to(conn) == "/workplace/projects/123"
+    assert html_response(conn, 302) =~ "You are being <a href=\"/workplace/projects/123\">redirected</a>."
   end
 
   test "when success auth from Github, but errors in model redirects to sign in page with error", %{conn: conn} do
@@ -51,9 +75,10 @@ defmodule DocdogWeb.AuthControllerTest do
     conn = get(conn, auth_path(conn, :callback, :github))
     assert redirected_to(conn) == "/auth/sign_in"
     assert get_flash(conn, :error) == "Failed to authenticate."
+    assert html_response(conn, 302) =~ "You are being <a href=\"/auth/sign_in\">redirected</a>"
   end
 
-  test "when guest try to open workplace", %{conn: conn} do
+  test "when guest try to open workplace", %{conn: _} do
     # TODO: Implement
   end
 end

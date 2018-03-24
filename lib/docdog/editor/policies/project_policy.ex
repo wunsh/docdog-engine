@@ -10,6 +10,11 @@ defmodule Docdog.Editor.Policies.ProjectPolicy do
   # Regular users can craete projects
   def authorize(:create, _, _), do: true
 
+  # Every authorized users instead of project author and members can accept invite to project
+  def authorize(:accept_invite, %User{id: user_id}, %{project: %Project{user_id: project_author_id, members: members}}) do
+    !(Enum.member?(members, user_id) || user_id == project_author_id)
+  end
+
   # Public projects
 
   # Regular users can read public projects

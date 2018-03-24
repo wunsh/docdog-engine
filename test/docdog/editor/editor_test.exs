@@ -16,7 +16,7 @@ defmodule Docdog.EditorTest do
     setup do
       user = insert(:user)
       document = insert(:document, user: user)
-      project = insert(:project, user: user, documents: [document])
+      project = insert(:project, user: user, documents: [document], invite_code: "966f1fa5-eada-40b6-aad3-735032e12740")
 
       {:ok, user: user, project: project}
     end
@@ -29,7 +29,7 @@ defmodule Docdog.EditorTest do
       processed_line = build(:processed_line)
       unprocessed_line = build(:unprocessed_line)
       document = build(:document, user: user, lines: [processed_line, unprocessed_line])
-      project = insert(:project, user: user, documents: [document])
+      project = insert(:project, user: user, documents: [document], invite_code: "966f1fa5-eada-40b6-aad3-735032e12741")
 
       project_with_percentage =
         Enum.find(Editor.full_list_projects(user), fn p -> p.id == project.id end)
@@ -39,6 +39,10 @@ defmodule Docdog.EditorTest do
 
     test "get_project!/1 returns the project with given id", %{project: project} do
       assert Editor.get_project!(project.id) == project
+    end
+
+    test "get_project_by_invite_code!/1 returns the project with given id", %{project: project} do
+      assert Editor.get_project_by_invite_code!("966f1fa5-eada-40b6-aad3-735032e12740") == project
     end
 
     test "create_project/2 with valid data creates a project", %{user: user} do
@@ -81,7 +85,7 @@ defmodule Docdog.EditorTest do
 
     setup do
       user = insert(:user)
-      project = insert(:project, user: user)
+      project = insert(:project, user: user, invite_code: "02e12272-c477-477f-a9c4-f4e898e111f0")
       document = insert(:document, user: user, project: project, lines: [])
 
       {:ok, user: user, project: project, document: document}
@@ -142,7 +146,7 @@ defmodule Docdog.EditorTest do
 
     setup do
       user = insert(:user)
-      project = insert(:project)
+      project = insert(:project, invite_code: "ceefeadc-c73b-4914-9590-b7eef8bb7686")
       document = insert(:document, user: user)
       line = insert(:processed_line, document: document, user: user, project: project)
 

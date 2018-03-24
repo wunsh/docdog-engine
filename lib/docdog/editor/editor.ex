@@ -64,6 +64,22 @@ defmodule Docdog.Editor do
     |> Repo.get!(id)
   end
 
+  def get_project_by_invite_code!(invite_code) do
+    Project
+    |> ProjectQuery.default_scope()
+    |> Repo.get_by!(invite_code: invite_code)
+  end
+
+  def all_members_for_project(project) do
+    member_ids = project.members
+
+    from(
+      u in Docdog.Accounts.User,
+      where: u.id in ^member_ids
+    )
+    |> Repo.all
+  end
+
   @doc """
   Creates a project.
 
@@ -99,6 +115,14 @@ defmodule Docdog.Editor do
   def update_project(%Project{} = project, attrs) do
     project
     |> Project.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def add_member_to_project(%Project{} = project, new_member) do
+    new_members_map = %{members: project.members ++ [new_member.id]}
+
+    project
+    |> Ecto.Changeset.change(new_members_map)
     |> Repo.update()
   end
 
@@ -186,7 +210,10 @@ defmodule Docdog.Editor do
 
   """
   def create_document(project, user, attrs \\ %{}) do
-    attrs = attrs |> Map.put("user_id", user.id)
+    attrs =
+      attrs
+      |> Map.put("user_id", user.id)
+      |> Map.put("project_id", project.id)
 
     project
     |> Ecto.build_assoc(:documents)

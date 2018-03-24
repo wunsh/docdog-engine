@@ -10,3 +10,15 @@ $icon-font-path: "/fonts/";
 @import "components/page_header";
 @import "components/card";
 @import "components/editor";
+
+.members-block {
+  margin-bottom: 10px;
+
+  &__member {
+    margin-left: 5px;
+  }
+
+  &__add-button {
+    margin-left: 5px;
+  }
+}
