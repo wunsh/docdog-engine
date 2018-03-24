@@ -15,9 +15,9 @@ defmodule Docdog.Accounts.User do
 
     timestamps()
 
-    has_many(:projects, Docdog.Editor.Project)
-    has_many(:documents, Docdog.Editor.Document)
-    has_many(:lines, Docdog.Editor.Line)
+    has_many(:projects, Docdog.Editor.Project, on_delete: :nilify_all)
+    has_many(:documents, Docdog.Editor.Document, on_delete: :nilify_all)
+    has_many(:lines, Docdog.Editor.Line, on_delete: :nilify_all)
   end
 
   @doc false

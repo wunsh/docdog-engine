@@ -26,8 +26,8 @@ defmodule Docdog.Editor.Document do
   @doc false
   def changeset(%Document{} = document, attrs) do
     document
-    |> cast(attrs, [:name, :original_text, :user_id])
-    |> validate_required([:name, :original_text, :user_id])
+    |> cast(attrs, [:name, :original_text, :user_id, :project_id])
+    |> validate_required([:name, :original_text, :user_id, :project_id])
     |> put_assoc(:lines, create_lines(attrs["original_text"]))
   end
 

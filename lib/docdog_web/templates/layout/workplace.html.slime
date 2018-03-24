@@ -3,5 +3,17 @@
 
   .container
     .row
+      .col-md-6.col-md-offset-3
+        = if (info = get_flash(@conn, :info)) do
+          .alert.alert-info.alert-dismissible role="alert"
+            button type="button" class="close" data-dismiss="alert" aria-label="Close"
+              span aria-hidden="true" &times;
+            strong = info
+        = if (error = get_flash(@conn, :error)) do
+          .alert.alert-danger.alert-dismissible role="alert"
+            button type="button" class="close" data-dismiss="alert" aria-label="Close"
+              span aria-hidden="true" &times;
+            strong = error
+    .row
       .col-xs-12
         = render @view_module, @view_template, assigns
