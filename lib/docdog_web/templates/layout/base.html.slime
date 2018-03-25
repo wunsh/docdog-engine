@@ -23,7 +23,7 @@ html
   footer.footer
     .container
       span.text-muted
-        = "Version: #{Mix.Project.config[:version]}"
+        = "Version: #{Application.spec(:docdog)[:vsn]}"
       span &nbsp;
       span Made with love at&nbsp;
       a href="https://wunsh.ru" target="_blank" Elixir & Wunsh
