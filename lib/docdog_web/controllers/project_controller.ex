@@ -1,6 +1,8 @@
 defmodule DocdogWeb.ProjectController do
   use DocdogWeb, :controller
 
+  plug DocdogWeb.AuthorizationRequiredPlug
+
   alias Docdog.Editor
   alias Docdog.Editor.Project
 
@@ -37,16 +39,18 @@ defmodule DocdogWeb.ProjectController do
   def edit(conn, %{"id" => id}) do
     user = conn.assigns.current_user
     project = Editor.get_project!(id)
+    members = Editor.all_members_for_project(project)
     changeset = Editor.change_project(project)
 
     with :ok <- Bodyguard.permit(Editor, :project_update, user, project: project) do
-      render(conn, "edit.html", project: project, changeset: changeset)
+      render(conn, "edit.html", project: project, members: members, changeset: changeset)
     end
   end
 
   def update(conn, %{"id" => id, "project" => project_params}) do
     user = conn.assigns.current_user
     project = Editor.get_project!(id)
+    members = Editor.all_members_for_project(project)
 
     with :ok <- Bodyguard.permit(Editor, :project_update, user, project: project),
          {:ok, _project} <- Editor.update_project(project, project_params) do
@@ -55,7 +59,7 @@ defmodule DocdogWeb.ProjectController do
       |> redirect(to: project_path(conn, :index))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", project: project, changeset: changeset)
+        render(conn, "edit.html", project: project, members: members, changeset: changeset)
 
       error ->
         error

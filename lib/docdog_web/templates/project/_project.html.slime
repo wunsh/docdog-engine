@@ -6,12 +6,11 @@
 
   .card__progress.progress.progress-xs
     .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="#{@project.completed_percentage}" role="progressbar" style="width: #{@project.completed_percentage}%;"
-      span.sr-only 60% Complete
+      span.sr-only #{@project.completed_percentage}% Complete
 
   .card__body
     h4.card__title = @project.name
-    h5 = description(@project)
-    p.card__text The translation of documentation for <a href="">Phoenix framework</a>.
+    p.card__text = description(@project)
     = link "Documents", to: project_document_path(@conn, :index, @project), class: "btn btn-default"
 
     = link to: project_path(@conn, :delete, @project), method: :delete, class: "btn btn-danger pull-right" do

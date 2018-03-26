@@ -14,6 +14,7 @@ defmodule Docdog.Editor.Project do
     field(:description, :string)
     field(:public, :boolean, default: false)
     field(:completed_percentage, :decimal, virtual: true)
+    field(:invite_code, Ecto.UUID)
     field(:members, {:array, :integer}, default: [])
 
     timestamps()

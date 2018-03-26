@@ -1,0 +1,12 @@
+.row
+  .col-md-6.col-md-offset-3
+    .page_header.page-header
+      h2 Invite you to «#{@project.name}» project
+
+    p You were invited to project. Please, accept it.
+
+    p
+
+      = form_for @conn,  project_invite_path(@conn, :create), fn f ->
+        = hidden_input f, :invite_code, value: @project.invite_code
+        = submit "Approve"

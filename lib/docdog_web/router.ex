@@ -36,8 +36,13 @@ defmodule DocdogWeb.Router do
 
     resources("/popular", PopularController, only: [:index])
 
-    resources "/projects", ProjectController, exclude: [:show] do
-      resources("/documents", DocumentController, exclude: [:update])
+    resources "/projects", ProjectController, except: [:show] do
+      resources("/documents", DocumentController, except: [:update])
+    end
+
+    scope "/projects" do
+      get("/invites/:invite_code", ProjectInviteController, :show)
+      post("/invites", ProjectInviteController, :create)
     end
   end
 
@@ -54,6 +59,7 @@ defmodule DocdogWeb.Router do
   scope "/auth", DocdogWeb do
     pipe_through(:browser)
 
+    get("/sign_in", AuthController, :new)
     get("/:provider", AuthController, :request)
     get("/:provider/callback", AuthController, :callback)
     post("/:provider/callback", AuthController, :callback)

@@ -7,4 +7,16 @@
             span.glyphicon.glyphicon-circle-arrow-left
         | Edit Project
 
+
+    .members-block
+      strong Members &nbsp;
+
+      span.label.label-primary = @project.user.username
+
+      = for member <- @members do
+        span.members-block__member.label.label-default = member.username
+
+      = link to: project_invite_path(@conn, :show, @project.invite_code), class: "members-block__add-button label label-success" do
+        span.glyphicon.glyphicon-plus
+
     = render "form.html", Map.put(assigns, :action, project_path(@conn, :update, @project))

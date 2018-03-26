@@ -1,6 +1,8 @@
 defmodule DocdogWeb.LineController do
   use DocdogWeb, :controller
 
+  plug DocdogWeb.AuthorizationRequiredPlug
+
   alias Docdog.Editor
 
   def index(conn, %{"document_id" => document_id}) do

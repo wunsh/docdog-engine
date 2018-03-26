@@ -1,0 +1,8 @@
+h1 Built for developers and professional translators
+
+p Docdog is a translation platform built especially for you. With us, you can translate documentations, technical texts, and any other documents from one language to another.
+
+= sign_in_with_github_link(@conn)
+
+p
+  small By clicking "Sign in with Github", you agree to our terms of service and privacy policy.
