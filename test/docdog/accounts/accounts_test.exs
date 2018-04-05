@@ -18,11 +18,12 @@ defmodule Docdog.AccountsTest do
       name: "Petr Petroff",
       first_name: "Petr",
       last_name: "Petrov",
-      image: ""
+      image: "",
+      github_uid: 1234567
     }
 
     setup do
-      user = insert(:user)
+      user = insert(:user, github_uid: "1234567")
 
       {:ok, user: user}
     end
@@ -64,9 +65,9 @@ defmodule Docdog.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
 
-    test "find_or_create/1 returns existed user when found by nickname", %{user: user} do
+    test "find_or_create/1 returns existed user when found by github uid", %{user: user} do
       {:ok, found_user} =
-        Accounts.find_or_create(%Ueberauth.Auth{info: %{nickname: "ivan_ivanov"}})
+        Accounts.find_or_create(%Ueberauth.Auth{uid: 1234567})
 
       assert user == found_user
     end
