@@ -109,6 +109,9 @@ defmodule Docdog.EditorTest do
     test "create_document/3 with valid data creates a document", %{project: project, user: user} do
       assert {:ok, %Document{} = document} = Editor.create_document(project, user, @valid_attrs)
       assert document.name == "Introduction"
+
+      first_line = hd(document.lines)
+      assert first_line.project_id == project.id
     end
 
     test "create_document/3 with invalid data returns error changeset", %{

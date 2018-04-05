@@ -28,7 +28,7 @@ defmodule Docdog.Editor.Document do
     document
     |> cast(attrs, [:name, :original_text, :user_id, :project_id])
     |> validate_required([:name, :original_text, :user_id, :project_id])
-    |> put_assoc(:lines, create_lines(attrs["original_text"]))
+    |> put_assoc(:lines, create_lines(attrs["original_text"], attrs["project_id"]))
   end
 
   def translated_text(document) do
@@ -37,11 +37,11 @@ defmodule Docdog.Editor.Document do
     |> Enum.join("\n\n")
   end
 
-  defp create_lines(nil) do
+  defp create_lines(nil, _) do
     []
   end
 
-  defp create_lines(text) do
+  defp create_lines(text, project_id) do
     text
     |> SnippetHelper.process_snippets()
     |> String.split("\n")
@@ -50,5 +50,6 @@ defmodule Docdog.Editor.Document do
     |> Enum.reject(&(&1 == ""))
     |> Enum.with_index()
     |> Enum.map(&Line.prepare_line/1)
+    |> Enum.map(fn line -> Map.put(line, :project_id, project_id) end)
   end
 end
