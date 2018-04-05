@@ -103,7 +103,8 @@ defmodule Docdog.Accounts do
   end
 
   def find_or_create(%Auth{} = auth) do
-    query = from(u in User, where: u.username == ^auth.info.nickname)
+    github_uid = to_string(auth.uid)
+    query = from(u in User, where: u.github_uid == ^github_uid)
 
     if user = Repo.one(query) do
       {:ok, user}

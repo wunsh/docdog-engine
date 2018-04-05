@@ -12,6 +12,7 @@ defmodule Docdog.Accounts.User do
     field(:username, :string)
     field(:avatar, :string)
     field(:admin, :boolean, default: false)
+    field(:github_uid, :string)
 
     timestamps()
 
@@ -23,7 +24,7 @@ defmodule Docdog.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :username, :avatar])
+    |> cast(attrs, [:email, :username, :avatar, :github_uid])
     |> validate_required([:email, :username])
   end
 
@@ -31,6 +32,7 @@ defmodule Docdog.Accounts.User do
     %{
       email: auth.info.email,
       username: name_from_auth(auth),
+      github_uid: to_string(auth.uid),
       avatar: auth.info.image
     }
   end
