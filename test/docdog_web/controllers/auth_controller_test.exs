@@ -14,7 +14,7 @@ defmodule DocdogWeb.AuthControllerTest do
   }
 
   @invalid_attrs_from_github %Ueberauth.Auth{
-    info: %{nickname: "foobar", email: nil, name: "dsfdsf", image: "dfsdf"}
+    info: %{nickname: "foobar", email: "some@email.com", name: "dsfdsf", image: "dfsdf"}
   }
 
   @failure_attrs_from_github %Ueberauth.Failure{}

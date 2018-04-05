@@ -40,6 +40,14 @@ defmodule DocdogWeb.AuthController do
     end
   end
 
+  def delete(conn, _params) do
+    conn
+    |> put_flash(:info, "Successfully logged out.")
+    |> delete_session(:current_user)
+       # FIXME
+    |> redirect(to: "/")
+  end
+
   # We mustn't redirect to auth url
   defp success_redirect_url(conn, redirect_url = "/auth" <> _) do
     popular_path(conn, :index)

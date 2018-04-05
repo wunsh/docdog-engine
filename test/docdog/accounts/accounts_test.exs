@@ -64,9 +64,9 @@ defmodule Docdog.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
 
-    test "find_or_create/1 returns existed user when found by nickname", %{user: user} do
+    test "find_or_create/1 returns existed user when found by email", %{user: user} do
       {:ok, found_user} =
-        Accounts.find_or_create(%Ueberauth.Auth{info: %{nickname: "ivan_ivanov"}})
+        Accounts.find_or_create(%Ueberauth.Auth{info: %{email: user.email}})
 
       assert user == found_user
     end
