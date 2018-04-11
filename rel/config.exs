@@ -1,12 +1,11 @@
 use Mix.Releases.Config,
-    # This sets the default release built by `mix release`
-    default_release: :default,
-    # This sets the default environment used by `mix release`
-    default_environment: :dev
+  # This sets the default release built by `mix release`
+  default_release: :default,
+  # This sets the default environment used by `mix release`
+  default_environment: :dev
 
 # For a full list of config options for both releases
 # and environments, visit https://hexdocs.pm/distillery/configuration.html
-
 
 # You may define one or more environments in this file,
 # an environment's settings will override those of a release
@@ -14,15 +13,25 @@ use Mix.Releases.Config,
 # and environment configuration is called a profile
 
 environment :dev do
-  set dev_mode: true
-  set include_erts: false
-  set cookie: ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}") |> String.to_atom()
+  set(dev_mode: true)
+  set(include_erts: false)
+
+  set(
+    cookie:
+      ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}")
+      |> String.to_atom()
+  )
 end
 
 environment :prod do
-  set include_erts: true
-  set include_src: false
-  set cookie: ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}") |> String.to_atom()
+  set(include_erts: true)
+  set(include_src: false)
+
+  set(
+    cookie:
+      ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}")
+      |> String.to_atom()
+  )
 end
 
 # You may define one or more releases in this file.
@@ -31,6 +40,5 @@ end
 # will be used by default
 
 release :docdog do
-  set version: current_version(:docdog)
+  set(version: current_version(:docdog))
 end
-

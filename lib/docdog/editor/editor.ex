@@ -5,6 +5,7 @@ defmodule Docdog.Editor do
 
   import Ecto.Query
 
+  alias Ecto.Changeset
   alias Docdog.Repo
   alias Docdog.Editor.Project
   alias Docdog.Editor.Document
@@ -24,7 +25,7 @@ defmodule Docdog.Editor do
       [%Project{}, ...]
 
   """
-  def list_projects() do
+  def list_projects do
     Project
     |> ProjectQuery.default_scope()
     |> Repo.all()
@@ -73,11 +74,12 @@ defmodule Docdog.Editor do
   def all_members_for_project(project) do
     member_ids = project.members
 
-    from(
-      u in Docdog.Accounts.User,
-      where: u.id in ^member_ids
+    Repo.all(
+      from(
+        u in Docdog.Accounts.User,
+        where: u.id in ^member_ids
+      )
     )
-    |> Repo.all
   end
 
   @doc """
@@ -122,7 +124,7 @@ defmodule Docdog.Editor do
     new_members_map = %{members: project.members ++ [new_member.id]}
 
     project
-    |> Ecto.Changeset.change(new_members_map)
+    |> Changeset.change(new_members_map)
     |> Repo.update()
   end
 

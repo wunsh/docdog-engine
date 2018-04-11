@@ -19,7 +19,7 @@ defmodule Docdog.AccountsTest do
       first_name: "Petr",
       last_name: "Petrov",
       image: "",
-      github_uid: 1234567
+      github_uid: 1_234_567
     }
 
     setup do
@@ -51,8 +51,12 @@ defmodule Docdog.AccountsTest do
       assert user.username == "alex_alexandrov"
     end
 
-    test "update_user/2 with invalid data returns error changeset", %{user: user} do
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
+    test "update_user/2 with invalid data returns error changeset", %{
+      user: user
+    } do
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user(user, @invalid_attrs)
+
       assert user == Accounts.get_user!(user.id)
     end
 
@@ -65,34 +69,43 @@ defmodule Docdog.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
 
-    test "find_or_create/1 returns existed user when found by github uid", %{user: user} do
+    test "find_or_create/1 returns existed user when found by github uid", %{
+      user: user
+    } do
       {:ok, found_user} =
-        Accounts.find_or_create(%Ueberauth.Auth{uid: 1234567})
+        Accounts.find_or_create(%Ueberauth.Auth{uid: 1_234_567})
 
       assert user == found_user
     end
 
-    test "find_or_create/1 returns just created user with usesrname from name", %{
-      user: existed_user
-    } do
-      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: @create_attrs_from_github})
+    test "find_or_create/1 returns just created user with usesrname from name",
+         %{
+           user: existed_user
+         } do
+      {:ok, new_user} =
+        Accounts.find_or_create(%Ueberauth.Auth{info: @create_attrs_from_github})
+
       refute existed_user == new_user
       assert new_user.username == "Petr Petroff"
     end
 
-    test "find_or_create/1 returns just created user when info with empty name", %{
-      user: existed_user
-    } do
+    test "find_or_create/1 returns just created user when info with empty name",
+         %{
+           user: existed_user
+         } do
       params_without_name = %{@create_attrs_from_github | name: nil}
 
-      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: params_without_name})
+      {:ok, new_user} =
+        Accounts.find_or_create(%Ueberauth.Auth{info: params_without_name})
+
       refute existed_user == new_user
       assert new_user.username == "Petr Petrov"
     end
 
-    test "find_or_create/1 returns just created user when no any names in info", %{
-      user: existed_user
-    } do
+    test "find_or_create/1 returns just created user when no any names in info",
+         %{
+           user: existed_user
+         } do
       params_without_any_names = %{
         @create_attrs_from_github
         | name: nil,
@@ -100,7 +113,9 @@ defmodule Docdog.AccountsTest do
           last_name: nil
       }
 
-      {:ok, new_user} = Accounts.find_or_create(%Ueberauth.Auth{info: params_without_any_names})
+      {:ok, new_user} =
+        Accounts.find_or_create(%Ueberauth.Auth{info: params_without_any_names})
+
       refute existed_user == new_user
       assert new_user.username == "petr_petrov"
     end

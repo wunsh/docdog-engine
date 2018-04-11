@@ -41,11 +41,11 @@ defmodule DocdogWeb.AuthController do
   end
 
   # We mustn't redirect to auth url
-  defp success_redirect_url(conn, redirect_url = "/auth" <> _) do
+  defp success_redirect_url(conn, "/auth" <> _ = redirect_url) do
     popular_path(conn, :index)
   end
 
-  defp success_redirect_url(_, redirect_url = "/" <> _) do
+  defp success_redirect_url(_, "/" <> _ = redirect_url) do
     redirect_url
   end
 

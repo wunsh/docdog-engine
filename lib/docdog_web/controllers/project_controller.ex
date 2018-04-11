@@ -1,7 +1,7 @@
 defmodule DocdogWeb.ProjectController do
   use DocdogWeb, :controller
 
-  plug DocdogWeb.AuthorizationRequiredPlug
+  plug(DocdogWeb.AuthorizationRequiredPlug)
 
   alias Docdog.Editor
   alias Docdog.Editor.Project
@@ -42,8 +42,15 @@ defmodule DocdogWeb.ProjectController do
     members = Editor.all_members_for_project(project)
     changeset = Editor.change_project(project)
 
-    with :ok <- Bodyguard.permit(Editor, :project_update, user, project: project) do
-      render(conn, "edit.html", project: project, members: members, changeset: changeset)
+    with :ok <-
+           Bodyguard.permit(Editor, :project_update, user, project: project) do
+      render(
+        conn,
+        "edit.html",
+        project: project,
+        members: members,
+        changeset: changeset
+      )
     end
   end
 
@@ -52,14 +59,21 @@ defmodule DocdogWeb.ProjectController do
     project = Editor.get_project!(id)
     members = Editor.all_members_for_project(project)
 
-    with :ok <- Bodyguard.permit(Editor, :project_update, user, project: project),
+    with :ok <-
+           Bodyguard.permit(Editor, :project_update, user, project: project),
          {:ok, _project} <- Editor.update_project(project, project_params) do
       conn
       |> put_flash(:info, "Project updated successfully.")
       |> redirect(to: project_path(conn, :index))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", project: project, members: members, changeset: changeset)
+        render(
+          conn,
+          "edit.html",
+          project: project,
+          members: members,
+          changeset: changeset
+        )
 
       error ->
         error
@@ -70,7 +84,8 @@ defmodule DocdogWeb.ProjectController do
     user = conn.assigns.current_user
     project = Editor.get_project!(id)
 
-    with :ok <- Bodyguard.permit(Editor, :project_delete, user, project: project),
+    with :ok <-
+           Bodyguard.permit(Editor, :project_delete, user, project: project),
          {:ok, _project} <- Editor.delete_project(project) do
       conn
       |> put_flash(:info, "Project deleted successfully.")

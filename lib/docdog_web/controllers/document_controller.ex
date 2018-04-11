@@ -1,7 +1,7 @@
 defmodule DocdogWeb.DocumentController do
   use DocdogWeb, :controller
 
-  plug DocdogWeb.AuthorizationRequiredPlug
+  plug(DocdogWeb.AuthorizationRequiredPlug)
 
   alias Docdog.Editor
   alias Docdog.Editor.Document
@@ -11,7 +11,13 @@ defmodule DocdogWeb.DocumentController do
     project = Editor.get_project!(project_id)
     documents = project.documents
 
-    with :ok <- Bodyguard.permit(Editor, :project_read, user, project: project) do
+    with :ok <-
+      Bodyguard.permit(
+        Editor,
+        :project_read,
+        user,
+        project: project
+    ) do
       render(conn, "index.html", project_id: project_id, documents: documents)
     end
   end
@@ -21,7 +27,13 @@ defmodule DocdogWeb.DocumentController do
     project = Editor.get_project!(project_id)
     changeset = Editor.change_document(%Document{})
 
-    with :ok <- Bodyguard.permit(Editor, :document_create, user, project: project) do
+    with :ok <-
+           Bodyguard.permit(
+             Editor,
+             :document_create,
+             user,
+             project: project
+           ) do
       render(conn, "new.html", project_id: project_id, changeset: changeset)
     end
   end
@@ -30,8 +42,19 @@ defmodule DocdogWeb.DocumentController do
     user = conn.assigns.current_user
     project = Editor.get_project!(project_id)
 
-    with :ok <- Bodyguard.permit(Editor, :document_create, user, project: project),
-         {:ok, document} <- Editor.create_document(project, user, document_params) do
+    with :ok <-
+           Bodyguard.permit(
+             Editor,
+             :document_create,
+             user,
+             project: project
+           ),
+         {:ok, document} <-
+           Editor.create_document(
+             project,
+             user,
+             document_params
+           ) do
       conn
       |> put_flash(:info, "Document created successfully.")
       |> redirect(to: project_document_path(conn, :edit, project, document))

@@ -3,9 +3,9 @@ defmodule Docdog.Repo.Migrations.AddProcessedToLines do
 
   def change do
     alter table(:lines) do
-      add :processed, :boolean, default: false, null: false
+      add(:processed, :boolean, default: false, null: false)
     end
 
-    create index(:lines, [:processed])
+    create(index(:lines, [:processed]))
   end
 end

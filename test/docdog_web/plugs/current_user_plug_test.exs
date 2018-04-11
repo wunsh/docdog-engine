@@ -39,7 +39,10 @@ defmodule DocdogWeb.CurrentUserPlugTest do
       {:ok, conn: conn, user: user}
     end
 
-    test "current user brings just from assigns when no session", %{conn: conn, user: user} do
+    test "current user brings just from assigns when no session", %{
+      conn: conn,
+      user: user
+    } do
       assert conn.assigns[:current_user] == user
     end
   end

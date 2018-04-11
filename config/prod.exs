@@ -70,4 +70,3 @@ config :docdog, Docdog.Repo,
   database: "",
   ssl: true,
   pool_size: 1
-

@@ -22,7 +22,12 @@ defmodule Docdog.Mixfile do
   def application do
     [
       mod: {Docdog.Application, []},
-      extra_applications: [:ex_machina, :logger, :runtime_tools, :ueberauth_github]
+      extra_applications: [
+        :ex_machina,
+        :logger,
+        :runtime_tools,
+        :ueberauth_github
+      ]
     ]
   end
 
@@ -38,19 +43,21 @@ defmodule Docdog.Mixfile do
       {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
-      {:gettext, "~> 0.11"},
       {:phoenix_slime, git: "https://github.com/slime-lang/phoenix_slime"},
+      {:postgrex, ">= 0.0.0"},
+      {:gettext, "~> 0.11"},
       {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"},
       {:distillery, "~> 1.0.0"},
       {:bodyguard, "~> 2.2"},
+      {:ex_machina, "~> 2.1"},
+
+      # Development and testing:
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.8", only: :test},
-      {:ex_machina, "~> 2.1"},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 

@@ -4,7 +4,8 @@ use Mix.Config
 # you can enable the server option below.
 config :docdog, DocdogWeb.Endpoint,
   http: [port: 4001],
-  secret_key_base: "+xONLYFORTESTSynmgIFCtSnwLoh7SP1PTPzJJq0Yh4vVDiY3O4+kbhlm+svVwS1",
+  secret_key_base:
+    "+xONLYFORTESTSynmgIFCtSnwLoh7SP1PTPzJJq0Yh4vVDiY3O4+kbhlm+svVwS1",
   server: false
 
 # Print only warnings and errors during test
