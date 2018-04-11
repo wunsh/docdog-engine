@@ -4,8 +4,12 @@ defmodule Docdog.Editor.SnippetHelper do
   """
 
   def process_snippets(text) do
-    snippets = Regex.scan(~r/```[^`]*```/, text) |> Enum.map(&hd/1)
-    replacements = snippets |> Enum.map(&encode_newlines/1)
+    snippets =
+      ~r/```[^`]*```/
+      |> Regex.scan(text)
+      |> Enum.map(&hd/1)
+
+    replacements = Enum.map(snippets, &encode_newlines/1)
 
     snippets
     |> Stream.zip(replacements)

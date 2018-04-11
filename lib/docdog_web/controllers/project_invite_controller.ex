@@ -16,7 +16,9 @@ defmodule DocdogWeb.ProjectInviteController do
     user = conn.assigns.current_user
     project = Editor.get_project_by_invite_code!(invite_code)
 
-    with :ok <- Bodyguard.permit(Editor, :project_accept_invite, user, project: project),
+    with :ok <- Bodyguard.permit(
+        Editor, :project_accept_invite, user, project: project
+      ),
          {:ok, _project} <- Editor.add_member_to_project(project, user) do
       conn
       |> put_flash(:info, "You successfully became a project member.")

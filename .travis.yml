@@ -14,6 +14,7 @@ before_script:
   - PGPASSWORD=postgres psql -c 'create database docdog_test;' -U postgres
 
 script:
+  - mix credo --strict
   - mix coveralls.travis
 
 deploy:
