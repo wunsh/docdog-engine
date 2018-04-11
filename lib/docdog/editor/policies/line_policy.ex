@@ -1,4 +1,8 @@
 defmodule Docdog.Editor.Policies.LinePolicy do
+  @moduledoc """
+  Defines line policies.
+  """
+
   @behaviour Bodyguard.Policy
 
   alias Docdog.Editor.Project

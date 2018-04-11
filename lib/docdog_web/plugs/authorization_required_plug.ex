@@ -18,6 +18,7 @@ defmodule DocdogWeb.AuthorizationRequiredPlug do
         |> put_session(:redirect_url, conn.request_path)
         |> put_flash(:info, "Please, sign in to continue.")
         |> redirect(to: auth_path(conn, :new))
+
       _ ->
         conn
     end

@@ -3,9 +3,9 @@ defmodule Docdog.Repo.Migrations.AddMembersToProjects do
 
   def change do
     alter table(:projects) do
-      add :members, {:array, :integer}, default: [], null: false
+      add(:members, {:array, :integer}, default: [], null: false)
     end
 
-    create index(:projects, [:members], using: "GIN")
+    create(index(:projects, [:members], using: "GIN"))
   end
 end

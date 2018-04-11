@@ -1,7 +1,7 @@
 defmodule DocdogWeb.LineController do
   use DocdogWeb, :controller
 
-  plug DocdogWeb.AuthorizationRequiredPlug
+  plug(DocdogWeb.AuthorizationRequiredPlug)
 
   alias Docdog.Editor
 
@@ -28,9 +28,14 @@ defmodule DocdogWeb.LineController do
     user = get_session(conn, :current_user) || conn.assigns.current_user
     line = Editor.get_line!(id)
 
-    with :ok <- Bodyguard.permit(
-        Editor, :line_update, user, line: line, project: line.project
-      ),
+    with :ok <-
+           Bodyguard.permit(
+             Editor,
+             :line_update,
+             user,
+             line: line,
+             project: line.project
+           ),
          {:ok, updated_line} <- Editor.update_line(line, user, line_params) do
       conn
       |> put_status(:ok)

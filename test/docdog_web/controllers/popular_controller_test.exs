@@ -13,7 +13,10 @@ defmodule DocdogWeb.PopularControllerTest do
     private_project = insert(:project, name: "Private Project")
     public_project = insert(:project, name: "Public Project", public: true)
 
-    {:ok, conn: conn, private_project: private_project, public_project: public_project}
+    {:ok,
+     conn: conn,
+     private_project: private_project,
+     public_project: public_project}
   end
 
   describe "index" do

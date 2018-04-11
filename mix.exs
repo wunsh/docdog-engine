@@ -22,7 +22,12 @@ defmodule Docdog.Mixfile do
   def application do
     [
       mod: {Docdog.Application, []},
-      extra_applications: [:ex_machina, :logger, :runtime_tools, :ueberauth_github]
+      extra_applications: [
+        :ex_machina,
+        :logger,
+        :runtime_tools,
+        :ueberauth_github
+      ]
     ]
   end
 
@@ -40,7 +45,6 @@ defmodule Docdog.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_slime, git: "https://github.com/slime-lang/phoenix_slime"},
-
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:ueberauth_github, "~> 0.4"},

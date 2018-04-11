@@ -5,6 +5,7 @@ defmodule Docdog.Editor do
 
   import Ecto.Query
 
+  alias Ecto.Changeset
   alias Docdog.Repo
   alias Docdog.Editor.Project
   alias Docdog.Editor.Document
@@ -13,8 +14,7 @@ defmodule Docdog.Editor do
   alias Docdog.Editor.Queries.DocumentQuery
   alias Docdog.Editor.Queries.LineQuery
 
-  defdelegate authorize(action, user, params),
-    to: Docdog.Editor.Policies.Router
+  defdelegate authorize(action, user, params), to: Docdog.Editor.Policies.Router
 
   @doc """
   Returns the list of projects.
@@ -74,9 +74,11 @@ defmodule Docdog.Editor do
   def all_members_for_project(project) do
     member_ids = project.members
 
-    Repo.all from(
-      u in Docdog.Accounts.User,
-      where: u.id in ^member_ids
+    Repo.all(
+      from(
+        u in Docdog.Accounts.User,
+        where: u.id in ^member_ids
+      )
     )
   end
 
@@ -122,7 +124,7 @@ defmodule Docdog.Editor do
     new_members_map = %{members: project.members ++ [new_member.id]}
 
     project
-    |> Ecto.Changeset.change(new_members_map)
+    |> Changeset.change(new_members_map)
     |> Repo.update()
   end
 

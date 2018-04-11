@@ -3,9 +3,9 @@ defmodule Docdog.Repo.Migrations.AddUserIdToDocuments do
 
   def change do
     alter table(:documents) do
-      add :user_id, references(:users, on_delete: :nothing)
+      add(:user_id, references(:users, on_delete: :nothing))
     end
 
-    create index(:documents, [:user_id])
+    create(index(:documents, [:user_id]))
   end
 end

@@ -19,13 +19,20 @@ defmodule DocdogWeb.ProjectControllerTest do
       build_conn()
       |> assign(:current_user, another_user)
 
-    project = insert(:project, user: user, name: "Elixir Documentation 1",
-      description: "Official documentation of Elixir language")
+    project =
+      insert(
+        :project,
+        user: user,
+        name: "Elixir Documentation 1",
+        description: "Official documentation of Elixir language"
+      )
 
     project_with_documents =
-      insert(:project, name: "Elixir Documentation 2", user: user) |> with_documents
+      insert(:project, name: "Elixir Documentation 2", user: user)
+      |> with_documents
 
-    _project_of_another_user = insert(:project, name: "Another User Project", user: another_user)
+    _project_of_another_user =
+      insert(:project, name: "Another User Project", user: another_user)
 
     {:ok,
      conn: conn,
@@ -38,7 +45,10 @@ defmodule DocdogWeb.ProjectControllerTest do
     test "lists main user projects", %{conn: conn} do
       conn = get(conn, project_path(conn, :index))
       assert html_response(conn, 200) =~ "Elixir Documentation 1"
-      assert html_response(conn, 200) =~ "Official documentation of Elixir language"
+
+      assert html_response(conn, 200) =~
+               "Official documentation of Elixir language"
+
       assert html_response(conn, 200) =~ "Elixir Documentation 2"
       assert html_response(conn, 200) =~ "No description"
 
@@ -70,12 +80,18 @@ defmodule DocdogWeb.ProjectControllerTest do
   end
 
   describe "edit project" do
-    test "renders form for editing chosen project", %{conn: conn, project: project} do
+    test "renders form for editing chosen project", %{
+      conn: conn,
+      project: project
+    } do
       conn = get(conn, project_path(conn, :edit, project))
       assert html_response(conn, 200) =~ "Edit Project"
     end
 
-    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
+    test "renders unauthorized page for another user", %{
+      another_conn: conn,
+      project: project
+    } do
       conn = get(conn, project_path(conn, :edit, project))
       assert html_response(conn, 403) =~ "Forbidden"
     end
@@ -83,7 +99,9 @@ defmodule DocdogWeb.ProjectControllerTest do
 
   describe "update project" do
     test "redirects when data is valid", %{conn: conn, project: project} do
-      new_conn = put(conn, project_path(conn, :update, project), project: @update_attrs)
+      new_conn =
+        put(conn, project_path(conn, :update, project), project: @update_attrs)
+
       assert redirected_to(new_conn) == project_path(new_conn, :index)
 
       new_conn = get(conn, project_path(conn, :index))
@@ -91,12 +109,19 @@ defmodule DocdogWeb.ProjectControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, project: project} do
-      conn = put(conn, project_path(conn, :update, project), project: @invalid_attrs)
+      conn =
+        put(conn, project_path(conn, :update, project), project: @invalid_attrs)
+
       assert html_response(conn, 200) =~ "Edit Project"
     end
 
-    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
-      conn = put(conn, project_path(conn, :update, project), project: @invalid_attrs)
+    test "renders unauthorized page for another user", %{
+      another_conn: conn,
+      project: project
+    } do
+      conn =
+        put(conn, project_path(conn, :update, project), project: @invalid_attrs)
+
       assert html_response(conn, 403) =~ "Forbidden"
     end
   end
@@ -115,7 +140,10 @@ defmodule DocdogWeb.ProjectControllerTest do
       assert redirected_to(conn) == project_path(conn, :index)
     end
 
-    test "renders unauthorized page for another user", %{another_conn: conn, project: project} do
+    test "renders unauthorized page for another user", %{
+      another_conn: conn,
+      project: project
+    } do
       conn = delete(conn, project_path(conn, :delete, project))
       assert html_response(conn, 403) =~ "Forbidden"
     end

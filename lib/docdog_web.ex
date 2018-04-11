@@ -48,7 +48,11 @@ defmodule DocdogWeb do
       end
 
       def sign_in_with_github_link(conn) do
-        link "Sign in with Github", to: auth_path(conn, :request, :github), class: "btn btn-lg btn-default"
+        link(
+          "Sign in with Github",
+          to: auth_path(conn, :request, :github),
+          class: "btn btn-lg btn-default"
+        )
       end
     end
   end

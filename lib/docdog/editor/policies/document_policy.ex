@@ -1,4 +1,8 @@
 defmodule Docdog.Editor.Policies.DocumentPolicy do
+  @moduledoc """
+  Defines document policies.
+  """
+
   @behaviour Bodyguard.Policy
 
   alias Docdog.Editor.Project
@@ -26,10 +30,16 @@ defmodule Docdog.Editor.Policies.DocumentPolicy do
   # Project owners can update documents in public projects
   def authorize(:update, %User{id: user_id}, %{
         document: %Document{project_id: project_id},
-        project: %Project{id: project_id, public: true, user_id: project_user_id, members: members}
+        project: %Project{
+          id: project_id,
+          public: true,
+          user_id: project_user_id,
+          members: members
+        }
       }) do
     Enum.member?(members, user_id) || user_id == project_user_id
   end
+
   # Only admin can delete documents from public projects
 
   # Documents in private projects
@@ -56,10 +66,14 @@ defmodule Docdog.Editor.Policies.DocumentPolicy do
   # Project owners can update and delete documents in private projects
   def authorize(action, %User{id: user_id}, %{
         document: %Document{project_id: project_id},
-        project: %Project{id: project_id, public: false, user_id: project_user_id, members: members}
+        project: %Project{
+          id: project_id,
+          public: false,
+          user_id: project_user_id,
+          members: members
+        }
       })
-      when action in [:update, :delete]
-  do
+      when action in [:update, :delete] do
     Enum.member?(members, user_id) || user_id == project_user_id
   end
 

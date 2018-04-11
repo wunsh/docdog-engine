@@ -18,10 +18,16 @@ defmodule DocdogWeb.LineControllerTest do
     processed_line = insert(:processed_line)
     unprocessed_line = insert(:unprocessed_line)
 
-    project = insert(:project, user: user, lines: [processed_line, unprocessed_line])
+    project =
+      insert(:project, user: user, lines: [processed_line, unprocessed_line])
 
     document =
-      insert(:document, user: user, project: project, lines: [processed_line, unprocessed_line])
+      insert(
+        :document,
+        user: user,
+        project: project,
+        lines: [processed_line, unprocessed_line]
+      )
 
     {:ok,
      conn: conn,
@@ -57,7 +63,10 @@ defmodule DocdogWeb.LineControllerTest do
              }
     end
 
-    test "renders unauthorized json for antoher user", %{another_conn: conn, document: document} do
+    test "renders unauthorized json for antoher user", %{
+      another_conn: conn,
+      document: document
+    } do
       conn = get(conn, document_line_path(conn, :index, document.id))
       assert json_response(conn, 403) == %{"error" => "Forbidden"}
     end
@@ -84,8 +93,17 @@ defmodule DocdogWeb.LineControllerTest do
              }
     end
 
-    test "renders errors when data is invalid", %{conn: conn, unprocessed_line: line} do
-      conn = put(conn, line_path(conn, :update, line.id), line: %{"translated_text" => nil})
+    test "renders errors when data is invalid", %{
+      conn: conn,
+      unprocessed_line: line
+    } do
+      conn =
+        put(
+          conn,
+          line_path(conn, :update, line.id),
+          line: %{"translated_text" => nil}
+        )
+
       assert json_response(conn, 400) == %{"status" => "error"}
     end
 
@@ -93,7 +111,13 @@ defmodule DocdogWeb.LineControllerTest do
       another_conn: conn,
       unprocessed_line: line
     } do
-      conn = put(conn, line_path(conn, :update, line.id), line: %{"translated_text" => nil})
+      conn =
+        put(
+          conn,
+          line_path(conn, :update, line.id),
+          line: %{"translated_text" => nil}
+        )
+
       assert json_response(conn, 403) == %{"error" => "Forbidden"}
     end
   end

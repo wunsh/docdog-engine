@@ -18,7 +18,13 @@ defmodule Docdog.Factory do
   end
 
   def with_documents(project) do
-    insert(:document, project: project, user: build(:user), lines: [build(:processed_line)])
+    insert(
+      :document,
+      project: project,
+      user: build(:user),
+      lines: [build(:processed_line)]
+    )
+
     project
   end
 

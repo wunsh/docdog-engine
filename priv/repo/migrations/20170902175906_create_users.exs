@@ -3,10 +3,9 @@ defmodule Docdog.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :username, :string
+      add(:username, :string)
 
       timestamps()
     end
-
   end
 end

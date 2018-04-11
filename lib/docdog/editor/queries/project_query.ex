@@ -1,4 +1,8 @@
 defmodule Docdog.Editor.Queries.ProjectQuery do
+  @moduledoc """
+  Defines project queries.
+  """
+
   import Ecto.Query, warn: false
 
   alias Docdog.Editor.Project
@@ -34,7 +38,8 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
         p in Project,
         select: %{
           id: p.id,
-          completed_percentage: fragment("count(l2.translated_text) * 100.0 / count(p0.id)")
+          completed_percentage:
+            fragment("count(l2.translated_text) * 100.0 / count(p0.id)")
         },
         left_join: d in assoc(p, :documents),
         left_join: l in assoc(d, :lines),
@@ -46,7 +51,8 @@ defmodule Docdog.Editor.Queries.ProjectQuery do
         s in subquery(documents_subquery),
         select: %{
           id: s.id,
-          completed_percentage: fragment("round(sum(s0.completed_percentage) / count(*), 2)")
+          completed_percentage:
+            fragment("round(sum(s0.completed_percentage) / count(*), 2)")
         },
         group_by: s.id
       )
