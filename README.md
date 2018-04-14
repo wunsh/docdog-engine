@@ -21,3 +21,8 @@ Getting start with technologies we are using:
 * Elixir – <https://elixir-lang.org/getting-started/introduction.html>
 * Phoenix – <https://hexdocs.pm/phoenix>
 * Elm – <http://elm-lang.org/docs>
+
+## Credits
+
+We use an awesome icon as logo and favicon created by Vladimir Belochkin. We express our gratitude to the author and the [Noun Project](https://thenounproject.com).
+ 

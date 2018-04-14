@@ -7,6 +7,11 @@ html
     meta content="Application" name="description"
     meta content="Wunsh Community" name="author"
 
+    link rel="shortcut icon" href="/favicon.png"
+    link rel="apple-touch-icon-precomposed" href="/favicon-152.png"
+    meta name="msapplication-TileColor" content="#fffcc4"
+    meta name="msapplication-TileImage" content="/favicon-144.png"
+
     = csrf_meta_tag()
 
     title Hello Docdog!
@@ -24,6 +29,8 @@ html
     .container
       span.text-muted
         = "Version: #{Application.spec(:docdog)[:vsn]}"
-      span &nbsp;
-      span Made with love at&nbsp;
-      a href="https://wunsh.ru" target="_blank" Elixir & Wunsh
+      .credits.pull-right
+          span Made with love at&nbsp;
+          a href="https://wunsh.ru" target="_blank" Elixir & Wunsh
+          | .&nbsp;
+          a href="https://github.com/wunsh/docdog-engine#credits" Credits
