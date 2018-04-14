@@ -10,7 +10,7 @@ defmodule DocdogWeb.Endpoint do
     at: "/",
     from: :docdog,
     gzip: false,
-    only: ~w(css fonts js favicon.ico robots.txt)
+    only: ~w(css fonts js favicon.png favicon-144.png favicon-152.png robots.txt)
   )
 
   plug(Plug.Static, at: "/", from: :docdog, gzip: false, only: ~w(images))
