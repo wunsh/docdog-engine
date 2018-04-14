@@ -4,6 +4,7 @@ defmodule DocdogWeb.PageControllerTest do
   describe "when guest" do
     test "GET /", %{conn: conn} do
       conn = get(conn, "/")
+
       assert html_response(conn, 200) =~ "Docdog App"
     end
   end
@@ -19,6 +20,7 @@ defmodule DocdogWeb.PageControllerTest do
 
     test "GET /", %{conn: conn} do
       conn = get(conn, "/")
+
       assert redirected_to(conn) =~ "/workplace/popular"
     end
   end

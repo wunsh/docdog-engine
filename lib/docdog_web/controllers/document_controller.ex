@@ -11,13 +11,7 @@ defmodule DocdogWeb.DocumentController do
     project = Editor.get_project!(project_id)
     documents = project.documents
 
-    with :ok <-
-      Bodyguard.permit(
-        Editor,
-        :project_read,
-        user,
-        project: project
-    ) do
+    with :ok <- Bodyguard.permit(Editor, :project_read, user, project: project) do
       render(conn, "index.html", project_id: project_id, documents: documents)
     end
   end
@@ -27,13 +21,7 @@ defmodule DocdogWeb.DocumentController do
     project = Editor.get_project!(project_id)
     changeset = Editor.change_document(%Document{})
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_create,
-             user,
-             project: project
-           ) do
+    with :ok <- Bodyguard.permit(Editor, :document_create, user, project: project) do
       render(conn, "new.html", project_id: project_id, changeset: changeset)
     end
   end
@@ -42,19 +30,8 @@ defmodule DocdogWeb.DocumentController do
     user = conn.assigns.current_user
     project = Editor.get_project!(project_id)
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_create,
-             user,
-             project: project
-           ),
-         {:ok, document} <-
-           Editor.create_document(
-             project,
-             user,
-             document_params
-           ) do
+    with :ok <- Bodyguard.permit(Editor, :document_create, user, project: project),
+         {:ok, document} <- Editor.create_document(project, user, document_params) do
       conn
       |> put_flash(:info, "Document created successfully.")
       |> redirect(to: project_document_path(conn, :edit, project, document))
@@ -70,15 +47,9 @@ defmodule DocdogWeb.DocumentController do
   def show(conn, %{"id" => id}) do
     user = conn.assigns.current_user
     document = Editor.get_document!(id)
+    project = document.project
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_read,
-             user,
-             document: document,
-             project: document.project
-           ) do
+    with :ok <- Bodyguard.permit(Editor, :document_read, user, document: document, project: project) do
       case get_format(conn) do
         "html" ->
           render(conn, "show.html", document: document)
@@ -88,10 +59,7 @@ defmodule DocdogWeb.DocumentController do
 
           conn
           |> put_resp_content_type("text/markdown")
-          |> put_resp_header(
-            "content-disposition",
-            "attachment; filename=\"#{document.name}.md\""
-          )
+          |> put_resp_header("content-disposition", "attachment; filename=\"#{document.name}.md\"")
           |> send_resp(200, content)
       end
     end
@@ -101,15 +69,9 @@ defmodule DocdogWeb.DocumentController do
     user = conn.assigns.current_user
     document = Editor.get_document!(id)
     lines = Editor.get_lines_for_document(document)
+    project = document.project
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_update,
-             user,
-             document: document,
-             project: document.project
-           ) do
+    with :ok <- Bodyguard.permit(Editor, :document_update, user, document: document, project: project) do
       render(conn, "edit.html", document: document, lines: lines)
     end
   end
@@ -117,15 +79,9 @@ defmodule DocdogWeb.DocumentController do
   def delete(conn, %{"id" => id, "project_id" => project_id}) do
     user = conn.assigns.current_user
     document = Editor.get_document!(id)
+    project = document.project
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_delete,
-             user,
-             document: document,
-             project: document.project
-           ),
+    with :ok <- Bodyguard.permit(Editor, :document_delete, user, document: document, project: project),
          {:ok, _document} = Editor.delete_document(document) do
       conn
       |> put_flash(:info, "Document deleted successfully.")

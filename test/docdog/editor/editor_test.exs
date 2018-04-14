@@ -35,13 +35,11 @@ defmodule Docdog.EditorTest do
       assert Editor.list_projects() == [project]
     end
 
-    test "full_list_projects/0 returns all projects with completed percentages",
-         %{user: user} do
+    test "full_list_projects/0 returns all projects with completed percentages", %{user: user} do
       processed_line = build(:processed_line)
       unprocessed_line = build(:unprocessed_line)
 
-      document =
-        build(:document, user: user, lines: [processed_line, unprocessed_line])
+      document = build(:document, user: user, lines: [processed_line, unprocessed_line])
 
       project =
         insert(
@@ -56,8 +54,7 @@ defmodule Docdog.EditorTest do
           p.id == project.id
         end)
 
-      assert Decimal.to_float(project_with_percentage.completed_percentage) ==
-               50.0
+      assert Decimal.to_float(project_with_percentage.completed_percentage) == 50.0
     end
 
     test "get_project!/1 returns the project with given id", %{project: project} do
@@ -67,14 +64,11 @@ defmodule Docdog.EditorTest do
     test "get_project_by_invite_code!/1 returns the project with given id", %{
       project: project
     } do
-      assert Editor.get_project_by_invite_code!(
-               "966f1fa5-eada-40b6-aad3-735032e12740"
-             ) == project
+      assert Editor.get_project_by_invite_code!("966f1fa5-eada-40b6-aad3-735032e12740") == project
     end
 
     test "create_project/2 with valid data creates a project", %{user: user} do
-      assert {:ok, %Project{} = project} =
-               Editor.create_project(user, @valid_attrs)
+      assert {:ok, %Project{} = project} = Editor.create_project(user, @valid_attrs)
 
       assert project.name == "Elixir Documentation"
     end
@@ -82,8 +76,7 @@ defmodule Docdog.EditorTest do
     test "create_project/2 with invalid data returns error changeset", %{
       user: user
     } do
-      assert {:error, %Ecto.Changeset{}} =
-               Editor.create_project(user, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Editor.create_project(user, @invalid_attrs)
     end
 
     test "update_project/2 with valid data updates the project", %{
@@ -98,8 +91,7 @@ defmodule Docdog.EditorTest do
     test "update_project/2 with invalid data returns error changeset", %{
       project: project
     } do
-      assert {:error, %Ecto.Changeset{}} =
-               Editor.update_project(project, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Editor.update_project(project, @invalid_attrs)
 
       assert project == Editor.get_project!(project.id)
     end
@@ -143,11 +135,10 @@ defmodule Docdog.EditorTest do
       assert Editor.list_documents() == [document]
     end
 
-    test "list_documents_for_project/1 returns all documents for given project",
-         %{
-           project: project,
-           document: document
-         } do
+    test "list_documents_for_project/1 returns all documents for given project", %{
+      project: project,
+      document: document
+    } do
       assert Editor.list_documents_for_project(project.id) == [document]
     end
 
@@ -161,8 +152,7 @@ defmodule Docdog.EditorTest do
       project: project,
       user: user
     } do
-      assert {:ok, %Document{} = document} =
-               Editor.create_document(project, user, @valid_attrs)
+      assert {:ok, %Document{} = document} = Editor.create_document(project, user, @valid_attrs)
 
       assert document.name == "Introduction"
 
@@ -174,8 +164,7 @@ defmodule Docdog.EditorTest do
       project: project,
       user: user
     } do
-      assert {:error, %Ecto.Changeset{}} =
-               Editor.create_document(project, user, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Editor.create_document(project, user, @invalid_attrs)
     end
 
     test "update_document/2 with valid data updates the document", %{
@@ -189,8 +178,7 @@ defmodule Docdog.EditorTest do
     test "update_document/2 with invalid data returns error changeset", %{
       document: document
     } do
-      assert {:error, %Ecto.Changeset{}} =
-               Editor.update_document(document, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Editor.update_document(document, @invalid_attrs)
 
       assert document == Editor.get_document!(document.id)
     end
@@ -216,8 +204,7 @@ defmodule Docdog.EditorTest do
     setup do
       user = insert(:user)
 
-      project =
-        insert(:project, invite_code: "ceefeadc-c73b-4914-9590-b7eef8bb7686")
+      project = insert(:project, invite_code: "ceefeadc-c73b-4914-9590-b7eef8bb7686")
 
       document = insert(:document, user: user)
 
@@ -264,11 +251,9 @@ defmodule Docdog.EditorTest do
       snippet = "```elixir\n1+1 # 2\n2+2 # 4\n```"
       encoded_snippet = "```elixir%$%n$%$1+1 # 2%$%n$%$2+2 # 4%$%n$%$```"
 
-      text_with_snippet =
-        "Take a look at the snippet below:\n\n#{snippet}\n\nWow, it works!\n"
+      text_with_snippet = "Take a look at the snippet below:\n\n#{snippet}\n\nWow, it works!\n"
 
-      processed_text =
-        "Take a look at the snippet below:\n\n#{encoded_snippet}\n\nWow, it works!\n"
+      processed_text = "Take a look at the snippet below:\n\n#{encoded_snippet}\n\nWow, it works!\n"
 
       {:ok,
        snippet: snippet,

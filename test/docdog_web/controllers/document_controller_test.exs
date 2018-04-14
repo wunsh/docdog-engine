@@ -23,20 +23,10 @@ defmodule DocdogWeb.DocumentControllerTest do
     private_project = insert(:project, user: user, public: false)
 
     document =
-      insert(
-        :document,
-        user: user,
-        project: public_project,
-        lines: [line, line]
-      )
+      insert(:document, user: user, project: public_project, lines: [line, line])
 
-    {:ok,
-     conn: conn,
-     another_conn: conn_with_another_user,
-     user: user,
-     private_project: private_project,
-     public_project: public_project,
-     document: document}
+    {:ok, conn: conn, another_conn: conn_with_another_user, user: user, private_project: private_project,
+          public_project: public_project, document: document}
   end
 
   describe "index" do
@@ -45,6 +35,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project
     } do
       conn = get(conn, project_document_path(conn, :index, project.id))
+
       assert html_response(conn, 200) =~ "Listing Documents"
     end
 
@@ -53,6 +44,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project
     } do
       conn = get(conn, project_document_path(conn, :index, project.id))
+
       assert html_response(conn, 200) =~ "Listing Documents"
     end
 
@@ -61,6 +53,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       private_project: project
     } do
       conn = get(conn, project_document_path(conn, :index, project.id))
+
       assert html_response(conn, 403) =~ "Forbidden"
     end
   end
@@ -71,8 +64,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project,
       document: document
     } do
-      conn =
-        get(conn, project_document_path(conn, :show, project.id, document.id))
+      conn = get(conn, project_document_path(conn, :show, project.id, document.id))
 
       assert html_response(conn, 200) =~ "Show Document"
     end
@@ -82,10 +74,8 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project,
       document: document
     } do
-      conn = conn |> put_req_header("accept", "text/markdown")
-
-      conn =
-        get(conn, project_document_path(conn, :show, project.id, document.id))
+      conn = put_req_header(conn, "accept", "text/markdown")
+      conn = get(conn, project_document_path(conn, :show, project.id, document.id))
 
       assert response_content_type(conn, :md) =~ "text/markdown; charset=utf-8"
       assert response(conn, 200) == "Эликсир - это\n\nЭликсир - это"
@@ -97,9 +87,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       private_project: project
     } do
       document = insert(:document, user: user, project: project)
-
-      conn =
-        get(conn, project_document_path(conn, :show, project.id, document.id))
+      conn = get(conn, project_document_path(conn, :show, project.id, document.id))
 
       assert html_response(conn, 403) =~ "Forbidden"
     end
@@ -108,6 +96,7 @@ defmodule DocdogWeb.DocumentControllerTest do
   describe "new document" do
     test "renders form", %{conn: conn, public_project: project} do
       conn = get(conn, project_document_path(conn, :new, project.id))
+
       assert html_response(conn, 200) =~ "New Document"
     end
 
@@ -116,6 +105,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       private_project: project
     } do
       conn = get(conn, project_document_path(conn, :new, project.id))
+
       assert html_response(conn, 403) =~ "Forbidden"
     end
   end
@@ -126,16 +116,10 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project
     } do
       new_conn =
-        post(
-          conn,
-          project_document_path(conn, :create, project.id),
-          document: @create_attrs
-        )
+        post(conn, project_document_path(conn, :create, project.id), document: @create_attrs)
 
       assert %{id: id} = redirected_params(new_conn)
-
-      assert redirected_to(new_conn) ==
-               project_document_path(new_conn, :edit, project.id, id)
+      assert redirected_to(new_conn) == project_document_path(new_conn, :edit, project.id, id)
 
       new_conn = get(conn, project_document_path(conn, :edit, project.id, id))
       assert html_response(new_conn, 200) =~ "Edit Document"
@@ -145,12 +129,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       conn: conn,
       public_project: project
     } do
-      conn =
-        post(
-          conn,
-          project_document_path(conn, :create, project.id),
-          document: @invalid_attrs
-        )
+      conn = post(conn, project_document_path(conn, :create, project.id), document: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "New Document"
     end
@@ -159,12 +138,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       another_conn: conn,
       private_project: project
     } do
-      conn =
-        post(
-          conn,
-          project_document_path(conn, :create, project.id),
-          document: @invalid_attrs
-        )
+      conn = post(conn, project_document_path(conn, :create, project.id), document: @invalid_attrs)
 
       assert html_response(conn, 403) =~ "Forbidden"
     end
@@ -177,6 +151,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       document: document
     } do
       conn = get(conn, project_document_path(conn, :edit, project.id, document))
+
       assert html_response(conn, 200) =~ "Edit Document"
     end
 
@@ -187,26 +162,22 @@ defmodule DocdogWeb.DocumentControllerTest do
     } do
       document = insert(:document, user: user, project: project)
       conn = get(conn, project_document_path(conn, :edit, project.id, document))
+
       assert html_response(conn, 403) =~ "Forbidden"
     end
   end
 
   describe "delete document" do
-    test "renders unauthorized page for document of private project for admin",
-         %{
-           conn: conn,
-           public_project: project,
-           document: document
-         } do
+    test "renders unauthorized page for document of private project for admin", %{
+      conn: conn,
+      public_project: project,
+      document: document
+    } do
       admin = insert(:user, admin: true)
       conn = assign(conn, :current_user, admin)
+      delete_conn = delete(conn, project_document_path(conn, :delete, project.id, document))
 
-      delete_conn =
-        delete(conn, project_document_path(conn, :delete, project.id, document))
-
-      assert redirected_to(delete_conn) ==
-               project_document_path(conn, :index, project.id)
-
+      assert redirected_to(delete_conn) == project_document_path(conn, :index, project.id)
       assert_error_sent(404, fn ->
         get(conn, project_document_path(conn, :show, project.id, document))
       end)
@@ -217,8 +188,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       public_project: project,
       document: document
     } do
-      delete_conn =
-        delete(conn, project_document_path(conn, :delete, project.id, document))
+      delete_conn = delete(conn, project_document_path(conn, :delete, project.id, document))
 
       assert html_response(delete_conn, 403) =~ "Forbidden"
     end
@@ -229,9 +199,7 @@ defmodule DocdogWeb.DocumentControllerTest do
       private_project: project
     } do
       document = insert(:document, user: user, project: project)
-
-      delete_conn =
-        delete(conn, project_document_path(conn, :delete, project.id, document))
+      delete_conn = delete(conn, project_document_path(conn, :delete, project.id, document))
 
       assert html_response(delete_conn, 403) =~ "Forbidden"
     end

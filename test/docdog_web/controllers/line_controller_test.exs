@@ -15,32 +15,22 @@ defmodule DocdogWeb.LineControllerTest do
       build_conn()
       |> assign(:current_user, another_user)
 
-    processed_line = insert(:processed_line)
-    unprocessed_line = insert(:unprocessed_line)
-
-    project =
-      insert(:project, user: user, lines: [processed_line, unprocessed_line])
-
-    document =
-      insert(
-        :document,
-        user: user,
-        project: project,
-        lines: [processed_line, unprocessed_line]
-      )
+    processed = insert(:processed_line)
+    unprocessed = insert(:unprocessed_line)
+    project = insert(:project, user: user, lines: [processed, unprocessed])
+    document = insert(:document, user: user, project: project, lines: [processed, unprocessed])
 
     {:ok,
      conn: conn,
      another_conn: conn_with_another_user,
      user: user,
-     unprocessed_line: unprocessed_line,
+     unprocessed_line: unprocessed,
      document: document}
   end
 
   describe "index" do
     test "lists all lines in json format", %{conn: conn, document: document} do
       [line1, line2] = document.lines
-
       conn = get(conn, document_line_path(conn, :index, document.id))
 
       assert json_response(conn, 200) == %{
@@ -68,6 +58,7 @@ defmodule DocdogWeb.LineControllerTest do
       document: document
     } do
       conn = get(conn, document_line_path(conn, :index, document.id))
+
       assert json_response(conn, 403) == %{"error" => "Forbidden"}
     end
   end
@@ -77,12 +68,8 @@ defmodule DocdogWeb.LineControllerTest do
       conn: conn,
       unprocessed_line: line
     } do
-      conn =
-        put(
-          conn,
-          line_path(conn, :update, line.id),
-          line: %{"translated_text" => "самый лучший язык программирования."}
-        )
+      line_params = %{"translated_text" => "самый лучший язык программирования."}
+      conn = put(conn, line_path(conn, :update, line.id), line: line_params)
 
       assert json_response(conn, 200) == %{
                "id" => line.id,
@@ -97,12 +84,8 @@ defmodule DocdogWeb.LineControllerTest do
       conn: conn,
       unprocessed_line: line
     } do
-      conn =
-        put(
-          conn,
-          line_path(conn, :update, line.id),
-          line: %{"translated_text" => nil}
-        )
+      line_params = %{"translated_text" => nil}
+      conn = put(conn, line_path(conn, :update, line.id), line: line_params)
 
       assert json_response(conn, 400) == %{"status" => "error"}
     end
@@ -111,12 +94,8 @@ defmodule DocdogWeb.LineControllerTest do
       another_conn: conn,
       unprocessed_line: line
     } do
-      conn =
-        put(
-          conn,
-          line_path(conn, :update, line.id),
-          line: %{"translated_text" => nil}
-        )
+      line_params = %{"translated_text" => nil}
+      conn = put(conn, line_path(conn, :update, line.id), line: line_params)
 
       assert json_response(conn, 403) == %{"error" => "Forbidden"}
     end
