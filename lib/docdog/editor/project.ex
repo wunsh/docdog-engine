@@ -7,7 +7,8 @@ defmodule Docdog.Editor.Project do
 
   import Ecto.Changeset
 
-  alias Docdog.Editor.Project
+  alias Docdog.Editor.{Project, Document, Line}
+  alias Docdog.Accounts.User
 
   schema "projects" do
     field(:name, :string)
@@ -19,10 +20,10 @@ defmodule Docdog.Editor.Project do
 
     timestamps()
 
-    belongs_to(:user, Docdog.Accounts.User)
+    belongs_to(:user, User)
 
-    has_many(:documents, Docdog.Editor.Document, on_delete: :delete_all)
-    has_many(:lines, Docdog.Editor.Line)
+    has_many(:documents, Document, on_delete: :delete_all)
+    has_many(:lines, Line)
   end
 
   @doc false

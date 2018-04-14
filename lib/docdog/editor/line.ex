@@ -9,9 +9,7 @@ defmodule Docdog.Editor.Line do
   import Ecto.Changeset
   import Ecto.Query
 
-  alias Docdog.Editor.Project
-  alias Docdog.Editor.Document
-  alias Docdog.Editor.Line
+  alias Docdog.Editor.{Project, Document, Line}
   alias Docdog.Accounts.User
 
   schema "lines" do
