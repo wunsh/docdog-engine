@@ -18,8 +18,7 @@ defmodule DocdogWeb.AuthorizationRequiredPlugTest do
       {:ok, conn: conn}
     end
 
-    test "redirects to sign in page with proper redirect url and flash message",
-         %{conn: conn} do
+    test "redirects to sign in page with proper redirect url and flash message", %{conn: conn} do
       assert get_session(conn, :redirect_url) == "/workplace/projects"
       assert get_flash(conn, :info) == "Please, sign in to continue."
       assert redirected_to(conn) == "/auth/sign_in"

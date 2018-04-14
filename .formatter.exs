@@ -5,5 +5,5 @@
     "mix.exs",
     "{config,lib,priv,rel,test}/**/*.{ex,exs}"
   ],
-  line_length: 80
+  line_length: 110
 ]

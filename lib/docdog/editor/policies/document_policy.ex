@@ -5,8 +5,7 @@ defmodule Docdog.Editor.Policies.DocumentPolicy do
 
   @behaviour Bodyguard.Policy
 
-  alias Docdog.Editor.Project
-  alias Docdog.Editor.Document
+  alias Docdog.Editor.{Project, Document}
   alias Docdog.Accounts.User
 
   # Admin users can do anything
@@ -16,7 +15,7 @@ defmodule Docdog.Editor.Policies.DocumentPolicy do
 
   # Project owners can create documents in public projects
   def authorize(:create, %User{id: user_id}, %{
-        project: %Project{id: project_id, user_id: user_id, public: true}
+        project: %Project{user_id: user_id, public: true}
       }),
       do: true
 
@@ -46,7 +45,7 @@ defmodule Docdog.Editor.Policies.DocumentPolicy do
 
   # Project owners can create documents in private projects
   def authorize(:create, %User{id: user_id}, %{
-        project: %Project{id: project_id, user_id: user_id, public: false}
+        project: %Project{user_id: user_id, public: false}
       }),
       do: true
 

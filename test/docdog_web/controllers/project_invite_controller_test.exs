@@ -26,22 +26,10 @@ defmodule DocdogWeb.ProjectInviteControllerTest do
     test "when user signed in shows invite page with Approve button", %{
       another_conn: conn
     } do
-      conn =
-        get(
-          conn,
-          project_invite_path(
-            conn,
-            :show,
-            "de4f032e-2fb9-11e8-b467-0ed5f89f718b"
-          )
-        )
+      conn = get(conn, project_invite_path(conn, :show, "de4f032e-2fb9-11e8-b467-0ed5f89f718b"))
 
-      assert html_response(conn, 200) =~
-               "Invite you to «Elixir Documentation» project"
-
-      assert html_response(conn, 200) =~
-               "You were invited to project. Please, accept it."
-
+      assert html_response(conn, 200) =~ "Invite you to «Elixir Documentation» project"
+      assert html_response(conn, 200) =~ "You were invited to project. Please, accept it."
       assert html_response(conn, 200) =~ ">Approve<"
     end
   end
@@ -51,17 +39,10 @@ defmodule DocdogWeb.ProjectInviteControllerTest do
       another_conn: conn,
       project: project
     } do
-      conn =
-        post(
-          conn,
-          project_invite_path(conn, :create, %{
-            invite_code: "de4f032e-2fb9-11e8-b467-0ed5f89f718b"
-          })
-        )
+      invite_params = %{invite_code: "de4f032e-2fb9-11e8-b467-0ed5f89f718b"}
+      conn = post(conn, project_invite_path(conn, :create, invite_params))
 
-      assert redirected_to(conn) ==
-               "/workplace/projects/#{project.id}/documents"
-
+      assert redirected_to(conn) == "/workplace/projects/#{project.id}/documents"
       assert html_response(conn, 302) =~
                "You are being <a href=\"/workplace/projects/#{project.id}/documents\">redirected</a>."
     end

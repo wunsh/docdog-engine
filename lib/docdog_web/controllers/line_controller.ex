@@ -10,15 +10,9 @@ defmodule DocdogWeb.LineController do
     user = get_session(conn, :current_user) || conn.assigns.current_user
     document = Editor.get_document!(document_id)
     lines = Editor.get_lines_for_document(document)
+    project = document.project
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :document_update,
-             user,
-             document: document,
-             project: document.project
-           ) do
+    with :ok <- Bodyguard.permit(Editor, :document_update, user, document: document, project: project) do
       render(conn, "index.json", lines: lines)
     end
   end
@@ -27,15 +21,9 @@ defmodule DocdogWeb.LineController do
     # TODO: Fix
     user = get_session(conn, :current_user) || conn.assigns.current_user
     line = Editor.get_line!(id)
+    project = line.project
 
-    with :ok <-
-           Bodyguard.permit(
-             Editor,
-             :line_update,
-             user,
-             line: line,
-             project: line.project
-           ),
+    with :ok <- Bodyguard.permit(Editor, :line_update, user, line: line, project: project),
          {:ok, updated_line} <- Editor.update_line(line, user, line_params) do
       conn
       |> put_status(:ok)
