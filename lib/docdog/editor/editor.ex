@@ -7,14 +7,11 @@ defmodule Docdog.Editor do
 
   alias Ecto.Changeset
   alias Docdog.Repo
-  alias Docdog.Editor.Project
-  alias Docdog.Editor.Document
-  alias Docdog.Editor.Line
-  alias Docdog.Editor.Queries.ProjectQuery
-  alias Docdog.Editor.Queries.DocumentQuery
-  alias Docdog.Editor.Queries.LineQuery
+  alias Docdog.Editor.{Project, Document, Line, Policies}
+  alias Docdog.Editor.Queries.{ProjectQuery, DocumentQuery, LineQuery}
+  alias Docdog.Accounts.User
 
-  defdelegate authorize(action, user, params), to: Docdog.Editor.Policies.Router
+  defdelegate authorize(action, user, params), to: Policies.Router
 
   @doc """
   Returns the list of projects.
@@ -76,7 +73,7 @@ defmodule Docdog.Editor do
 
     Repo.all(
       from(
-        u in Docdog.Accounts.User,
+        u in User,
         where: u.id in ^member_ids
       )
     )

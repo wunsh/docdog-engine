@@ -8,9 +8,9 @@ defmodule Docdog.Editor.Document do
   import Ecto.Changeset
 
   alias Docdog.Editor
-  alias Docdog.Editor.Document
-  alias Docdog.Editor.Line
-  alias Docdog.Editor.SnippetHelper
+  alias Docdog.Editor.{Project, Document, Line}
+  alias Docdog.Editor.Services.CreateLines
+  alias Docdog.Accounts.User
 
   schema "documents" do
     field(:name, :string)
@@ -18,10 +18,10 @@ defmodule Docdog.Editor.Document do
 
     timestamps()
 
-    belongs_to(:project, Docdog.Editor.Project)
-    belongs_to(:user, Docdog.Accounts.User)
+    belongs_to(:project, Project)
+    belongs_to(:user, User)
 
-    has_many(:lines, Docdog.Editor.Line, on_replace: :mark_as_invalid, on_delete: :nilify_all)
+    has_many(:lines, Line, on_replace: :mark_as_invalid, on_delete: :nilify_all)
   end
 
   @doc false
@@ -29,32 +29,13 @@ defmodule Docdog.Editor.Document do
     document
     |> cast(attrs, [:name, :original_text, :user_id, :project_id])
     |> validate_required([:name, :original_text, :user_id, :project_id])
-    |> put_assoc(
-      :lines,
-      create_lines(attrs["original_text"], attrs["project_id"])
-    )
+    |> put_assoc(:lines, CreateLines.call(attrs["original_text"], attrs["project_id"]))
   end
 
   def translated_text(document) do
     document
     |> Editor.get_lines_for_document()
-    |> Enum.map(fn x -> x.translated_text end)
+    |> Enum.map(fn line -> line.translated_text end)
     |> Enum.join("\n\n")
-  end
-
-  defp create_lines(nil, _) do
-    []
-  end
-
-  defp create_lines(text, project_id) do
-    text
-    |> SnippetHelper.process_snippets()
-    |> String.split("\n")
-    |> Enum.map(&SnippetHelper.decode_newlines/1)
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.with_index()
-    |> Enum.map(&Line.prepare_line/1)
-    |> Enum.map(fn line -> Map.put(line, :project_id, project_id) end)
   end
 end
