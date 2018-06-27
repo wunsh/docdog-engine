@@ -13,24 +13,20 @@ use Mix.Releases.Config,
 # and environment configuration is called a profile
 
 environment :dev do
-  set(dev_mode: true)
+  set(dev_mode: false)
   set(include_erts: false)
 
   set(
-    cookie:
-      ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}")
-      |> String.to_atom()
+    cookie: System.get_env("DOCDOG_COOKIE") || "&ni4J65$&00OKB5$!AZ#RnybOr^oBU$hbEx8C4Rf3O0r%DSqkhiY7Vl#JH#Q%xqy"
   )
 end
 
 environment :prod do
-  set(include_erts: true)
+  set(include_erts: false)
   set(include_src: false)
 
   set(
-    cookie:
-      ("DOCDOG_COOKIE" |> System.get_env() || "${DOCDOG_COOKIE}")
-      |> String.to_atom()
+    cookie: System.get_env("DOCDOG_COOKIE") || "${DOCDOG_COOKIE}"
   )
 end
 
@@ -41,4 +37,8 @@ end
 
 release :docdog do
   set(version: current_version(:docdog))
+
+  set commands: [
+    "migrate": "rel/commands/migrate.sh"
+  ]
 end

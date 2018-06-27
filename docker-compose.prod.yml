@@ -1,0 +1,28 @@
+version: "3.6"
+services:
+  web:
+    image: docdog-release
+    container_name: docdog-engine_web
+    build:
+      context: .
+      args:
+        - BUILD_ENV=prod # Default environment
+        - PORT=4000
+      cache_from:
+        - docdog-app
+    command: foreground
+    ports:
+      - 4000:4000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  migrator:
+    image: docdog-release
+    container_name: docdog-engine_migrator
+    command: migrate
+    env_file:
+      - .env
+    depends_on:
+      - db

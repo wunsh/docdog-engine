@@ -7,7 +7,8 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :docdog, DocdogWeb.Endpoint,
-  http: [port: 4000],
+  url: [host: "localhost", port: {:system, "PORT"}],
+  http: [port: {:system, "PORT"}],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -58,7 +59,7 @@ config :phoenix, :stacktrace_depth, 20
 config :docdog, Docdog.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("DATABASE_USERNAME") || "postgres",
-  password: System.get_env("DATABASE_PASSWORD") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "",
   database: System.get_env("DATABASE_NAME") || "docdog_dev",
-  hostname: "localhost",
+  hostname: "db",
   pool_size: 10

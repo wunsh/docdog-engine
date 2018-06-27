@@ -49,7 +49,7 @@ defmodule Docdog.Mixfile do
       {:gettext, "~> 0.11"},
       {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"},
-      {:distillery, "~> 1.0.0"},
+      {:distillery, "~> 1.5.0"},
       {:bodyguard, "~> 2.2"},
       {:ex_machina, "~> 2.1"},
 

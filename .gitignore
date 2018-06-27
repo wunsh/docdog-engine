@@ -1,7 +1,12 @@
 # App artifacts
 /_build
+/.cache
 /db
+/data
 /deps
+/.elixir_ls
+/.elm
+/.node-gyp
 /*.ez
 .DS_Store
 
