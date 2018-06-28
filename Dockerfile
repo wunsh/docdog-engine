@@ -75,6 +75,8 @@ ADD . .
 
 WORKDIR assets
 
+RUN touch js/main.js
+
 RUN if [ ${MIX_ENV} = "prod" ]; then yarn run deploy; else yarn run build; fi
 
 
