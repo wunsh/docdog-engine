@@ -1,4 +1,5 @@
 # App artifacts
+
 /_build
 /.cache
 /db
@@ -23,7 +24,8 @@ npm-debug.log
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
-/assets/elm/elm-stuff/
+/assets/elm/elm-stuff/*
+!assets/elm/elm-stuff/exact-dependencies.json
 /assets/js/main.js
 
 # Files matching config/*.secret.exs pattern contain sensitive
