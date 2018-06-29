@@ -61,10 +61,6 @@ WORKDIR elm
 
 ADD assets/elm/elm-package.json ./
 
-ADD assets/elm/elm-stuff/exact-dependencies.json ./elm-stuff/
-
-WORKDIR ${HOME}/assets/elm
-
 RUN elm package install -y
 
 
@@ -73,9 +69,12 @@ WORKDIR ${HOME}
 ADD . .
 
 
-WORKDIR assets
+WORKDIR assets/elm
 
-RUN touch js/main.js
+RUN elm-make Main.elm --output=../js/main.js
+
+
+WORKDIR assets
 
 RUN if [ ${MIX_ENV} = "prod" ]; then yarn run deploy; else yarn run build; fi
 
