@@ -1,0 +1,22 @@
+version: "3.6"
+services:
+  db:
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+
+  app:
+    image: docdog-app
+    container_name: docdog-engine_app
+    build:
+      context: .
+      target: app
+      args:
+        - BUILD_ENV=test # Default environment
+        - PORT=4000
+    environment:
+      - MIX_ENV=test
+    depends_on:
+      - db

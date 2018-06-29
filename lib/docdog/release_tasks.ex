@@ -1,5 +1,8 @@
 # From: https://hexdocs.pm/distillery/running-migrations.html
 defmodule Docdog.ReleaseTasks do
+  @moduledoc """
+  Release tasks.
+  """
 
   @start_apps [
     :crypto,

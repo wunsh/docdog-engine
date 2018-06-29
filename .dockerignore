@@ -10,8 +10,7 @@ assets/elm/elm-stuff/
 cover/
 data/
 deps/
-priv/static/
-test/
+priv/static/test/docdog/editor/editor_test.exs:34
 
 # Files
 *.ez

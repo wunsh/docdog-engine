@@ -81,12 +81,15 @@ RUN if [ ${MIX_ENV} = "prod" ]; then yarn run deploy; else yarn run build; fi
 
 WORKDIR ${HOME}
 
-RUN mix do compile, phx.digest, release --env=${MIX_ENV}
+RUN mix do compile, phx.digest
 
 RUN \
-  RELEASE_DIR=`ls -d _build/${MIX_ENV}/rel/${APP_NAME}/releases/*/` && \
-  mkdir /release && \
-  tar -xf "${RELEASE_DIR}${APP_NAME}.tar.gz" -C /release
+  if [ ${MIX_ENV} = "prod" ]; then \
+    RELEASE_DIR=`ls -d _build/${MIX_ENV}/rel/${APP_NAME}/releases/*/` && \
+    mix release --env=${MIX_ENV} && \
+    mkdir /release && \
+    tar -xf "${RELEASE_DIR}${APP_NAME}.tar.gz" -C /release; \
+  fi
 
 
 CMD ["mix", "phx.server"]

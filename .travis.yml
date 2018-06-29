@@ -1,25 +1,24 @@
-language: elixir
-
-elixir: 1.5
-
-otp_release: 20.0
+sudo: required
 
 services:
-  - postgresql
+  - docker
 
 env:
-  - MIX_ENV=test
+  - DOCKER_COMPOSE_VERSION=1.21.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - touch .env
+  - docker-compose -f docker-compose.yml -f docker-compose.test.yml build --build-arg BUILD_ENV=test app
+  - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d db
+  - docker ps -a
 
 before_script:
-  - PGPASSWORD=postgres psql -c 'create database docdog_test;' -U postgres
+  - docker-compose exec db psql -c 'create database docdog_test;' -U postgres
 
 script:
-  - mix credo --strict
-  - mix coveralls.travis
-
-deploy:
-  # Deploys code to gigalixir:
-  provider: script
-  script: bash ./deploy.sh
-  on:
-    branch: master
+  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run -e MIX_ENV=test app mix credo --strict
+  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run -e MIX_ENV=test -e CI=true -e TRAVIS_JOB_ID=$TRAVIS_JOB_ID app mix coveralls.travis # Run tests

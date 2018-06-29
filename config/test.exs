@@ -14,7 +14,7 @@ config :logger, level: :warn
 config :docdog, Docdog.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("DATABASE_USERNAME") || "postgres",
-  password: System.get_env("DATABASE_PASSWORD") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "",
   database: "docdog_test",
-  hostname: "localhost",
+  hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox
