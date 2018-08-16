@@ -11,7 +11,7 @@ services:
     image: docdog-app
     container_name: docdog-engine_app
     build:
-      context: ..
+      context: .
       target: app
       args:
         - BUILD_ENV=test # Default environment

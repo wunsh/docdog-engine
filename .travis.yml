@@ -13,16 +13,16 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - touch .env
   - docker network create nginx-proxy
-  - docker-compose -f docker-compose.yml -f config/docker-compose.test.yml build --build-arg BUILD_ENV=test app
-  - docker-compose -f docker-compose.yml -f config/docker-compose.test.yml up -d db
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml build --build-arg BUILD_ENV=test app
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml up -d db
   - sudo service postgresql stop
   - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
   - docker ps -a
 
 before_script:
   - docker-compose exec db psql -c 'create database docdog_test;' -U postgres
-  - docker-compose -f docker-compose.yml -f config/docker-compose.test.yml run -e MIX_ENV=test app mix deps.get
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run -e MIX_ENV=test app mix deps.get
 
 script:
-  - docker-compose -f docker-compose.yml -f config/docker-compose.test.yml run -e MIX_ENV=test app mix credo
-  - docker-compose -f docker-compose.yml -f config/docker-compose.test.yml run -e MIX_ENV=test -e CI=true -e TRAVIS_JOB_ID=$TRAVIS_JOB_ID app mix coveralls.travis # Run tests
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run -e MIX_ENV=test app mix credo
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run -e MIX_ENV=test -e CI=true -e TRAVIS_JOB_ID=$TRAVIS_JOB_ID app mix coveralls.travis # Run tests
