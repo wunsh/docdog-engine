@@ -4,8 +4,8 @@ defmodule Docdog.Mixfile do
   def project do
     [
       app: :docdog,
-      version: "0.1.1",
-      elixir: "~> 1.5",
+      version: "0.2.0",
+      elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -49,7 +49,7 @@ defmodule Docdog.Mixfile do
       {:gettext, "~> 0.11"},
       {:ueberauth_github, "~> 0.4"},
       {:cowboy, "~> 1.0"},
-      {:distillery, "~> 1.0.0"},
+      {:distillery, "~> 1.5.0"},
       {:bodyguard, "~> 2.2"},
       {:ex_machina, "~> 2.1"},
 

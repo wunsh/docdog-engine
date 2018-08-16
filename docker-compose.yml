@@ -1,0 +1,50 @@
+version: "3.6"
+services:
+  db:
+    image: postgres:10.4-alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  web:
+    restart: always
+    image: nginx:1.15-alpine
+    container_name: docdog-engine_web
+    environment:
+      - VIRTUAL_HOST=www.docdog.io,docdog.io
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=www.docdog.io,docdog.io
+      - LETSENCRYPT_EMAIL=hello@docdog.io
+    volumes:
+      - /etc/nginx/conf.d
+      - /etc/nginx/vhost.d
+      - ./config/nginx.conf:/etc/nginx/conf.d/docdog.conf:ro
+      - ./src/public:/usr/share/nginx/html
+
+  app:
+    image: docdog-app
+    container_name: docdog-engine_app
+    build:
+      context: .
+      target: app
+      args:
+        - BUILD_ENV=dev # Default environment
+        - PORT=4000
+    volumes:
+      - .:/opt/app
+    ports:
+      - 4000:4000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

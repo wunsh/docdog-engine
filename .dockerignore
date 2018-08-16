@@ -1,0 +1,23 @@
+# Directories
+_build/
+.cache/
+.elixir_ls/
+.elm/
+.git/
+.node-gyp/
+assets/node_modules/
+assets/elm/elm-stuff/
+cover/
+data/
+deps/
+priv/static/test/docdog/editor/editor_test.exs:34
+
+# Files
+*.ez
+.DS_Store
+.env
+erl_crash.dump
+npm-debug.log
+
+# Exclude from ignoring
+!assets/elm/elm-stuff/exact-dependencies.json

@@ -4,13 +4,29 @@ Web application for co-translation of technical texts – documentations, articl
 
 ## Start your own Docdog locally
 
-To start your Docdog server:
+Now you can start your development activity very easy:
 
-* Fill all environment variables from `.env.sample` to `.env` and move it to OS environment by `source .env`
-* Install dependencies with `mix deps.get`
-* Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-* Install frontend dependencies with `cd assets && yarn install`
-* Start Phoenix endpoint with `mix phx.server`
+```elixir
+docker-compose up
+```
+
+But make simple preparing before:
+
+1. Install [Docker](https://docs.docker.com/install/) with [compose feature](https://docs.docker.com/compose/install/#install-compose).
+
+1. Fill all needed environment variables from `.env.sample` to `.env`:
+
+    ```
+    cp .env.sample .env
+    # Update `.env` in your favorite editor
+    ```
+
+1. Now you can `docker-compose up` it! If this is your first app booting, you need to create database and run migrations:
+
+    ```
+    # Your compose must be running
+    docker-compose exec app mix do ecto.create, ecto.migrate
+    ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
