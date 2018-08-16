@@ -68,7 +68,6 @@ config :logger, level: :info
 # Configure your database
 config :docdog, Docdog.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: "${DATABASE_URL}",
-  database: "",
+  url: {:system, "DATABASE_URL"},
   ssl: false,
   pool_size: 1
