@@ -85,8 +85,9 @@ RUN mix do compile, phx.digest
 
 RUN \
   if [ ${MIX_ENV} = "prod" ]; then \
+    mix release --env=${MIX_ENV}; \
+    \
     RELEASE_DIR=`ls -d _build/${MIX_ENV}/rel/${APP_NAME}/releases/*/` && \
-    mix release --env=${MIX_ENV} && \
     mkdir /release && \
     tar -xf "${RELEASE_DIR}${APP_NAME}.tar.gz" -C /release; \
   fi
