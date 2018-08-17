@@ -98,7 +98,7 @@ CMD ["mix", "phx.server"]
 
 # Release Application
 
-FROM bitwalker/alpine-erlang:21.0
+FROM bitwalker/alpine-erlang:21.0.3
 
 MAINTAINER Docdog Developers <dev@docdog.io>
 
